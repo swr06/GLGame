@@ -1,0 +1,273 @@
+-> Batch Rendering test (5 bug fixes)
+	// START CODE 
+			Game game(800, 400);
+
+			void Game::OnEvent(Event e)
+			{
+	
+			}
+
+			void Game::OnFrameAdvance(long long frame)
+			{
+	
+			}
+
+			void Game::OnImGuiRender(long long frame)
+			{
+
+			}
+
+			int main()
+			{
+				glm::mat4 projection_matrix = glm::ortho(0.0f, 800.0f, 0.0f, 400.0f);
+				Texture tex1;
+				Texture tex2;
+				Texture tex3;
+				Texture tex4;
+				Texture tex5;
+				Texture tex6;
+				Texture tex7;
+				Texture tex8;
+				SpriteBatcher batcher;
+
+				tex1.CreateTexture("Core\\Resources\\tree.png");
+				tex2.CreateTexture("Core\\Resources\\tree.png");
+				tex3.CreateTexture("Core\\Resources\\tree.png");
+				tex4.CreateTexture("Core\\Resources\\tree.png");
+				tex5.CreateTexture("Core\\Resources\\tree.png");
+				tex6.CreateTexture("Core\\Resources\\tree.png");
+				tex7.CreateTexture("Core\\Resources\\tree.png");
+				tex8.CreateTexture("Core\\Resources\\tree.png");
+				batcher.InitSpriteBatch(projection_matrix);
+
+				glClearColor(0.1, 0.1, 0.1, 1.0f);
+				glfwSwapInterval(1);
+
+				while (!game.GameWindowShouldClose())
+				{
+					glClear(GL_COLOR_BUFFER_BIT);
+
+					for (int i = 0; i < 100; i++)
+					{
+						batcher.AddGenericTextureToBatch(&tex1, glm::vec3(i * 32, 0, 0));
+					}
+
+					for (int i = 0; i < 100; i++)
+					{
+						batcher.AddGenericTextureToBatch(&tex2, glm::vec3(i * 32, 0, 0));
+					}
+
+					for (int i = 0; i < 100; i++)
+					{
+						batcher.AddGenericTextureToBatch(&tex3, glm::vec3(i * 32, 0, 0));
+					}
+
+					for (int i = 0; i < 100; i++)
+					{
+						batcher.AddGenericTextureToBatch(&tex4, glm::vec3(i * 32, 0, 0));
+					}
+
+					for (int i = 0; i < 100; i++)
+					{
+						batcher.AddGenericTextureToBatch(&tex5, glm::vec3(i * 32, 0, 0));
+					}
+
+					for (int i = 0; i < 100; i++)
+					{
+						batcher.AddGenericTextureToBatch(&tex6, glm::vec3(i * 32, 0, 0));
+					}
+
+					for (int i = 0; i < 100; i++)
+					{
+						batcher.AddGenericTextureToBatch(&tex7, glm::vec3(i * 32, 0, 0));
+					}
+
+					for (int i = 0; i < 100; i++)
+					{
+						batcher.AddGenericTextureToBatch(&tex8, glm::vec3(i * 32, 0, 0));
+					}
+
+					batcher.DrawFullBatch();
+					glfwSwapBuffers(game.GetGameWindow());
+				}
+	
+			}
+	// END CODE 
+
+	////////////////////////////////////////////////////////////////////////////////////////
+
+-> Key Hold Test (3 Bug fixes)
+
+	// START CODE
+			#include "Core\Engine\Game\Game.h"
+			#include <GL/glew.h>
+
+			using namespace GLGame;
+			using namespace std;
+
+			const int game_width = 800;
+			const int game_height = 600;
+
+			Game game(game_width, game_height, "", true, false);
+
+			void EventCallback(Event e);
+
+			void Game::OnEvent(Event e)
+			{
+				EventCallback(e);
+			}
+
+			void Game::OnFrameAdvance(long long frame)
+			{
+	
+			}
+
+			/*
+			if (IsThereCollision(object_1, object_2);
+			if (IsThereCollision(id_1, id_2);
+			*/
+
+			void Game::OnImGuiRender(long long frame)
+			{
+				static float x = 0, y = 0;
+
+				/*ImGui::ShowDemoWindow();
+				ImGui::SliderFloat("X coordinate", &x, 0.0f, (float)800);
+				ImGui::SliderFloat("Y coordinate", &y, 0.0f, (float)600);
+				ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);*/
+			}
+
+			Camera cam(0.0f, game_width, 0.0f, game_height);
+			Object obj("Object_1", true);
+			Object obj_2("Object_2", true);
+			Background* bg;
+
+			bool increment_pos = true;
+
+			void EventCallback(Event e)
+			{
+				const float move_factor = 4;
+				const int move_factor_camera = 4;
+				glm::vec3 pos = game.GetCurrentCamera()->GetPosition();
+
+				if (e.EventType == Event_WindowResize || e.EventType == Event_FrameBufferResize)
+				{
+					cam.SetProjection(0, e.WindowFrameBufferX, 0, e.WindowFrameBufferY);
+					glViewport(0, 0, e.WindowFrameBufferX, e.WindowFrameBufferY);
+				}
+
+				if (increment_pos)
+				{
+		
+				}
+			}
+
+			int main()
+			{
+				Texture tex1, tex2, tile_sheet;
+				Scene scene; 
+				Animation ani({&tex1, &tex2});
+				bg = new Background("Core\\Resources\\grass_block.png");
+
+				bg->SetMovesWithCamera(false);
+				scene.SetSceneCamera(cam);
+
+				scene.AddSceneBackground(bg, 1);
+				scene.AddObjectAtPosition(obj_2, 0, glm::vec3(200.0f, 200.0f, 0.0f));
+				scene.AddObjectAtPosition(obj, 1, glm::vec3(170.0f, 10.0f, 0.0f));
+				scene.AddObjectAtPosition(obj, 2, glm::vec3(400.0f, 10.0f, 0.0f));
+				scene.AddObjectAtPosition(obj, 3, glm::vec3(400.0f, 400.0f, 0.0f));
+
+				tex1.CreateTexture("Core\\Resources\\tree.png");
+				tex2.CreateTexture("Core\\Resources\\ghost.png"); // Alpha = 50.0%
+
+				Sprite spr("spr_1", ani, 45); 
+				Sprite spr_2("spr_2", tex2);
+	                               
+				obj.SetSprite(spr); // tex1
+				obj_2.SetSprite(spr_2); // tex2
+
+				//cam.SetScale(glm::vec3(2.0f, 2.0f, 1.0f));
+				//cam.SetRotation(45.0f);
+	
+				game.SetCurrentScene(scene);
+				game.DisplayFpsOnWindowTitleBar(true);
+				game.SetBlend(true);
+				game.SetVSync(true);
+
+				int move_factor = 4;
+
+				while (!game.GameWindowShouldClose())
+				{
+					game.Render(); 
+
+					const int move_factor = 4;
+					const int move_factor_camera = 4;
+					glm::vec3 pos = game.GetCurrentCamera()->GetPosition();
+
+					if (game.KeyIsBeingPressed(GLFW_KEY_RIGHT))
+					{
+						obj_2.IncrementPosition(glm::vec3(move_factor, 0.0f, 0.0f));
+					}
+
+					if (game.KeyIsBeingPressed(GLFW_KEY_LEFT))
+					{
+						obj_2.IncrementPosition(glm::vec3(-move_factor, 0.0f, 0.0f));
+					}
+
+					else if (game.KeyIsBeingPressed(GLFW_KEY_RIGHT))
+					{
+						obj_2.IncrementPosition(glm::vec3(move_factor, 0.0f, 0.0f));
+					}
+
+					else if (game.KeyIsBeingPressed(GLFW_KEY_UP))
+					{
+						obj_2.IncrementPosition(glm::vec3(0.0f, move_factor, 0.0f));
+					}
+
+					else if (game.KeyIsBeingPressed(GLFW_KEY_DOWN))
+					{
+						obj_2.IncrementPosition(glm::vec3(0.0f, -move_factor, 0.0f));
+					}
+
+
+					else if (game.KeyIsBeingPressed(GLFW_KEY_A))
+					{
+						cam.SetPosition(glm::vec3(pos.x + move_factor_camera, pos.y, pos.z));
+					}
+
+					else if (game.KeyIsBeingPressed(GLFW_KEY_D))
+					{
+						cam.SetPosition(glm::vec3(pos.x - move_factor_camera, pos.y, pos.z));
+					}
+
+					else if (game.KeyIsBeingPressed(GLFW_KEY_W))
+					{
+						cam.SetPosition(glm::vec3(pos.x, pos.y - move_factor_camera, pos.z));
+					}
+
+					else if (game.KeyIsBeingPressed(GLFW_KEY_S))
+					{
+						cam.SetPosition(glm::vec3(pos.x, pos.y + move_factor_camera, pos.z));
+					}
+
+					else if (game.KeyIsBeingPressed(GLFW_KEY_L))
+					{
+						bg->IncrementPosition(glm::vec3(5.0f, 0.0f, 0.0f));
+					}
+
+					if (game.IsThereCollision(obj_2, obj))
+					{
+						cout << "\nCOLLISION\n";
+					}
+				}
+			} 
+
+
+
+			/*
+			W S A D is to move the camera
+			And the arrow keys are for the ghost object
+
+			*/
+// END CODE ! 

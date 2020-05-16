@@ -1,0 +1,433 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Source Files\Abstract OpenGL">
+      <UniqueIdentifier>{80102359-386e-41b0-ae43-67221c0884be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Shaders">
+      <UniqueIdentifier>{73806982-e2f5-4cc2-a785-68cf16c03ca7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Resources">
+      <UniqueIdentifier>{7e6d34f3-e843-4cca-ba1d-3929f1e2b38b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Dependencies">
+      <UniqueIdentifier>{993a5efb-eac1-4dab-9554-3283786d2e68}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Engine">
+      <UniqueIdentifier>{9e3cd8c2-bd68-4050-b1d5-c52639358313}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Engine\Rendering">
+      <UniqueIdentifier>{4bf3594c-eb5d-4900-b399-7c3ec6932c29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Engine\Camera">
+      <UniqueIdentifier>{09c4bb6c-c342-4e84-8dba-ffa4b9a33e21}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Engine\Events">
+      <UniqueIdentifier>{01b31f0a-3d21-4a3b-aa23-de1d1a0de2ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Engine\Game">
+      <UniqueIdentifier>{68f5d822-222f-4b8d-b68f-f89f7f6a6973}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Engine\Object">
+      <UniqueIdentifier>{7a52cf21-bd4e-4335-8dd7-29f5e32c3e86}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Engine\Scene">
+      <UniqueIdentifier>{2175bdbd-7007-45de-a548-80a0bf43cd80}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Engine\Animation">
+      <UniqueIdentifier>{84e648a8-f5f1-4357-b1c1-30b20c7d6716}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Engine\Instance">
+      <UniqueIdentifier>{573f21e9-a1ea-499b-b6fd-bfdce8f73434}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Engine\Background">
+      <UniqueIdentifier>{331a568a-478e-4c82-8390-5322cdad4521}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Engine\Defaults">
+      <UniqueIdentifier>{1723bd0d-d1d7-4729-ab5a-9e84d3a9ee2a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Engine\Macros">
+      <UniqueIdentifier>{603814f0-85f4-4e46-a57c-02ff8eb5f3cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Engine\Audio">
+      <UniqueIdentifier>{8a4d5434-2d87-46f2-bd22-41a0166e4e43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Engine\Particles">
+      <UniqueIdentifier>{a31b3742-1d80-42fd-85b6-9f9082acea55}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Engine\Post Processing">
+      <UniqueIdentifier>{ab203a49-4e21-433f-ae60-f53d0ace17e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Engine\UI Elements">
+      <UniqueIdentifier>{afdcc9c3-c436-40ed-be93-de77cbf97965}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Engine\Log">
+      <UniqueIdentifier>{8fc9e13f-7f5b-4813-b954-b4836a366ed4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Todo">
+      <UniqueIdentifier>{c9200d76-1fb5-42ed-aa9a-c8e58448a2a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Backup">
+      <UniqueIdentifier>{9f0738f4-d823-4fb5-9056-814519d620c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Engine\Texture Atlas">
+      <UniqueIdentifier>{33f007e1-b138-46f3-a61e-10e04d4d7a1a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Engine\Collision">
+      <UniqueIdentifier>{c297c215-a46a-49e1-98cc-13891a578420}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Abstract OpenGL\FPS">
+      <UniqueIdentifier>{bf7ee9f9-224f-49f1-a22c-197682389493}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Abstract OpenGL\Vertex Buffer">
+      <UniqueIdentifier>{ef8c41eb-f33d-4763-81af-bb574dad6dcf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Abstract OpenGL\Vertex Array">
+      <UniqueIdentifier>{cd3f5446-6360-4755-9f23-9f1f8fe54a87}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Abstract OpenGL\Texturing">
+      <UniqueIdentifier>{459d316b-6531-4817-9f34-dc59c3e33541}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Abstract OpenGL\Shader">
+      <UniqueIdentifier>{e4b19eb1-dd33-4504-ab6f-28a99a4dc762}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Abstract OpenGL\Index Buffer">
+      <UniqueIdentifier>{823cf692-6ad1-490a-aaba-525d3192a360}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Abstract OpenGL\Renderer">
+      <UniqueIdentifier>{cf467586-f759-4280-b6ca-74966801ded2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Engine\Scene Editor">
+      <UniqueIdentifier>{c75630ef-6b5c-4605-92b5-6f46e6a6d92c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Dependencies\imgui">
+      <UniqueIdentifier>{7c008cde-7f94-4033-b68f-00a2af867b7f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Engine\Sprite">
+      <UniqueIdentifier>{64a3073a-7132-4eff-a899-28a25e89c736}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Engine\Resource Manager">
+      <UniqueIdentifier>{c10f068d-ba38-4208-91e0-d58b76cfe0cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Abstract OpenGL\GLDebug">
+      <UniqueIdentifier>{1ac384ef-4ed9-4d5a-8c50-75d5520eeae5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Engine\Lighting">
+      <UniqueIdentifier>{1aea01e1-eea8-4b7f-88db-1f447e9be013}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Core\Engine\Rendering\BatchRendering.cpp">
+      <Filter>Source Files\Engine\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Engine\Rendering\Rendering.cpp">
+      <Filter>Source Files\Engine\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Engine\Camera\Camera.cpp">
+      <Filter>Source Files\Engine\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Engine\Events\Events.cpp">
+      <Filter>Source Files\Engine\Events</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Engine\Game\Game.cpp">
+      <Filter>Source Files\Engine\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Engine\Object\Object.cpp">
+      <Filter>Source Files\Engine\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Engine\Scene\Scene.cpp">
+      <Filter>Source Files\Engine\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Engine\Sprite\Sprite.cpp">
+      <Filter>Source Files\Engine\Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Engine\Animation\Animation.cpp">
+      <Filter>Source Files\Engine\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Engine\Instance\Instance.cpp">
+      <Filter>Source Files\Engine\Instance</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Engine\Background\Background.cpp">
+      <Filter>Source Files\Engine\Background</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Engine\Audio\Audio.cpp">
+      <Filter>Source Files\Engine\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Engine\Lighting\Lighting.cpp">
+      <Filter>Source Files\Engine\Lighting</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Engine\Particles\Particles.cpp">
+      <Filter>Source Files\Engine\Particles</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Engine\Post Processing\Post Processing.cpp">
+      <Filter>Source Files\Engine\Post Processing</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Engine\Log\Log.cpp">
+      <Filter>Source Files\Engine\Log</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Engine\TextureAtlas\TextureAtlas.cpp">
+      <Filter>Source Files\Engine\Texture Atlas</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Engine\Collision\AABB.cpp">
+      <Filter>Source Files\Engine\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Engine\Collision\Collision.cpp">
+      <Filter>Source Files\Engine\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\OpenGL Classes\Fps\Fps.cpp">
+      <Filter>Source Files\Abstract OpenGL\FPS</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\OpenGL Classes\Renderer\Quad.cpp">
+      <Filter>Source Files\Abstract OpenGL\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\OpenGL Classes\Renderer\Renderer.cpp">
+      <Filter>Source Files\Abstract OpenGL\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\OpenGL Classes\Shader\Shader.cpp">
+      <Filter>Source Files\Abstract OpenGL\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\OpenGL Classes\Vertex Array\VertexArray.cpp">
+      <Filter>Source Files\Abstract OpenGL\Vertex Array</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\OpenGL Classes\Vertex Buffer\VertexBuffer.cpp">
+      <Filter>Source Files\Abstract OpenGL\Vertex Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\OpenGL Classes\Texture\stb_image.cpp">
+      <Filter>Source Files\Abstract OpenGL\Texturing</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\OpenGL Classes\Texture\Texture.cpp">
+      <Filter>Source Files\Abstract OpenGL\Texturing</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\OpenGL Classes\Index Buffer\IndexBuffer.cpp">
+      <Filter>Source Files\Abstract OpenGL\Index Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Engine\Scene Editor\SceneEditor.cpp">
+      <Filter>Source Files\Engine\Scene Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Engine\Scene\SceneFileParser.cpp">
+      <Filter>Source Files\Engine\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Tiny OpenGL Game Engine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Dependencies\imgui\imgui.cpp">
+      <Filter>Source Files\Dependencies\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Dependencies\imgui\imgui_demo.cpp">
+      <Filter>Source Files\Dependencies\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Dependencies\imgui\imgui_draw.cpp">
+      <Filter>Source Files\Dependencies\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Dependencies\imgui\imgui_widgets.cpp">
+      <Filter>Source Files\Dependencies\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Engine\Resource Manager\ResourceManager.cpp">
+      <Filter>Source Files\Engine\Resource Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\OpenGL Classes\GLDebug\GLDebug.cpp">
+      <Filter>Source Files\Abstract OpenGL\GLDebug</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Dependencies\imgui\imgui_impl_glfw.cpp">
+      <Filter>Source Files\Dependencies\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Dependencies\imgui\imgui_impl_opengl3.cpp">
+      <Filter>Source Files\Dependencies\imgui</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Core\Engine\Rendering\BatchRendering.h">
+      <Filter>Source Files\Engine\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Engine\Rendering\Rendering.h">
+      <Filter>Source Files\Engine\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Engine\Camera\Camera.h">
+      <Filter>Source Files\Engine\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Engine\Events\Events.h">
+      <Filter>Source Files\Engine\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Engine\Game\Game.h">
+      <Filter>Source Files\Engine\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Engine\Object\Object.h">
+      <Filter>Source Files\Engine\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Engine\Scene\Scene.h">
+      <Filter>Source Files\Engine\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Engine\Sprite\Sprite.h">
+      <Filter>Source Files\Engine\Sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Engine\Animation\Animation.h">
+      <Filter>Source Files\Engine\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Engine\Instance\Instance.h">
+      <Filter>Source Files\Engine\Instance</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Engine\Background\Background.h">
+      <Filter>Source Files\Engine\Background</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Engine\Defaults\Defaults.h">
+      <Filter>Source Files\Engine\Defaults</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Engine\Macros\Macros.h">
+      <Filter>Source Files\Engine\Macros</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Engine\Audio\Audio.h">
+      <Filter>Source Files\Engine\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Engine\Lighting\Lighting.h">
+      <Filter>Source Files\Engine\Lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Engine\Particles\Particles.h">
+      <Filter>Source Files\Engine\Particles</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Engine\Post Processing\Post Processing.h">
+      <Filter>Source Files\Engine\Post Processing</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Engine\Log\Log.h">
+      <Filter>Source Files\Engine\Log</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Engine\TextureAtlas\TextureAtlas.h">
+      <Filter>Source Files\Engine\Texture Atlas</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Engine\Collision\AABB.h">
+      <Filter>Source Files\Engine\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Engine\Collision\Collision.h">
+      <Filter>Source Files\Engine\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Engine\Scene\SceneData.h">
+      <Filter>Source Files\Engine\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\OpenGL Classes\Fps\Fps.h">
+      <Filter>Source Files\Abstract OpenGL\FPS</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\OpenGL Classes\Renderer\Quad.h">
+      <Filter>Source Files\Abstract OpenGL\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\OpenGL Classes\Renderer\Renderer.h">
+      <Filter>Source Files\Abstract OpenGL\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\OpenGL Classes\Shader\Shader.h">
+      <Filter>Source Files\Abstract OpenGL\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\OpenGL Classes\Vertex Array\VertexArray.h">
+      <Filter>Source Files\Abstract OpenGL\Vertex Array</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\OpenGL Classes\Vertex Buffer\VertexBuffer.h">
+      <Filter>Source Files\Abstract OpenGL\Vertex Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\OpenGL Classes\AbstractOpengGL.h">
+      <Filter>Source Files\Abstract OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\OpenGL Classes\Texture\stb_image.h">
+      <Filter>Source Files\Abstract OpenGL\Texturing</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\OpenGL Classes\Texture\Texture.h">
+      <Filter>Source Files\Abstract OpenGL\Texturing</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\OpenGL Classes\Index Buffer\IndexBuffer.h">
+      <Filter>Source Files\Abstract OpenGL\Index Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Engine\Scene Editor\SceneEditor.h">
+      <Filter>Source Files\Engine\Scene Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Engine\Scene\SceneFileParser.h">
+      <Filter>Source Files\Engine\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Dependencies\imgui\imconfig.h">
+      <Filter>Source Files\Dependencies\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Dependencies\imgui\imgui.h">
+      <Filter>Source Files\Dependencies\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Dependencies\imgui\imgui_internal.h">
+      <Filter>Source Files\Dependencies\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Dependencies\imgui\imstb_rectpack.h">
+      <Filter>Source Files\Dependencies\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Dependencies\imgui\imstb_textedit.h">
+      <Filter>Source Files\Dependencies\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Dependencies\imgui\imstb_truetype.h">
+      <Filter>Source Files\Dependencies\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Engine\Resource Manager\ResourceManager.h">
+      <Filter>Source Files\Engine\Resource Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\OpenGL Classes\GLDebug\GLDebug.h">
+      <Filter>Source Files\Abstract OpenGL\GLDebug</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Dependencies\imgui\imgui_impl_glfw.h">
+      <Filter>Source Files\Dependencies\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Dependencies\imgui\imgui_impl_opengl3.h">
+      <Filter>Source Files\Dependencies\imgui</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Core\Resources\container.jpg">
+      <Filter>Source Files\Resources</Filter>
+    </Image>
+    <Image Include="Core\Resources\face.png">
+      <Filter>Source Files\Resources</Filter>
+    </Image>
+    <Image Include="Core\Resources\tree.png">
+      <Filter>Source Files\Resources</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Core\OpenGL Classes\Renderer\Readme.file">
+      <Filter>Source Files\Abstract OpenGL\Renderer</Filter>
+    </None>
+    <None Include="ReadMe.file">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Core\Shaders\DefaultVertexShader.glsl">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="Core\Shaders\DefaultFragmentShader.glsl">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="Core\Shaders\DefaultBatchFragShader.glsl">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="Core\Shaders\DefaultBatchVertexShader.glsl">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="Core\Dependencies\imgui\imgui_main.cpp">
+      <Filter>Source Files\Dependencies\imgui</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Core\Todo.txt">
+      <Filter>Source Files\Todo</Filter>
+    </Text>
+    <Text Include="Core\Backup\Backup_3.txt">
+      <Filter>Source Files\Backup</Filter>
+    </Text>
+    <Text Include="Core\Backup\Backup_2.txt">
+      <Filter>Source Files\Backup</Filter>
+    </Text>
+    <Text Include="Core\Backup\Backup_1.txt">
+      <Filter>Source Files\Backup</Filter>
+    </Text>
+    <Text Include="Core\Backup\Backup.txt">
+      <Filter>Source Files\Backup</Filter>
+    </Text>
+    <Text Include="Core\Engine\Scene\SceneDataFormat.txt">
+      <Filter>Source Files\Engine\Scene</Filter>
+    </Text>
+    <Text Include="TestCases.txt">
+      <Filter>Source Files\Todo</Filter>
+    </Text>
+  </ItemGroup>
+</Project>

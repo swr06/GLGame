@@ -1,0 +1,16 @@
+Author : Samuel Rasquinha (samuelrasquinha@gmail.com)
+Age : 14
+Platform : Windows
+Program : GLGame (Tiny OpenGL Game Engine)
+Description : A tiny 2D game engine that has all the features of a normal 2D game engine with :
+			- Culling
+			- Batch Rendering 
+			- Lighting 
+			- Particles
+			- Physics
+			- Helper functions
+
+This engine is still in development.
+This engine is also availible on github with it's source code. If you like this project, please star it on github
+
+Thank you :)

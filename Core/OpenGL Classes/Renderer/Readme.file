@@ -1,0 +1,10 @@
+These files
+	- Renderer.cpp
+	- Renderer.h
+	- Quad.cpp
+	- Quad.h
+
+Are not used by Tiny OpenGL Game Engine [GLGame]. 
+I will eventually write code for these files and they will be usable but will still not be used by GLGame.
+
+~ Samuel Rasquinha (samuelrasquinha@gmail.com)

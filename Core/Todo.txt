@@ -1,0 +1,93 @@
+﻿Project Name : GLGame (Tiny OpenGL Game Engine)
+Description : A tiny 2D game engine with all the main features
+Author : Samuel Wesley Rasquinha
+Age : 14
+Date Started : March 25th 2020 (Coronavirus outbreak period :I)
+Dependencies : Glew (To access openGL functions), Glfw, stb-image
+C++ Version : C++17 (for std::filesystem)
+Country : India
+
+Todo : 
+
+- Add an Event Handler ✓
+- Quad Translater (float[12] => glm::vec3[2]) x,y[4] => x,y,w,h ✓
+- Update MACROS ✓
+- Add an Update Game function  ✓
+	- Cull the objects that are not there in the cameras view if set to  ✓
+- Tilesets ✓
+- Scenes  ✓
+	- Render queue ✓
+- Scene Editor
+- Scene file parser
+- Camera zooming ✓
+- Log - ✓
+- Depth and Layers ✓
+- Scene Backgrounds with depth and has SX, SY, EX, EY (StartX, StartY, EndX, EndY) ✓
+- KeyPress Events ✓
+- SpriteBatcher Class ✓
+- Test Batcher ✓
+- Fix Culling bugs ✓
+
+
+- Add a deregister function when the objects/sprites/scenes are deleted
+- In the background shader, the model matrix is not multiplied
+
+- Particles (Basic particles with batch rendering) 
+	- Simple colored quads
+- UI Elements
+- Lighting
+- Audio
+
+- Profiling
+
+Additional Features
+- Random Number Generator (Singleton)
+- Virtual keys 
+- GetBlue, GetRed, GetGreen, GetHUE, GetOpacity.
+	- Takes in an RGB(int r,g,b)
+- GameSetBlendMode() 
+- Drawing Primitives 
+	- Rectangles, circles, triangles and squares
+- Window Functions 
+	- GetWindowHandle() 
+	- GetWindowCenter() 
+	- GetWindowCaption() 
+	- IsFullScreen() 
+	- HasFocus() 
+	- SetFullScreen() 
+	- GetWindowHeight() 
+	- GetWindowWidth() 
+	- GetMouseXY(glm::vec2&)
+
+	- SetWindowPosition() 
+	- SetWindowSize()
+	- SetWindowCursor() 
+
+- Particles
+	- CreateParticle() 
+	- DestroyParticle() 
+	// etc
+
+- Networking
+	- Create Socket
+	- Connect
+
+- Physics
+	- physics_world_create
+	- physics_world_gravity
+	- physics_world_update_iterations
+	- physics_world_update_speed
+	- physics_world_draw_debug
+	- physics_draw_debug
+	- physics_pause_enable
+
+if (IsThereCollision(object_1, object_2);
+if (IsThereCollision(id_1, id_2);
+
+- Add "SimpleRenderComponent"
+
+Bugs : 
+
+- Error when collision check when the 2 objects are on different layers. ! 
+- Fix the BatchRenderInstances function and try to shift it to a batcher instead of that.
+	- Thing to fix : Culling issue. Refer The SpriteBatcher class

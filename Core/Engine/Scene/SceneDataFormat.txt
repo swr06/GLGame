@@ -1,0 +1,37 @@
+# This is the format for the scene data files used by Tiny OpenGL Game Engine (GLGame)
+
+Scene Info Chunk
+	*Time* *No of Items*
+
+Item Types : (2 bytes)
+	Object = 01
+	Sprite = 02
+	Texture Atlas Tile = 03
+	Background = 04
+
+Object Chunk : 
+	ID = 00001 (5 bytes)
+	X = 00000 (5 bytes)
+	Y = 00000 (5 bytes)
+	Z = 00000 (5 bytes)
+	Depth = 00000 (5 bytes)
+
+Texture Atlas Chunk : 
+	*TO CHECK*
+	ID = 00001 (5 bytes)
+	SX = 00000 (5 bytes) (SamplerX)
+	SY = 00000 (5 bytes) (SamplerY)
+	X = 00000 (5 bytes)
+	Y = 00000 (5 bytes)
+	Z = 00000 (5 bytes)
+	Depth = 00000 (5 bytes)
+
+Background Chunk : 
+	ID = 00001 (5 bytes)
+	StartX = 00001 (5 bytes)
+	StartY = 00001 (5 bytes)
+	EndX = 00001 (5 bytes)
+	EndY = 00001 (5 bytes)
+	Depth = 00000 (5 bytes)
+
+*GLGame Signature* *Item Type* *Respective Chunk*
