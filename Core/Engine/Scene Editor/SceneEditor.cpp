@@ -25,6 +25,7 @@ namespace GLGame
 		static unordered_map<string, Sprite*>* SceneEditorGlobalSprites = nullptr;
 		static vector<string>* ObjectIDList = nullptr;
 		static vector<string>* SpriteIDList = nullptr;
+		static SpriteBatcher* SceneEditorBatcher;
 
 		// Data used by the UI elements and widgets
 
@@ -111,6 +112,7 @@ namespace GLGame
 			}
 
 			SceneEditorCamera = new Camera(0.0f, (float)SceneEditorWidth, 0.0f, (float)SceneEditorHeight);
+			SceneEditorBatcher = new SpriteBatcher();
 			SceneEditorRenderItemShader.CreateShaderProgram(GLGAME_DEFAULT_SE_VERTEX, GLGAME_DEFAULT_SE_FRAGMENT);
 			return SceneEditorWindow;
 		}
@@ -124,19 +126,12 @@ namespace GLGame
 		{
 			stbi_set_flip_vertically_on_load(true);
 
-			// Basic item rendering test
-
-			_RenderItem item;
 			Object* obj = SceneEditorGlobalObjects->at("@#$*#Object_1");
 
-			item.x = 100.0f;
-			item.y = 100.0f;
-			item.z = 1.0f;
-			item.tw = obj->GetSprite()->GetCurrentTextureWidth();
-			item.th = obj->GetSprite()->GetCurrentTextureHeight();
-			item.tex = obj->GetSprite()->GetCurrentTexture();
+			SceneEditorBatcher->StartSpriteBatch(SceneEditorCamera);
+			SceneEditorBatcher->AddGenericTextureToBatch(obj->GetSprite()->GetCurrentTexture(), glm::vec3(100.0f, 100.0f, 1.0f));
+			SceneEditorBatcher->EndSpriteBatch();
 
-			_NormallyRenderSEItems(item, SceneEditorRenderItemShader, SceneEditorCamera->GetViewProjectionMatrix());
 		}
 
 		void _DrawSEWidgets()
@@ -404,14 +399,12 @@ namespace GLGame
 			if (yoffset < 0)
 			{
 				const glm::vec3 scale = SceneEditorCamera->GetScale();
-				//SceneEditorCamera->SetPosition(glm::vec3((float)MousePosX / 2, (float)MousePosY / 2, 1.0f));
 				SceneEditorCamera->SetScale(glm::vec3(scale.x - 0.1, scale.y - 0.1, 1.0f));
 			}
 
 			else if (yoffset > 0)
 			{
 				const glm::vec3 scale = SceneEditorCamera->GetScale();
-			//	SceneEditorCamera->SetPosition(glm::vec3((float)MousePosX, (float)MousePosY, 1.0f));
 				SceneEditorCamera->SetScale(glm::vec3(scale.x + 0.1, scale.y + 0.1, 1.0f));
 			}
 		}
