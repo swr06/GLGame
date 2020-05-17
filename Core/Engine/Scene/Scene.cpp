@@ -56,6 +56,7 @@ namespace GLGame
 
 		instance.m_Object = &object;
 		instance.m_ObjectID = object_id;
+		instance.m_CollisionMask = new AABBCollisionMask;
 
 		item.ItemObjectInstance = instance;
 		item.ItemPos = position;

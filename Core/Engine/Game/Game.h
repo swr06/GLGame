@@ -72,7 +72,7 @@ namespace GLGame
 		void StartSceneEditor();
 
 		void ConvertCoordinates(glm::vec3 coordinates, glm::vec3 range);
-		void SetVSync(bool vsync);
+		void SetVSync(bool vsync, bool log = true);
 		void DisplayFpsOnWindowTitleBar(bool display);
 		void SetCurrentScene(Scene& scene);
 		bool GameWindowShouldClose();
@@ -87,9 +87,9 @@ namespace GLGame
 		void PollEvents();
 
 		// Virtual Functions
-		virtual void OnEvent(Event e) {};
-		virtual void OnImGuiRender(long long frame) {};
-		virtual void OnFrameAdvance(long long frame) {};
+		void OnEvent(Event e);
+		void OnImGuiRender(long long frame);
+		void OnFrameAdvance(long long frame);
 
 		Scene& GetCurrentScene();
 		Scene* GetCurrentScene() const { return m_CurrentScene; };

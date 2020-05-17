@@ -55,5 +55,12 @@ namespace GLGame
 		bool RenderSceneEditor();
 		bool SceneEditorAlive();
 		void RenderSceneEditorItems();
+
+		// GLFW Callbacks
+		void SEWindowResizeCallback(GLFWwindow* window, int width, int height);
+		void SEKeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
+		void SEMouseCallback(GLFWwindow* window, int button, int action, int mods);
+		void SEScrollCallback(GLFWwindow* window, double xoffset, double yoffset);
+		void SEWindowCloseCallback(GLFWwindow* window);
 	}
 }

@@ -33,9 +33,22 @@ namespace GLGame
 		static int RadioSpriteSelected = -1;
 		static int ItemTypeSelected = Nothing;
 
+		// Render queue
 		static map<int, vector<SceneEditorRenderItem>> SceneEditorRenderQueue;
 		static Shader SceneEditorRenderItemShader;
 
+		// Mouse and window attributes
+		static double MousePosX = 0;
+		static double MousePosY = 0;
+		static int WindowSizeX = 0;
+		static int WindowSizeY = 0;
+		static double MouseScrollOffsetX = 0;
+		static double MouseScrollOffsetY = 0;
+
+		static const char* ObjectInsertString = "@#$*#\0";
+		static const char* SpriteInsertString = "$*$^(\0";
+
+		// IMGUI context => Scene editor window
 		ImGuiContext* imcontext;
 
 		GLFWwindow* InitSceneEditor(unordered_map<string, Object*>* global_objects, unordered_map<string, Sprite*>* global_sprites, vector<string>* objid_list, vector<string>* sprid_list, GLFWwindow* window, ImGuiContext* context)
@@ -122,9 +135,13 @@ namespace GLGame
 
 			if (ImGui::TreeNode("Objects"))
 			{
+				string obj_name_holder;
+
 				for (int i = 0; i < ObjectIDList->size(); i++)
 				{
-					ImGui::RadioButton(ObjectIDList->at(i).c_str(), &RadioObjectSelected, i);
+					obj_name_holder = ObjectIDList->at(i);
+					obj_name_holder.erase(obj_name_holder.begin(), obj_name_holder.begin() + 5);
+					ImGui::RadioButton(obj_name_holder.c_str(), &RadioObjectSelected, i);
 				}
 
 				ImGui::TreePop();
@@ -132,9 +149,13 @@ namespace GLGame
 
 			if (ImGui::TreeNode("Sprites"))
 			{
-				for (int i = 0; i < ObjectIDList->size(); i++)
+				string spr_name_holder;
+
+				for (int i = 0; i < SpriteIDList->size(); i++)
 				{
-					ImGui::RadioButton(SpriteIDList->at(i).c_str(), &RadioSpriteSelected, i);
+					spr_name_holder = SpriteIDList->at(i);
+					spr_name_holder.erase(spr_name_holder.begin(), spr_name_holder.begin() + 5);
+					ImGui::RadioButton(spr_name_holder.c_str(), &RadioSpriteSelected, i);
 				}
 
 				ImGui::TreePop();
@@ -262,11 +283,6 @@ namespace GLGame
 
 
 				ImGui::Render();
-
-				int display_w, display_h;
-
-				glfwGetFramebufferSize(SceneEditorWindow, &display_w, &display_h);
-				glViewport(0, 0, display_w, display_h);
 				ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 				glfwSwapBuffers(SceneEditorWindow);
@@ -298,19 +314,81 @@ namespace GLGame
 
 		}
 
-		void SEEventCallbackClose()
+		void SEWindowResizeCallback(GLFWwindow* window, int width, int height)
 		{
+			if (window != SceneEditorWindow)
+			{
+				return;
+			}
+
+			glfwGetFramebufferSize(window, &WindowSizeX, &WindowSizeY);
+			glfwGetCursorPos(window, &MousePosX, &MousePosY);
+
+			// Set the view port
+			glViewport(0, 0, WindowSizeX, WindowSizeY);
+		}
+
+		void SEKeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
+		{
+			if (window != SceneEditorWindow)
+			{
+				return;
+			}
+
+			if (action == GLFW_PRESS)
+			{
+				
+			}
+
+			else if (action == GLFW_RELEASE)
+			{
+				
+			}
+
+			else
+			{
+				
+			}
+		}
+
+		void SEMouseCallback(GLFWwindow* window, int button, int action, int mods)
+		{
+			if (window != SceneEditorWindow)
+			{
+				return;
+			}
+
+			if (action == GLFW_PRESS)
+			{
+				
+			}
+
+			else if (action == GLFW_RELEASE)
+			{
+				
+			}
+
+			else
+			{
+				
+			}
+		}
+
+		void SEScrollCallback(GLFWwindow* window, double xoffset, double yoffset)
+		{
+			if (window != SceneEditorWindow)
+			{
+				return;
+			}
 
 		}
 
-		void SEEventCallbackMouse()
+		void SEWindowCloseCallback(GLFWwindow* window)
 		{
-
-		}
-
-		void SEEventCallbackKeyboard()
-		{
-
+			if (window != SceneEditorWindow)
+			{
+				return;
+			}
 		}
 	}
 }

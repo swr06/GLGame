@@ -306,7 +306,7 @@ namespace GLGame
 			{
 				// For some reason, The vsync suddenly goes off when the scene editor closes.
 				// This fixes the bug
-				SetVSync(m_Vsync);
+				SetVSync(m_Vsync, false);
 			}
 
 			glfwMakeContextCurrent(m_GameWindow);
@@ -335,7 +335,7 @@ namespace GLGame
 
 	}
 
-	void Game::SetVSync(bool vsync)
+	void Game::SetVSync(bool vsync, bool log)
 	{
 		if (vsync)
 		{
@@ -349,7 +349,10 @@ namespace GLGame
 			glfwSwapInterval(0);
 		}
 
-		Log::_LogVSyncInit(glfwGetTime(), vsync, __FILE__, __LINE__);
+		if (log)
+		{
+			Log::_LogVSyncInit(glfwGetTime(), vsync, __FILE__, __LINE__);
+		}
 	}
 
 	bool Game::GameWindowShouldClose()
@@ -429,26 +432,45 @@ namespace GLGame
 			}
 		}
 		
-		for (int i = 0; i < obj1_item_list.size(); i++)
+		if (obj1_item_list.size() > 0 && obj2_item_list.size() > 0)
 		{
-			obj1_AABB.x = obj1_item_list[i]->ItemPos.x;
-			obj1_AABB.y = obj1_item_list[i]->ItemPos.y;
-			obj1_AABB.w = obj1_item_list[i]->ItemObjectInstance.m_Object->GetSprite()->GetCurrentTextureWidth();
-			obj1_AABB.h = obj1_item_list[i]->ItemObjectInstance.m_Object->GetSprite()->GetCurrentTextureHeight();
+			// If both of the collision masks are rects, use the AABB collision method
 
-			for (int j = 0; j < obj2_item_list.size(); j++)
+			if (obj1_item_list[0]->ItemObjectInstance.m_Object->GetCollisionMaskType() == mask_rect &&
+				obj2_item_list[0]->ItemObjectInstance.m_Object->GetCollisionMaskType() == mask_rect)
 			{
-				obj2_AABB.x = obj2_item_list[j]->ItemPos.x;
-				obj2_AABB.y = obj2_item_list[j]->ItemPos.y;
-				obj2_AABB.w = obj2_item_list[j]->ItemObjectInstance.m_Object->GetSprite()->GetCurrentTextureWidth();
-				obj2_AABB.h = obj2_item_list[j]->ItemObjectInstance.m_Object->GetSprite()->GetCurrentTextureHeight();
+				// Get each of their bounding boxes
 
-				if (CheckAABBCollision(obj1_AABB, obj2_AABB))
+				glm::vec4 obj1_bounding_box = obj1_item_list[0]->ItemObjectInstance.m_Object->GetBoundingBox();
+				glm::vec4 obj2_bounding_box = obj2_item_list[0]->ItemObjectInstance.m_Object->GetBoundingBox();
+
+				for (int i = 0; i < obj1_item_list.size(); i++)
 				{
-					return_val = true;
-					break;
+					obj1_AABB.x = obj1_item_list[i]->ItemPos.x + obj1_bounding_box.x;
+					obj1_AABB.y = obj1_item_list[i]->ItemPos.y + obj1_bounding_box.y;
+					obj1_AABB.w = obj1_bounding_box.z;
+					obj1_AABB.h = obj1_bounding_box.w;
+
+					for (int j = 0; j < obj2_item_list.size(); j++)
+					{
+						obj2_AABB.x = obj2_item_list[j]->ItemPos.x + obj2_bounding_box.x;
+						obj2_AABB.y = obj2_item_list[j]->ItemPos.y + obj2_bounding_box.y;
+						obj2_AABB.w = obj2_bounding_box.z;
+						obj2_AABB.h = obj2_bounding_box.w;
+
+						if (CheckAABBCollision(obj1_AABB, obj2_AABB, obj1_item_list[i]->ItemObjectInstance.m_CollisionMask))
+						{
+							return_val = true;
+							break;
+						}
+					}
 				}
 			}
+		}
+
+		else
+		{
+			return_val = false;
 		}
 
 		return return_val;

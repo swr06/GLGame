@@ -4,436 +4,44 @@ Tiny 2D OpenGL Game Engine [GLGame] v01 By Samuel Wesley Rasquinha (samuelrasqui
 
 
 TIME : [0]	TYPE : INIT_LOG   
-TIME : [6.26383]	TYPE : INIT_WINDOW | WIDTH : 800 HEIGHT : 600	| FILE : Game.cpp	LINE : [34]  
+TIME : [0.366093]	TYPE : INIT_WINDOW | WIDTH : 800 HEIGHT : 600	| FILE : Game.cpp	LINE : [34]  
 
-TIME : [6.27304]	TYPE : INIT_GL 3.3	| FILE : Game.cpp	LINE : [42]
+TIME : [0.371494]	TYPE : INIT_GL 3.3	| FILE : Game.cpp	LINE : [42]
 
-TIME : [6.27331]	TYPE : EVENT_INIT	CALLBACKS SET : 13	| FILE : Game.cpp	LINE : [110]
+TIME : [0.371681]	TYPE : EVENT_INIT	CALLBACKS SET : 13	| FILE : Game.cpp	LINE : [110]
 
-TIME : [6.27939]	TYPE : CREATE_SHADER	ELAPSED TIME : 0.0037699
+TIME : [0.375803]	TYPE : CREATE_SHADER	ELAPSED TIME : 0.0025249
 	VERTEX PTH : Core\Shaders\DefaultBatchVertexShader.glsl
 	FRAGMENT PTH : Core\Shaders\DefaultBatchFragShader.glsl
 	| FILE : Shader.cpp	LINE : [103]
 
-TIME : [6.28669]	TYPE : CREATE_SHADER	ELAPSED TIME : 0.0050047
+TIME : [0.382123]	TYPE : CREATE_SHADER	ELAPSED TIME : 0.0044714
 	VERTEX PTH : Core\Shaders\DefaultVertexShader.glsl
 	FRAGMENT PTH : Core\Shaders\DefaultFragmentShader.glsl
 	| FILE : Shader.cpp	LINE : [103]
 
-TIME : [6.28733]	TYPE : CREATE_SHADER	ELAPSED TIME : 0.0004386
+TIME : [0.382669]	TYPE : CREATE_SHADER	ELAPSED TIME : 0.0003937
 	VERTEX PTH : Core\Shaders\DefaultVertexShader.glsl
 	FRAGMENT PTH : Core\Shaders\DefaultFragmentShader.glsl
 	| FILE : Shader.cpp	LINE : [103]
 
-TIME : [6.3586]	TYPE : CREATE_SHADER	ELAPSED TIME : 0.0016436
+TIME : [0.433076]	TYPE : CREATE_SHADER	ELAPSED TIME : 0.0011526
 	VERTEX PTH : Core\Shaders\DefaultVertexShader.glsl
 	FRAGMENT PTH : Core\Shaders\DefaultFragmentShader.glsl
 	| FILE : Shader.cpp	LINE : [103]
 
-TIME : [6.35889]	TYPE : CREATE_OBJECT [@#$*#Object_1]	ELAPSED_TIME : 5.21e-05
+TIME : [0.433287]	TYPE : CREATE_OBJECT [@#$*#Object_1]	ELAPSED_TIME : 4.9e-05
 	VISIBLE : 1
 	HAS_SPRITE : 1
 	CULL : 1	| FILE : Object.cpp	LINE : [30]	
 
-TIME : [6.35922]	TYPE : CREATE_OBJECT [@#$*#Object_2]	ELAPSED_TIME : 2.5e-05
+TIME : [0.433433]	TYPE : CREATE_OBJECT [@#$*#Object_2]	ELAPSED_TIME : 1.3e-05
 	VISIBLE : 1
 	HAS_SPRITE : 1
 	CULL : 1	| FILE : Object.cpp	LINE : [30]	
 
-TIME : [6.71636]	TYPE : CREATE_SPRITE	ELAPSED_TIME : 3.69e-05	PTH [Animation paths] ID : [spr_1]	| FILE : Sprite.cpp	LINE : [59]	
+TIME : [0.632042]	TYPE : CREATE_SPRITE	ELAPSED_TIME : 3.18e-05	PTH [Animation paths] ID : [$*$^(spr_1]	| FILE : Sprite.cpp	LINE : [75]	
 
-TIME : [6.71661]	TYPE : CREATE_SPRITE	ELAPSED_TIME : 2.88e-05	PTH [Core\Resources\ghost.png] ID : [spr_2]	| FILE : Sprite.cpp	LINE : [18]	
+TIME : [0.632166]	TYPE : CREATE_SPRITE	ELAPSED_TIME : 1.25e-05	PTH [Core\Resources\ghost.png] ID : [$*$^(spr_2]	| FILE : Sprite.cpp	LINE : [24]	
 
-TIME : [6.71678]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [12.7619]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [12.8346]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [12.8508]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [12.8684]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [12.9018]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [12.9351]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [12.9517]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [12.9681]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [12.9854]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [13.0018]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [13.0179]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [13.0349]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [13.0512]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [13.0682]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [13.0848]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [13.1018]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [13.1188]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [13.1351]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [13.1521]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [13.1689]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [13.1855]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [13.2022]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [13.2185]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [13.2356]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [13.2523]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [13.2689]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [13.2853]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [13.3024]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [13.3198]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [13.3357]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [13.3528]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [13.3689]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [13.3862]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [13.4024]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [13.4197]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [13.4358]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [13.453]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [13.4694]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [13.4864]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [13.5032]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [13.5205]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [13.5528]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [13.5697]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [13.5867]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [13.6031]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [13.6202]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [13.6365]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [13.654]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [13.6702]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [13.6873]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [13.7042]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [13.7373]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [13.7537]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [13.7707]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [13.787]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [13.8041]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [13.8205]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [13.838]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [13.854]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [13.8711]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [13.8874]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [13.9048]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [13.9213]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [13.9379]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [13.9546]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [13.9715]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [13.9878]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [14.005]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [14.0213]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [14.0385]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [14.0546]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [14.0718]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [14.0881]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [14.1052]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [14.1219]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [14.1389]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [14.1554]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [14.1717]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [14.1889]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [14.2052]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [14.2224]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [14.2387]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [14.2558]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [14.2721]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [14.2892]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [14.3056]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [14.3227]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [14.3396]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [14.3723]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [14.3893]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [14.4062]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [14.4227]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [14.4397]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [14.4561]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [14.4733]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [14.4895]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [14.5066]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [14.523]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [14.5403]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [14.5733]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [14.5902]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [14.607]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [14.6233]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [14.6405]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [14.6568]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [14.6739]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [14.6903]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [14.7073]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [14.7242]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [14.7412]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [14.7576]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [14.7743]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [14.7909]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [14.8079]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [14.8242]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [14.8416]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [14.858]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [14.8745]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [14.8909]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [14.9079]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [14.9244]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [14.942]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [14.9746]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [14.9915]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [15.0083]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [15.0254]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [15.0416]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [15.0586]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [15.0749]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [15.092]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [15.1084]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [15.1254]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [15.1424]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [15.1594]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [15.1753]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [15.1923]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [15.2087]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [15.2257]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [15.2421]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [15.2592]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [15.2756]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [15.2926]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [15.309]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [15.3262]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [15.3424]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [15.3599]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [15.3924]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [15.4094]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [15.4266]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [15.4429]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [15.46]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [15.4763]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [15.4935]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [15.5265]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [15.5433]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [15.5765]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [15.6102]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [15.6436]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [15.6604]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [15.6774]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [15.6938]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [15.711]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [15.7273]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [15.7444]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [15.7613]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [15.794]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [15.8109]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [15.8279]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [15.8611]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [15.8948]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [15.9283]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [15.9452]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [15.9787]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [16.0116]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [16.0288]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [16.0457]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [16.0784]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [16.0956]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [16.1124]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [16.1287]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [16.1457]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [16.1621]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [16.1793]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [16.1958]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [16.2125]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [16.2294]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [16.2461]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [16.263]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [16.2795]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [16.2964]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [16.3127]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [16.3298]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [16.3462]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [16.3633]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [16.3797]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
-
-TIME : [16.4801]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [352]	
+TIME : [0.632256]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [354]	

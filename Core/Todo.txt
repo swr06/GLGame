@@ -27,7 +27,11 @@ Todo :
 - SpriteBatcher Class ✓
 - Test Batcher ✓
 - Fix Culling bugs ✓
+- Rendering objects with different shaders
+- "Solid" attribute for objects. Determines if collision check has to be done
 
+- Think.
+	- Check the collisions for all objects whenever their position is updated.
 
 - Add a deregister function when the objects/sprites/scenes are deleted
 - In the background shader, the model matrix is not multiplied
@@ -38,6 +42,7 @@ Todo :
 - Lighting
 - Audio
 
+- Use BOX 2D? (To enable polygon collision)
 - Profiling
 
 Additional Features
@@ -88,6 +93,10 @@ if (IsThereCollision(id_1, id_2);
 
 Bugs : 
 
-- Error when collision check when the 2 objects are on different layers. ! 
 - Fix the BatchRenderInstances function and try to shift it to a batcher instead of that.
 	- Thing to fix : Culling issue. Refer The SpriteBatcher class
+- Culling bug when the camera is mmoved to the left but the object is not getting culled
+	- Expected sol : projection.x + pos.x
+					 projection.y + pos.y
+- Collision masks need to be updated with transformations
+

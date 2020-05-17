@@ -6,6 +6,7 @@
 
 #include "Core\OpenGL Classes\GLDebug\GLDebug.h"
 
+#include "Core\Engine\Collision\AABB.h"
 #include "Core\Engine\Object\Object.h"
 #include "Core\Engine\Sprite\Sprite.h"
 #include "Core\OpenGL Classes\Texture\Texture.h"
@@ -18,6 +19,7 @@ namespace GLGame
 
 		Object* m_Object; 
 		string m_ObjectID; 
+		AABBCollisionMask* m_CollisionMask;
 	};
 
 	class SpriteInstance

@@ -32,8 +32,14 @@ namespace GLGame
 
 	enum ObjectTransformations
 	{
-		rotate,
+		rotate = 0,
 		scale
+	};
+
+	enum ObjectCollisionMaskType
+	{
+		mask_rect = 0,
+		mask_circle
 	};
 
 	class Object
@@ -71,6 +77,12 @@ namespace GLGame
 
 		// Sets a bounding box which is used for collision detection.
 		void SetBoundingBox(const glm::vec4& bounding_box);
+
+		void SetBoundingCircle(const float radius, const float position)
+		{
+			Log::LogToConsole("Circle collisions have to still be implemented...");
+		}
+
 		const glm::vec4& GetBoundingBox() const { return m_BoundingBox; }
 
 		// Removes the sprite of the object. 
@@ -135,7 +147,11 @@ namespace GLGame
 		const glm::mat4& GetModelMatrix();
 
 		// Updates the object if it has a sprite and that sprite has an animation attached
-		void IntUpdate(long long fps); 
+		void IntUpdate(long long fps);
+
+		// Returns the type of collision mask set. 
+		// can either be mask_rect or mask_circle
+		const ObjectCollisionMaskType& GetCollisionMaskType() const { return m_MaskType; }
 
 	private:
 
@@ -152,5 +168,7 @@ namespace GLGame
 		bool m_Visible;
 		string m_ID;
 		string m_DisplayName;
+
+		ObjectCollisionMaskType m_MaskType = mask_rect;
 	};
 }

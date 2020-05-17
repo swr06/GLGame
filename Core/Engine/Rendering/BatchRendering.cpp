@@ -71,8 +71,8 @@ namespace GLGame
 
 		m_CameraCull.x = camera_position.x;
 		m_CameraCull.y = camera_position.y;
-		m_CameraCull.w = camera_projection.y ; 
-		m_CameraCull.h = camera_projection.w ;
+		m_CameraCull.w = camera_projection.y;
+		m_CameraCull.h = camera_projection.w;
 
 		m_CameraCullGiven = true;
 	}
@@ -349,8 +349,6 @@ namespace GLGame
 		m_VBO.BufferData((m_VerticesWritten * 24) * sizeof(GLfloat), m_VertexBuffer, GL_STATIC_DRAW);
 		glDrawElements(GL_TRIANGLES, 6 * m_VerticesWritten, GL_UNSIGNED_INT, (void*)0);
 		m_VAO.Unbind();
-
-		cout << "\n" << m_VerticesWritten << " Quads successfully drawn!";
 
 		m_VerticesWritten = 0;
 		m_LastElementVBuff = 0;

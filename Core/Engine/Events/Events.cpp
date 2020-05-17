@@ -12,7 +12,7 @@ namespace GLGame
 		glfwGetWindowPos(window, &e.WindowPositionX, &e.WindowPositionX);
 		glfwGetWindowSize(window, &e.WindowSizeCoordsX, &e.WindowSizeCoordsY);
 		glfwGetFramebufferSize(window, &e.WindowFrameBufferX, &e.WindowFrameBufferY);
-		glfwGetCursorPos(window, &e.MouseX, &e.MouseX);
+		glfwGetCursorPos(window, &e.MouseX, &e.MouseY);
 		e.WindowIsMaximized = glfwGetWindowAttrib(window, GLFW_MAXIMIZED);
 		e.WindowIsHovered = glfwGetWindowAttrib(window, GLFW_HOVERED);
 		e.WindowIsFloating = glfwGetWindowAttrib(window, GLFW_FLOATING);
@@ -64,7 +64,7 @@ namespace GLGame
 		e.WindowHasFocus = glfwGetWindowAttrib(window, GLFW_FOCUSED);
 		glfwGetWindowPos(window, &e.WindowPositionX, &e.WindowPositionX);
 		glfwGetFramebufferSize(window, &e.WindowFrameBufferX, &e.WindowFrameBufferY);
-		glfwGetCursorPos(window, &e.MouseX, &e.MouseX);
+		glfwGetCursorPos(window, &e.MouseX, &e.MouseY);
 		e.WindowIsMaximized = glfwGetWindowAttrib(window, GLFW_MAXIMIZED);
 		e.WindowIsHovered = glfwGetWindowAttrib(window, GLFW_HOVERED);
 		e.WindowIsFloating = glfwGetWindowAttrib(window, GLFW_FLOATING);
@@ -175,7 +175,7 @@ namespace GLGame
 		e.WindowHasFocus = glfwGetWindowAttrib(window, GLFW_FOCUSED);
 		glfwGetWindowPos(window, &e.WindowPositionX, &e.WindowPositionX);
 		glfwGetWindowSize(window, &e.WindowSizeCoordsX, &e.WindowSizeCoordsY);
-		glfwGetCursorPos(window, &e.MouseX, &e.MouseX);
+		glfwGetCursorPos(window, &e.MouseX, &e.MouseY);
 		e.WindowIsMaximized = glfwGetWindowAttrib(window, GLFW_MAXIMIZED);
 		e.WindowIsHovered = glfwGetWindowAttrib(window, GLFW_HOVERED);
 		e.WindowIsFloating = glfwGetWindowAttrib(window, GLFW_FLOATING);
@@ -196,7 +196,7 @@ namespace GLGame
 		e.WindowPositionY = ypos;
 		glfwGetWindowSize(window, &e.WindowSizeCoordsX, &e.WindowSizeCoordsY);
 		glfwGetFramebufferSize(window, &e.WindowFrameBufferX, &e.WindowFrameBufferY);
-		glfwGetCursorPos(window, &e.MouseX, &e.MouseX);
+		glfwGetCursorPos(window, &e.MouseX, &e.MouseY);
 		e.WindowIsMaximized = glfwGetWindowAttrib(window, GLFW_MAXIMIZED);
 		e.WindowIsHovered = glfwGetWindowAttrib(window, GLFW_HOVERED);
 		e.WindowIsFloating = glfwGetWindowAttrib(window, GLFW_FLOATING);

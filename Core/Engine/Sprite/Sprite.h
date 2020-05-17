@@ -39,6 +39,7 @@ namespace GLGame
 
 		void UpdateSprite(long long fps);
 
+		// Do not use this function. Use the GetSpriteDisplayID() function instead. The id has some extra added characters at the beginning
 		const string& GetSpriteID() const { return m_ID; }
 		Texture* GetCurrentTexture() const { return m_CurrentTexture; }
 
@@ -89,6 +90,7 @@ namespace GLGame
 		Texture* m_CurrentTexture; 
 		size_t m_Frequency = 1;
 		string m_ID; 
+		string m_DisplayID;
 		int m_CurrentFrame = 0;
 
 		bool m_AnimatedSprite;

@@ -33,8 +33,10 @@ namespace GLGame
 	Object::Object(const string& id, Sprite& sprite, bool should_cull, bool visible, Shader* shader, bool record_collision_event, const glm::vec4& bounding_box) : m_Rotation(-45.0f)
 	{
 		auto start = chrono::steady_clock::now();
+		const char* obj_append = "@#$*#\0";
 
 		m_ID = id;
+		m_ID.insert(0, obj_append);
 		m_DisplayName = id;
 		m_Shader = shader;
 		m_HasSprite = true;
@@ -45,7 +47,8 @@ namespace GLGame
 
 		GameInternal::_IntRegisterObject(this);
 
-		if (bounding_box == glm::vec4(-1.0f, -1.0f, -1.0f, -1.0f))
+		if (bounding_box.x == -1.0f && bounding_box.y == -1.0f &&
+			bounding_box.z == -1.0f && bounding_box.w == -1.0f)
 		{
 			m_BoundingBox = { 0.0f, 0.0f, sprite.GetCurrentTexture()->GetWidth(), sprite.GetCurrentTexture()->GetWidth() };
 		}
@@ -80,6 +83,14 @@ namespace GLGame
 
 	void Object::SetSprite(Sprite& sprite)
 	{
+		if (m_BoundingBox == glm::vec4(0.0f, 0.0f, 0.0f, 0.0f))
+		{
+			m_BoundingBox.x = 0.0f;
+			m_BoundingBox.y = 0.0f;
+			m_BoundingBox.z = sprite.GetCurrentTextureWidth();
+			m_BoundingBox.w = sprite.GetCurrentTextureHeight();
+		}
+
 		m_HasSprite = true;
 		m_Sprite = &sprite;
 	}
@@ -106,6 +117,7 @@ namespace GLGame
 
 	void Object::SetBoundingBox(const glm::vec4& bounding_box)
 	{
+		m_MaskType = mask_rect;
 		m_BoundingBox = bounding_box;
 	}
 

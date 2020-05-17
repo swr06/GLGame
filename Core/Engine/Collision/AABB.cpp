@@ -2,6 +2,8 @@
 
 namespace GLGame
 {
+	// Experimental collision method
+
 	/*bool CheckAABBCollision(AABB c1, AABB c2)
 	{
 		glm::vec2 ScreenDimensions = glm::vec2(c1.w, c1.h);
@@ -40,7 +42,7 @@ namespace GLGame
 		return false;
 	}*/
 
-	
+
 	bool ObjectInCameraView(AABB Camera, AABB Object)
 	{
 		// Same as AABB collision method but it has an error factor
@@ -51,11 +53,47 @@ namespace GLGame
 		return collisionX && collisionY;
 	}
 
-	bool CheckAABBCollision(AABB one, AABB two)
+	bool CheckAABBCollision(AABB one, AABB two, AABBCollisionMask* mask)
 	{
-		bool collisionX = one.x + one.w >= two.x && two.x + two.w >= one.x;
-		bool collisionY = one.y + one.h >= two.y && two.y + two.h >= one.y;
+		float one_width = one.x + one.w;
+		float one_height = one.y + one.h;
+		float two_width = two.x + two.w;
+		float two_height = two.y + two.h;
 
-		return collisionX && collisionY;
+		bool collisionX = one_width >= two.x && two_width >= one.x;
+		bool collisionY = one_height >= two.y && two_height >= one.y;
+
+		if (collisionX && collisionY)
+		{
+			// These was a collision on both the axes.
+
+			//mask->CheckPosition();
+			if (one.x < two.x)
+			{
+				std::cout << "\nThe right side of square 1 collided with the left side of square 2";
+			}
+
+			if (one.x > two.x)
+			{
+				std::cout << "\nThe left side of square 1 collided with the right side of square 2";
+			}
+
+			if (one.y < two.y)
+			{
+				std::cout << "\nThe bottom side of square 1 collided with the top side of square 2";
+			}
+
+			if (one.y > two.y)
+			{
+				std::cout << "\nThe top side of square 1 collided with the bottom side of square 2";
+			}
+
+			return true;
+		}
+
+		else
+		{
+			return false;
+		}
 	}
 }

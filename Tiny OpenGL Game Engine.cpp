@@ -1,7 +1,3 @@
-#define GLGAME_EXAMPLE 1
-
-#if defined(GLGAME_EXAMPLE)
-
 #include "Core\Engine\Game\Game.h"
 #include <GL/glew.h>
 
@@ -15,17 +11,17 @@ void EventCallback(Event e);
 
 Game game(game_width, game_height, "", true, false);
 
-void OnEvent(Event e) 
+void Game::OnEvent(Event e) 
 {
 	EventCallback(e);
 }
 
-void OnFrameAdvance(long long frame) 
+void Game::OnFrameAdvance(long long frame)
 {
 
 }
 
-void OnImGuiRender(long long frame) 
+void Game::OnImGuiRender(long long frame)
 {
 	static float x = 0, y = 0;
 
@@ -120,9 +116,9 @@ int main()
 
 	scene.AddSceneBackground(bg, 1);
 	scene.AddObjectAtPosition(obj_2, 0, glm::vec3(200.0f, 200.0f, 0.0f));
-	scene.AddObjectAtPosition(obj, 1, glm::vec3(170.0f, 10.0f, 0.0f));
-	scene.AddObjectAtPosition(obj, 2, glm::vec3(400.0f, 10.0f, 0.0f));
-	scene.AddObjectAtPosition(obj, 3, glm::vec3(400.0f, 400.0f, 0.0f));
+	scene.AddObjectAtPosition(obj, -1, glm::vec3(170.0f, 10.0f, 0.0f));
+	scene.AddObjectAtPosition(obj, 1, glm::vec3(400.0f, 150.0f, 0.0f));
+	scene.AddObjectAtPosition(obj, 2, glm::vec3(400.0f, 400.0f, 0.0f));
 
 	tex1.CreateTexture("Core\\Resources\\tree.png");
 	tex2.CreateTexture("Core\\Resources\\ghost.png"); // Alpha = 50.0%
@@ -142,6 +138,11 @@ int main()
 	while (!game.GameWindowShouldClose())
 	{
 		game.Render(); 
+
+		if (game.IsThereCollision(obj, obj_2))
+		{
+			cout << "\nCOLLISION!\n";
+		}
 	}
 } 
 
@@ -152,8 +153,6 @@ W S A D is to move the camera
 And the arrow keys are for the ghost object
 
 */
-
-#endif
 
 #if defined(IMGUI_EXAMPLE)
 
