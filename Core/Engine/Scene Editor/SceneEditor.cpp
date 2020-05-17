@@ -52,7 +52,6 @@ namespace GLGame
 		ImGuiContext* imcontext;
 
 		// Scene editor matrices
-		glm::mat4 SceneEditorProjectionMatrix = glm::mat4(1.0f);
 		Camera* SceneEditorCamera;
 
 		GLFWwindow* InitSceneEditor(unordered_map<string, Object*>* global_objects, unordered_map<string, Sprite*>* global_sprites, vector<string>* objid_list, vector<string>* sprid_list, GLFWwindow* window, ImGuiContext* context)
@@ -79,11 +78,21 @@ namespace GLGame
 
 			glfwMakeContextCurrent(SceneEditorWindow);
 
+			// Set all the GLFW Event Callbacks required
+
+			//glfwSetCursorPosCallback(m_GameWindow, GLGameCursorPosCallback);
+			glfwSetKeyCallback(SceneEditorWindow, SEKeyCallback);
+			glfwSetMouseButtonCallback(SceneEditorWindow, SEMouseCallback);
+			glfwSetScrollCallback(SceneEditorWindow, SEScrollCallback);
+			glfwSetFramebufferSizeCallback(SceneEditorWindow, SEWindowResizeCallback);
+			glfwSetWindowCloseCallback(SceneEditorWindow, SEWindowCloseCallback);
+
 			SceneEditorInitialized = true;
+
+			// Imgui initialization
+
 			ImGui::SetCurrentContext(ImGui::CreateContext());
 			imcontext = ImGui::GetCurrentContext();
-
-
 			ImGui_ImplGlfw_InitForOpenGL(SceneEditorWindow, true);
 			ImGui_ImplOpenGL3_Init((const char*)"#version 130");
 			ImGui::StyleColorsDark();
@@ -92,7 +101,8 @@ namespace GLGame
 			ImGuiIO& io = ImGui::GetIO();
 			io.Fonts->AddFontDefault();
 			io.Fonts->Build();
-
+			
+			// Imgui style
 			ImGuiStyle& style = ImGui::GetStyle();
 			if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
 			{
@@ -117,7 +127,6 @@ namespace GLGame
 			// Basic item rendering test
 
 			_RenderItem item;
-			glm::mat4 projection_matrix = glm::ortho(0.0f, 1366.0f, 0.0f, 760.0f);
 			Object* obj = SceneEditorGlobalObjects->at("@#$*#Object_1");
 
 			item.x = 100.0f;
@@ -127,7 +136,7 @@ namespace GLGame
 			item.th = obj->GetSprite()->GetCurrentTextureHeight();
 			item.tex = obj->GetSprite()->GetCurrentTexture();
 
-			_NormallyRenderSEItems(item, SceneEditorRenderItemShader, projection_matrix);
+			_NormallyRenderSEItems(item, SceneEditorRenderItemShader, SceneEditorCamera->GetViewProjectionMatrix());
 		}
 
 		void _DrawSEWidgets()
@@ -385,6 +394,8 @@ namespace GLGame
 			{
 				return;
 			}
+
+			SceneEditorCamera->SetRotation(yoffset * 10);
 
 		}
 
