@@ -349,6 +349,8 @@ namespace GLGame
 				return;
 			}
 
+			glfwGetCursorPos(window, &MousePosX, &MousePosY);
+
 			if (action == GLFW_PRESS)
 			{
 				
@@ -371,6 +373,8 @@ namespace GLGame
 			{
 				return;
 			}
+
+			glfwGetCursorPos(window, &MousePosX, &MousePosY);
 
 			if (action == GLFW_PRESS)
 			{
@@ -395,8 +399,21 @@ namespace GLGame
 				return;
 			}
 
-			SceneEditorCamera->SetRotation(yoffset * 10);
+			glfwGetCursorPos(window, &MousePosX, &MousePosY);
 
+			if (yoffset < 0)
+			{
+				const glm::vec3 scale = SceneEditorCamera->GetScale();
+				//SceneEditorCamera->SetPosition(glm::vec3((float)MousePosX / 2, (float)MousePosY / 2, 1.0f));
+				SceneEditorCamera->SetScale(glm::vec3(scale.x - 0.1, scale.y - 0.1, 1.0f));
+			}
+
+			else if (yoffset > 0)
+			{
+				const glm::vec3 scale = SceneEditorCamera->GetScale();
+			//	SceneEditorCamera->SetPosition(glm::vec3((float)MousePosX, (float)MousePosY, 1.0f));
+				SceneEditorCamera->SetScale(glm::vec3(scale.x + 0.1, scale.y + 0.1, 1.0f));
+			}
 		}
 
 		void SEWindowCloseCallback(GLFWwindow* window)
