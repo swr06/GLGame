@@ -51,6 +51,10 @@ namespace GLGame
 		// IMGUI context => Scene editor window
 		ImGuiContext* imcontext;
 
+		// Scene editor matrices
+		glm::mat4 SceneEditorProjectionMatrix = glm::mat4(1.0f);
+		Camera* SceneEditorCamera;
+
 		GLFWwindow* InitSceneEditor(unordered_map<string, Object*>* global_objects, unordered_map<string, Sprite*>* global_sprites, vector<string>* objid_list, vector<string>* sprid_list, GLFWwindow* window, ImGuiContext* context)
 		{
 			SceneEditorGlobalObjects = global_objects;
@@ -96,6 +100,7 @@ namespace GLGame
 				style.Colors[ImGuiCol_WindowBg].w = 1.0f;
 			}
 
+			SceneEditorCamera = new Camera(0.0f, (float)SceneEditorWidth, 0.0f, (float)SceneEditorHeight);
 			SceneEditorRenderItemShader.CreateShaderProgram(GLGAME_DEFAULT_SE_VERTEX, GLGAME_DEFAULT_SE_FRAGMENT);
 			return SceneEditorWindow;
 		}
