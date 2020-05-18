@@ -44,7 +44,8 @@ namespace GLGame
 		static int ItemTypeSelected = Nothing;
 
 		// Render queue
-		static map<int, vector<SceneEditorRenderItem>> SceneEditorRenderQueue;
+		static map<int, vector<SceneEditorRenderItem>> SceneEditorItemQueue;
+
 		static Shader SceneEditorRenderItemShader;
 
 		// Mouse and window attributes
@@ -219,6 +220,7 @@ namespace GLGame
 			{
 				ImGui::OpenPopup("Dependencies");
 
+
 				if (ImGui::BeginPopupModal("Dependencies", NULL, ImGuiWindowFlags_AlwaysAutoResize))
 				{
 					ImGui::Text("GLGame the minimal open-source dependencies. All of the below are open-source and free");
@@ -256,53 +258,88 @@ namespace GLGame
 
 		void _DrawSEWidgets()
 		{
+			ImGui::SetNextWindowPos(ImVec2(SceneEditorWidth * 0.75, 20), ImGuiCond_FirstUseEver);
+			ImGui::SetNextWindowSize(ImVec2(400, 400), ImGuiCond_FirstUseEver);
+
+			ImGui::Begin("Operation select.");
 			ImGui::Text("What would you like to do ?");
 			ImGui::RadioButton("Place GLGame::Items", &CurrentOperationSelected, PlaceItems);
 			ImGui::RadioButton("Change/Add Backgrounds", &CurrentOperationSelected, ChangeBackground);
 			ImGui::RadioButton("See properties of a GLGame::Object or GLGame::Sprite", &CurrentOperationSelected, SeeProperties);
 			ImGui::RadioButton("Debug", &CurrentOperationSelected, Debug);
 			ImGui::RadioButton("View or Look at the scene.", &CurrentOperationSelected, ViewScene);
+			ImGui::End();
+		}
+
+		void _DrawSEPlaceItemWidgets()
+		{
+			static bool show_window = true;
 
 			if (CurrentOperationSelected == PlaceItems)
 			{
-				if (ImGui::CollapsingHeader("Place Scene Items") == false)
+				if (ImGui::Begin("Place GLGame::SceneItems", &show_window))
 				{
-					return;
-				}
-
-				if (ImGui::TreeNode("Objects"))
-				{
-					string obj_name_holder;
-
-					for (int i = 0; i < ObjectIDList->size(); i++)
+					if (ImGui::CollapsingHeader("Place Scene Items"))
 					{
-						obj_name_holder = ObjectIDList->at(i);
-						obj_name_holder.erase(obj_name_holder.begin(), obj_name_holder.begin() + 5);
-						ImGui::RadioButton(obj_name_holder.c_str(), &RadioObjectSelected, i);
-					}
+						if (ImGui::TreeNode("Objects"))
+						{
+							string obj_name_holder;
 
-					ImGui::TreePop();
+							for (int i = 0; i < ObjectIDList->size(); i++)
+							{
+								obj_name_holder = ObjectIDList->at(i);
+								obj_name_holder.erase(obj_name_holder.begin(), obj_name_holder.begin() + 5);
+								ImGui::RadioButton(obj_name_holder.c_str(), &RadioObjectSelected, i);
+							}
+
+							ImGui::TreePop();
+						}
+
+						if (ImGui::TreeNode("Sprites"))
+						{
+							string spr_name_holder;
+
+							for (int i = 0; i < SpriteIDList->size(); i++)
+							{
+								spr_name_holder = SpriteIDList->at(i);
+								spr_name_holder.erase(spr_name_holder.begin(), spr_name_holder.begin() + 5);
+								ImGui::RadioButton(spr_name_holder.c_str(), &RadioSpriteSelected, i);
+							}
+
+							ImGui::TreePop();
+						}
+
+						ImGui::Text("\nTYPE OF SCENE ITEM THAT YOU WOULD LIKE TO PLACE : \n\n");
+						ImGui::RadioButton("GLGame::Object", &ItemTypeSelected, ObjectSelection);
+						ImGui::RadioButton("GLGame::Sprite", &ItemTypeSelected, SpriteSelection);
+
+						// Draw the "Selected Item" ImGui window
+					}
 				}
 
-				if (ImGui::TreeNode("Sprites"))
+				ImGui::End();
+
 				{
-					string spr_name_holder;
+					Sprite* selected_obj_spr = SceneEditorGlobalObjects->at("@#$*#Object_1")->GetSprite();
 
-					for (int i = 0; i < SpriteIDList->size(); i++)
-					{
-						spr_name_holder = SpriteIDList->at(i);
-						spr_name_holder.erase(spr_name_holder.begin(), spr_name_holder.begin() + 5);
-						ImGui::RadioButton(spr_name_holder.c_str(), &RadioSpriteSelected, i);
-					}
+					ImGui::SetNextWindowPos(ImVec2(SceneEditorWidth - 270, SceneEditorHeight - 270), ImGuiCond_FirstUseEver);
+					ImGui::SetNextWindowSize(ImVec2(250, 250), ImGuiCond_Always);
+					ImGui::Begin("Selected Item");
+					ImGui::TextColored(ImVec4(0.0f, 1.0f, 1.0f, 1.0f), "SELECTED OBJECT ! \n\n\n");
 
-					ImGui::TreePop();
+					// Add the item to the imgui draw list
+					ImGui::GetWindowDrawList()->AddImage(
+						(void*)selected_obj_spr->GetCurrentTexture()->GetTextureID(),
+						ImVec2(ImGui::GetCursorScreenPos()),
+						ImVec2(ImGui::GetCursorScreenPos().x + selected_obj_spr->GetCurrentTextureWidth(),
+							ImGui::GetCursorScreenPos().y + selected_obj_spr->GetCurrentTextureHeight()),
+						ImVec2(0, 1),
+						ImVec2(1, 0));
+
+					ImGui::End();
 				}
-
-				ImGui::Text("\nTYPE OF SCENE ITEM THAT YOU WOULD LIKE TO PLACE : \n\n");
-				ImGui::RadioButton("GLGame::Object", &ItemTypeSelected, ObjectSelection);
-				ImGui::RadioButton("GLGame::Sprite", &ItemTypeSelected, SpriteSelection);
+				
 			}
-
 		}
 
 		void _DrawSEMenuBar()
@@ -412,19 +449,15 @@ namespace GLGame
 				glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
 				glClear(GL_COLOR_BUFFER_BIT);
 
-				// Render the test item
-				RenderSceneEditorItems();
 
 				// Draw the ImGui items
 				ImGui::SetCurrentContext(imcontext);
 
+				// Render the test item
+				RenderSceneEditorItems();
+
 				bool display_title_place_item = true;
 				bool display_title_selected_item = true;
-
-				ImGuiWindowFlags window_flags_place_item = 0;
-				window_flags_place_item |= ImGuiWindowFlags_MenuBar;
-				window_flags_place_item |= ImGuiWindowFlags_NoCollapse;
-				window_flags_place_item |= ImGuiWindowFlags_NoNav;
 
 				ImGui::SetNextWindowPos(ImVec2(SceneEditorWidth * 0.75, 20), ImGuiCond_Always);
 				ImGui::SetNextWindowSize(ImVec2(555, 760), ImGuiCond_Always);
@@ -435,39 +468,11 @@ namespace GLGame
 				ImGui::NewFrame();
 
 				_DrawSEMenuBar();
-
 				_ShowModalWindows();
-
-				ImGui::Begin("GLGame Editor", &display_title_place_item, window_flags_place_item);
 				_DrawSEWidgets();
-				ImGui::End();
+				_DrawSEPlaceItemWidgets();
 
-				ImGuiWindowFlags window_flags_selected_item = 0;
-				window_flags_selected_item |= ImGuiWindowFlags_MenuBar;
-				window_flags_selected_item |= ImGuiWindowFlags_NoCollapse;
-				window_flags_selected_item |= ImGuiWindowFlags_NoNav;
-
-				{
-					Sprite* selected_obj_spr = SceneEditorGlobalObjects->at("@#$*#Object_1")->GetSprite();
-
-					ImGui::Begin("Selected Item", &display_title_selected_item, window_flags_selected_item);
-
-					ImGui::SetNextWindowPos(ImVec2(SceneEditorWidth - 270, SceneEditorHeight - 270), ImGuiCond_FirstUseEver);
-					ImGui::SetNextWindowSize(ImVec2(250, 250), ImGuiCond_Always);
-
-					ImGui::TextColored(ImVec4(0.0f, 1.0f, 1.0f, 1.0f), "SELECTED OBJECT ! \n\n\n");
-
-					ImGui::GetWindowDrawList()->AddImage(
-						(void*)selected_obj_spr->GetCurrentTexture()->GetTextureID(),
-						ImVec2(ImGui::GetCursorScreenPos()),
-						ImVec2(ImGui::GetCursorScreenPos().x + selected_obj_spr->GetCurrentTextureWidth(),
-							ImGui::GetCursorScreenPos().y + selected_obj_spr->GetCurrentTextureHeight()),
-						ImVec2(0, 1),
-						ImVec2(1, 0));
-
-					ImGui::End();
-				}
-
+				// Scope : show modal window when you click on the close button
 				{
 					if (ShouldShowCloseModalWindow)
 					{
