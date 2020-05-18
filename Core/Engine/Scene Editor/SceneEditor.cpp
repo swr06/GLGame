@@ -58,6 +58,13 @@ namespace GLGame
 		static const char* ObjectInsertString = "@#$*#\0";
 		static const char* SpriteInsertString = "$*$^(\0";
 
+		// Modal windows
+		static bool ShouldShowCloseModalWindow = false;
+
+		static bool ShouldShowAboutTheAuthorWindow = false;
+		static bool ShouldShowSupportMeWindow = false;
+		static bool ShouldShowWITWindow = false; // What is this window
+
 		// IMGUI context => Scene editor window
 		ImGuiContext* imcontext;
 
@@ -132,6 +139,79 @@ namespace GLGame
 		void _SetSEImGuiFlags() 
 		{
 
+		}
+
+		void _ShowModalWindows()
+		{
+			// Shows all the modal windows that are flagged true.
+			// (Windows such as About me, Support me etc..
+
+			if (ShouldShowAboutTheAuthorWindow)
+			{
+				ImGui::OpenPopup("About the author");
+
+				if (ImGui::BeginPopupModal("About the author", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+				{
+					ImGui::Text("Programmed by Samuel Rasquinha\n");
+					ImGui::Text("GitHub : Samuel Rasquinha");
+					ImGui::Text("Gmail : samuelrasquinha@gmail.com");
+					ImGui::Text("Instagram : Samuel Rasquinha");
+					ImGui::Text("Programmed using C++ and OpenGL.");
+					ImGui::Text("If you like this program, please consider starring this on github.");
+
+					ImGui::SetItemDefaultFocus();
+
+					if (ImGui::Button("OK", ImVec2(120, 0)))
+					{
+						ShouldShowAboutTheAuthorWindow = false;
+						ImGui::CloseCurrentPopup();
+					}
+
+					ImGui::EndPopup();
+				}
+			}
+
+			if (ShouldShowSupportMeWindow)
+			{
+				ImGui::OpenPopup("Support me");
+
+				if (ImGui::BeginPopupModal("Support me", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+				{
+					ImGui::Text("\n\nThe entire GLGame project was made by Samuel Rasquinha (samuelrasquinha@gmail.com)");
+					ImGui::Text("Since I am only 14 years old, I don't have paypal. But you can show your support by starring this project on GitHub.");
+
+					ImGui::SetItemDefaultFocus();
+
+					if (ImGui::Button("OK", ImVec2(120, 0)))
+					{
+						ShouldShowSupportMeWindow = false;
+						ImGui::CloseCurrentPopup();
+					}
+
+					ImGui::EndPopup();
+				}
+			}
+
+			if (ShouldShowWITWindow)
+			{
+				ImGui::OpenPopup("What is this?");
+
+				if (ImGui::BeginPopupModal("What is this?", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+				{
+					ImGui::Text("\n\nThis is a debug tool and scene editor I made to run along with GLGame");
+					ImGui::Text("This is to be run during runtime.");
+
+					ImGui::SetItemDefaultFocus();
+
+					if (ImGui::Button("OK", ImVec2(120, 0)))
+					{
+						ShouldShowWITWindow = false;
+						ImGui::CloseCurrentPopup();
+					}
+
+					ImGui::EndPopup();
+				}
+			}
 		}
 
 		void RenderSceneEditorItems()
@@ -248,35 +328,32 @@ namespace GLGame
 				{
 					if (ImGui::MenuItem("About the author"))
 					{
-						if (ImGui::Begin("About"))
-						{
-							ImGui::Text("\n\nProgrammed by Samuel Rasquinha (samuelrasquinha@gmail.com)\n");
-							ImGui::Text("Programmed using C++ and OpenGL.");
-						}
+						ShouldShowAboutTheAuthorWindow = true;
+					}
 
-						ImGui::End();
+					else
+					{
+						ShouldShowAboutTheAuthorWindow = false;
 					}
 
 					if (ImGui::MenuItem("What is this?"))
 					{
-						if (ImGui::Begin("About"))
-						{
-							ImGui::Text("\n\nThis is a debug tool and scene editor I made to run along with GLGame");
-							ImGui::Text("This is to be run during runtime.");
-						}
+						ShouldShowWITWindow = true;
+					}
 
-						ImGui::End();
+					else
+					{
+						ShouldShowWITWindow = false;
 					}
 
 					if (ImGui::MenuItem("Support"))
 					{
-						if (ImGui::Begin("Support me"))
-						{
-							ImGui::Text("\n\nThe entire GLGame project was made by Samuel Rasquinha (samuelrasquinha@gmail.com)");
-							ImGui::Text("Since I am only 14 years old, I don't have paypal. But you can show your support by starring this project on GitHub.");
-						}
+						ShouldShowSupportMeWindow = true;
+					}
 
-						ImGui::End();
+					else
+					{
+						ShouldShowSupportMeWindow = false;
 					}
 
 					ImGui::EndMenu();
@@ -290,7 +367,7 @@ namespace GLGame
 		{
 			glfwGetFramebufferSize(SceneEditorWindow, &SceneEditorWidth, &SceneEditorWidth);
 
-			if (!glfwWindowShouldClose(SceneEditorWindow) && SE_window_destroyed == false)
+			if (SE_window_destroyed == false)
 			{
 				glfwMakeContextCurrent(SceneEditorWindow);
 				glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
@@ -319,6 +396,8 @@ namespace GLGame
 				ImGui::NewFrame();
 
 				_DrawSEMenuBar();
+
+				_ShowModalWindows();
 
 				ImGui::Begin("GLGame Editor", &display_title_place_item, window_flags_place_item);
 				_DrawSEWidgets();
@@ -350,8 +429,48 @@ namespace GLGame
 					ImGui::End();
 				}
 
+				{
+					if (ShouldShowCloseModalWindow)
+					{
+						ImGui::SetNextWindowSize(ImVec2(600, 100), ImGuiCond_Always);
+						ImGui::OpenPopup("Delete?");
+
+						if (ImGui::BeginPopupModal("Delete?", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+						{
+							ImGui::Text("The Scene you just created will be lost forever! This action cannot be undone!\n");
+							ImGui::Separator();
+
+							if (ImGui::Button("OK", ImVec2(120, 0)))
+							{ 
+								ImGui::CloseCurrentPopup();
+
+								if (SE_window_destroyed == false)
+								{
+									SE_window_destroyed = true;
+									glfwDestroyWindow(SceneEditorWindow);
+									Log::LogToConsole("The Scene Editor was destroyed!");
+								}
+								
+								return 0;
+							}
+
+							ImGui::SetItemDefaultFocus();
+							ImGui::SameLine();
+
+							if (ImGui::Button("Cancel", ImVec2(120, 0)))
+							{ 
+								ShouldShowCloseModalWindow = false;
+								ImGui::CloseCurrentPopup(); 
+							}
+
+							ImGui::EndPopup();
+						}
+					}
+				}
+
 
 				ImGui::Render();
+				ImGui::EndFrame();
 				ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 				glfwSwapBuffers(SceneEditorWindow);
@@ -360,12 +479,7 @@ namespace GLGame
 
 			else
 			{ 
-				if (SE_window_destroyed == false)
-				{
-					SE_window_destroyed = true;
-					glfwDestroyWindow(SceneEditorWindow);
-					Log::LogToConsole("The Scene Editor was destroyed!");
-				}
+				
 
 				return false;
 			}
@@ -479,6 +593,10 @@ namespace GLGame
 			{
 				return;
 			}
+
+			ShouldShowCloseModalWindow = true;
 		}
 	}
 }
+
+// Scene Editor End..

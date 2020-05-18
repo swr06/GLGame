@@ -55,6 +55,7 @@ namespace GLGame
 		bool RenderSceneEditor();
 		bool SceneEditorAlive();
 		void RenderSceneEditorItems();
+		void _ShowModalWindows();
 
 		// GLFW Callbacks
 		void SEWindowResizeCallback(GLFWwindow* window, int width, int height);
