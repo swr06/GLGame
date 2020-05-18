@@ -13,6 +13,15 @@ namespace GLGame
 			Nothing
 		};
 
+		static enum Operations
+		{
+			PlaceItems = 0,
+			ChangeBackground,
+			SeeProperties,
+			Debug,
+			ViewScene,
+		};
+
 		// Variables to initialize the window
 		static bool SceneEditorInitialized = false;
 		static GLFWwindow* SceneEditorWindow;
@@ -54,6 +63,9 @@ namespace GLGame
 
 		// Scene editor matrices
 		Camera* SceneEditorCamera;
+
+		// Other needed structures
+		int CurrentOperationSelected ; // Has to be an int for imgui. Used as an enum class "Operations" 
 
 		GLFWwindow* InitSceneEditor(unordered_map<string, Object*>* global_objects, unordered_map<string, Sprite*>* global_sprites, vector<string>* objid_list, vector<string>* sprid_list, GLFWwindow* window, ImGuiContext* context)
 		{
@@ -136,43 +148,53 @@ namespace GLGame
 
 		void _DrawSEWidgets()
 		{
-			if (ImGui::CollapsingHeader("Scene Items") == false)
-			{
-				// error
-				return;
-			}
+			ImGui::Text("What would you like to do ?");
+			ImGui::RadioButton("Place GLGame::Items", &CurrentOperationSelected, PlaceItems);
+			ImGui::RadioButton("Change/Add Backgrounds", &CurrentOperationSelected, ChangeBackground);
+			ImGui::RadioButton("See properties of a GLGame::Object or GLGame::Sprite", &CurrentOperationSelected, SeeProperties);
+			ImGui::RadioButton("Debug", &CurrentOperationSelected, Debug);
+			ImGui::RadioButton("View or Look at the scene.", &CurrentOperationSelected, ViewScene);
 
-			if (ImGui::TreeNode("Objects"))
+			if (CurrentOperationSelected == PlaceItems)
 			{
-				string obj_name_holder;
-
-				for (int i = 0; i < ObjectIDList->size(); i++)
+				if (ImGui::CollapsingHeader("Place Scene Items") == false)
 				{
-					obj_name_holder = ObjectIDList->at(i);
-					obj_name_holder.erase(obj_name_holder.begin(), obj_name_holder.begin() + 5);
-					ImGui::RadioButton(obj_name_holder.c_str(), &RadioObjectSelected, i);
+					return;
 				}
 
-				ImGui::TreePop();
-			}
-
-			if (ImGui::TreeNode("Sprites"))
-			{
-				string spr_name_holder;
-
-				for (int i = 0; i < SpriteIDList->size(); i++)
+				if (ImGui::TreeNode("Objects"))
 				{
-					spr_name_holder = SpriteIDList->at(i);
-					spr_name_holder.erase(spr_name_holder.begin(), spr_name_holder.begin() + 5);
-					ImGui::RadioButton(spr_name_holder.c_str(), &RadioSpriteSelected, i);
+					string obj_name_holder;
+
+					for (int i = 0; i < ObjectIDList->size(); i++)
+					{
+						obj_name_holder = ObjectIDList->at(i);
+						obj_name_holder.erase(obj_name_holder.begin(), obj_name_holder.begin() + 5);
+						ImGui::RadioButton(obj_name_holder.c_str(), &RadioObjectSelected, i);
+					}
+
+					ImGui::TreePop();
 				}
 
-				ImGui::TreePop();
+				if (ImGui::TreeNode("Sprites"))
+				{
+					string spr_name_holder;
+
+					for (int i = 0; i < SpriteIDList->size(); i++)
+					{
+						spr_name_holder = SpriteIDList->at(i);
+						spr_name_holder.erase(spr_name_holder.begin(), spr_name_holder.begin() + 5);
+						ImGui::RadioButton(spr_name_holder.c_str(), &RadioSpriteSelected, i);
+					}
+
+					ImGui::TreePop();
+				}
+
+				ImGui::Text("\nTYPE OF SCENE ITEM THAT YOU WOULD LIKE TO PLACE : \n\n");
+				ImGui::RadioButton("GLGame::Object", &ItemTypeSelected, ObjectSelection);
+				ImGui::RadioButton("GLGame::Sprite", &ItemTypeSelected, SpriteSelection);
 			}
 
-			ImGui::Text("\nTYPE OF SCENE ITEM THAT YOU WOULD LIKE TO PLACE : \n\n");
-			ImGui::RadioButton("GLGame::Object", &ItemTypeSelected, ObjectSelection);
-			ImGui::RadioButton("GLGame::Sprite", &ItemTypeSelected, SpriteSelection);
 		}
 
 		void _DrawSEMenuBar()
@@ -218,6 +240,45 @@ namespace GLGame
 
 					}
 
+
+					ImGui::EndMenu();
+				}
+
+				if (ImGui::BeginMenu("Help"))
+				{
+					if (ImGui::MenuItem("About the author"))
+					{
+						if (ImGui::Begin("About"))
+						{
+							ImGui::Text("\n\nProgrammed by Samuel Rasquinha (samuelrasquinha@gmail.com)\n");
+							ImGui::Text("Programmed using C++ and OpenGL.");
+						}
+
+						ImGui::End();
+					}
+
+					if (ImGui::MenuItem("What is this?"))
+					{
+						if (ImGui::Begin("About"))
+						{
+							ImGui::Text("\n\nThis is a debug tool and scene editor I made to run along with GLGame");
+							ImGui::Text("This is to be run during runtime.");
+						}
+
+						ImGui::End();
+					}
+
+					if (ImGui::MenuItem("Support"))
+					{
+						if (ImGui::Begin("Support me"))
+						{
+							ImGui::Text("\n\nThe entire GLGame project was made by Samuel Rasquinha (samuelrasquinha@gmail.com)");
+							ImGui::Text("Since I am only 14 years old, I don't have paypal. But you can show your support by starring this project on GitHub.");
+						}
+
+						ImGui::End();
+					}
+
 					ImGui::EndMenu();
 				}
 
@@ -257,11 +318,10 @@ namespace GLGame
 				ImGui_ImplGlfw_NewFrame();
 				ImGui::NewFrame();
 
-				ImGui::Begin("GLGame Editor", &display_title_place_item, window_flags_place_item);
-
 				_DrawSEMenuBar();
-				_DrawSEWidgets();
 
+				ImGui::Begin("GLGame Editor", &display_title_place_item, window_flags_place_item);
+				_DrawSEWidgets();
 				ImGui::End();
 
 				ImGuiWindowFlags window_flags_selected_item = 0;
@@ -373,7 +433,11 @@ namespace GLGame
 
 			if (action == GLFW_PRESS)
 			{
-				
+				if (ItemTypeSelected == ObjectSelection)
+				{
+					
+					
+				}
 			}
 
 			else if (action == GLFW_RELEASE)
