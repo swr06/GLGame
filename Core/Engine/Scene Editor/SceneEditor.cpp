@@ -64,6 +64,7 @@ namespace GLGame
 		static bool ShouldShowAboutTheAuthorWindow = false;
 		static bool ShouldShowSupportMeWindow = false;
 		static bool ShouldShowWITWindow = false; // What is this window
+		static bool ShouldShowDependenciesWindow = false;
 
 		// IMGUI context => Scene editor window
 		ImGuiContext* imcontext;
@@ -177,7 +178,7 @@ namespace GLGame
 
 				if (ImGui::BeginPopupModal("Support me", NULL, ImGuiWindowFlags_AlwaysAutoResize))
 				{
-					ImGui::Text("\n\nThe entire GLGame project was made by Samuel Rasquinha (samuelrasquinha@gmail.com)");
+					ImGui::Text("The entire GLGame project was made by Samuel Rasquinha (samuelrasquinha@gmail.com)");
 					ImGui::Text("Since I am only 14 years old, I don't have paypal. But you can show your support by starring this project on GitHub.");
 
 					ImGui::SetItemDefaultFocus();
@@ -198,7 +199,7 @@ namespace GLGame
 
 				if (ImGui::BeginPopupModal("What is this?", NULL, ImGuiWindowFlags_AlwaysAutoResize))
 				{
-					ImGui::Text("\n\nThis is a debug tool and scene editor I made to run along with GLGame");
+					ImGui::Text("This is a debug tool and scene editor I made to run along with GLGame");
 					ImGui::Text("This is to be run during runtime.");
 
 					ImGui::SetItemDefaultFocus();
@@ -206,6 +207,33 @@ namespace GLGame
 					if (ImGui::Button("OK", ImVec2(120, 0)))
 					{
 						ShouldShowWITWindow = false;
+						ImGui::CloseCurrentPopup();
+					}
+
+					ImGui::EndPopup();
+				}
+
+			}
+
+			if (ShouldShowDependenciesWindow)
+			{
+				ImGui::OpenPopup("Dependencies");
+
+				if (ImGui::BeginPopupModal("Dependencies", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+				{
+					ImGui::Text("GLGame the minimal open-source dependencies. All of the below are open-source and free");
+					ImGui::Text("GLGame uses the following dependencies : ");
+					ImGui::Text("C++17 (For std::filesystem)");
+					ImGui::Text("GLEW (To access OpenGL functions)");
+					ImGui::Text("GLFW (Windowing environment)");
+					ImGui::Text("ImGui (Bloat free immediate mode GUI interface by Omar Ocurnut)");
+					ImGui::Text("stb_image (To read texture files)\n");
+
+					ImGui::SetItemDefaultFocus();
+
+					if (ImGui::Button("OK", ImVec2(120, 0)))
+					{
+						ShouldShowDependenciesWindow = false;
 						ImGui::CloseCurrentPopup();
 					}
 
@@ -344,6 +372,17 @@ namespace GLGame
 					else
 					{
 						ShouldShowWITWindow = false;
+					}
+
+
+					if (ImGui::MenuItem("Dependencies"))
+					{
+						ShouldShowDependenciesWindow = true;
+					}
+
+					else
+					{
+						ShouldShowDependenciesWindow = false;
 					}
 
 					if (ImGui::MenuItem("Support"))
