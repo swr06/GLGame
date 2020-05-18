@@ -23,8 +23,10 @@ My name is Samuel Rasquinha (samuelrasquinha@gmail.com) and I am a 14 year old p
 
 # Contact Me : 
 
-Discord : @swr06 #1899 
-Gmail   : samuelrasquinha@gmail.com
-Instagram : Samuel Rasquinha
+- Discord : @swr06 #1899 
+- Gmail   : samuelrasquinha@gmail.com
+- Instagram : Samuel Rasquinha
 
-Thank you :)
+# Supporting this project
+
+If you like this project and would like to support it, please do star it on GitHub.
