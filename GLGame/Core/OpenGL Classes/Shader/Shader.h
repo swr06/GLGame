@@ -9,7 +9,7 @@
 
 #include "Core\OpenGL Classes\GLDebug\GLDebug.h"
 
-#include "Core\Engine\Log\Log.h"
+#include "Core\Engine\Logger\Log.h"
 
 #include <iostream>
 #include <string>

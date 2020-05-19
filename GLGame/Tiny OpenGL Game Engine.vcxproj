@@ -176,7 +176,7 @@
     <ClCompile Include="Core\Engine\Game\Game.cpp" />
     <ClCompile Include="Core\Engine\Instance\Instance.cpp" />
     <ClCompile Include="Core\Engine\Lighting\Lighting.cpp" />
-    <ClCompile Include="Core\Engine\Log\Log.cpp" />
+    <ClCompile Include="Core\Engine\Logger\Log.cpp" />
     <ClCompile Include="Core\Engine\Object\Object.cpp" />
     <ClCompile Include="Core\Engine\Particles\Particles.cpp" />
     <ClCompile Include="Core\Engine\Post Processing\Post Processing.cpp" />
@@ -220,7 +220,7 @@
     <ClInclude Include="Core\Engine\Game\Game.h" />
     <ClInclude Include="Core\Engine\Instance\Instance.h" />
     <ClInclude Include="Core\Engine\Lighting\Lighting.h" />
-    <ClInclude Include="Core\Engine\Log\Log.h" />
+    <ClInclude Include="Core\Engine\Logger\Log.h" />
     <ClInclude Include="Core\Engine\Macros\Macros.h" />
     <ClInclude Include="Core\Engine\Object\Object.h" />
     <ClInclude Include="Core\Engine\Particles\Particles.h" />

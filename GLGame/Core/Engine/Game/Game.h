@@ -32,7 +32,7 @@
 #include "Core\Engine\Background\Background.h"
 #include "Core\Engine\Animation\Animation.h"
 #include "Core\Engine\TextureAtlas\TextureAtlas.h"
-#include "Core\Engine\Log\Log.h"
+#include "Core\Engine\Logger\Log.h"
 #include "Core\Engine\Rendering\BatchRendering.h"
 
 namespace GLGame

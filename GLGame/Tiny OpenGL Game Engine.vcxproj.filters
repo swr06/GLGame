@@ -65,9 +65,6 @@
     <Filter Include="Source Files\Engine\UI Elements">
       <UniqueIdentifier>{afdcc9c3-c436-40ed-be93-de77cbf97965}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Engine\Log">
-      <UniqueIdentifier>{8fc9e13f-7f5b-4813-b954-b4836a366ed4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Todo">
       <UniqueIdentifier>{c9200d76-1fb5-42ed-aa9a-c8e58448a2a4}</UniqueIdentifier>
     </Filter>
@@ -119,6 +116,9 @@
     <Filter Include="Source Files\Engine\Lighting">
       <UniqueIdentifier>{1aea01e1-eea8-4b7f-88db-1f447e9be013}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Engine\Logger">
+      <UniqueIdentifier>{8fc9e13f-7f5b-4813-b954-b4836a366ed4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Core\Engine\Rendering\BatchRendering.cpp">
@@ -165,9 +165,6 @@
     </ClCompile>
     <ClCompile Include="Core\Engine\Post Processing\Post Processing.cpp">
       <Filter>Source Files\Engine\Post Processing</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\Engine\Log\Log.cpp">
-      <Filter>Source Files\Engine\Log</Filter>
     </ClCompile>
     <ClCompile Include="Core\Engine\TextureAtlas\TextureAtlas.cpp">
       <Filter>Source Files\Engine\Texture Atlas</Filter>
@@ -238,6 +235,9 @@
     <ClCompile Include="Core\Dependencies\imgui\imgui_impl_opengl3.cpp">
       <Filter>Source Files\Dependencies\imgui</Filter>
     </ClCompile>
+    <ClCompile Include="Core\Engine\Logger\Log.cpp">
+      <Filter>Source Files\Engine\Logger</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\Engine\Rendering\BatchRendering.h">
@@ -290,9 +290,6 @@
     </ClInclude>
     <ClInclude Include="Core\Engine\Post Processing\Post Processing.h">
       <Filter>Source Files\Engine\Post Processing</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\Engine\Log\Log.h">
-      <Filter>Source Files\Engine\Log</Filter>
     </ClInclude>
     <ClInclude Include="Core\Engine\TextureAtlas\TextureAtlas.h">
       <Filter>Source Files\Engine\Texture Atlas</Filter>
@@ -371,6 +368,9 @@
     </ClInclude>
     <ClInclude Include="Core\Dependencies\imgui\imgui_impl_opengl3.h">
       <Filter>Source Files\Dependencies\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Engine\Logger\Log.h">
+      <Filter>Source Files\Engine\Logger</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

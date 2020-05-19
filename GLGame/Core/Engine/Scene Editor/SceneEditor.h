@@ -23,7 +23,7 @@
 #include "Core\Dependencies\imgui\imgui_impl_glfw.h"
 #include "Core\Dependencies\imgui\imgui_impl_opengl3.h"
 
-#include "Core\Engine\Log\Log.h"
+#include "Core\Engine\Logger\Log.h"
 #include "Core\Engine\Macros\Macros.h"
 #include "Core\OpenGL Classes\Texture\Texture.h"
 #include "Core\Engine\Rendering\BatchRendering.h"

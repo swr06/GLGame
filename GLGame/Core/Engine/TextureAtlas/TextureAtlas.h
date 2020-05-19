@@ -8,7 +8,7 @@
 
 #include "Core\OpenGL Classes\GLDebug\GLDebug.h"
 #include "Core\OpenGL Classes\Texture\Texture.h"
-#include "Core\Engine\Log\Log.h"
+#include "Core\Engine\Logger\Log.h"
 
 namespace GLGame
 {
