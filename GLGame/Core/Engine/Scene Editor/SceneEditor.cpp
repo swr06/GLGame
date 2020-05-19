@@ -248,8 +248,6 @@ namespace GLGame
 		{
 			stbi_set_flip_vertically_on_load(true);
 
-			/*Object* obj = SceneEditorGlobalObjects->at("@#$*#Object_1");*/
-
 			SceneEditorBatcher->StartSpriteBatch(SceneEditorCamera);
 
 			for (auto e = SceneEditorItemQueue.begin(); e != SceneEditorItemQueue.end(); e++)
@@ -599,7 +597,8 @@ namespace GLGame
 
 			if (action == GLFW_PRESS)
 			{
-				if (CurrentOperationSelected == PlaceItems && ItemTypeSelected == ObjectSelection)
+				if (CurrentOperationSelected == PlaceItems && ItemTypeSelected == ObjectSelection &&
+					RadioObjectSelected < ObjectIDList->size() && RadioObjectSelected > -1)
 				{
 					if (ObjectIDList != nullptr)
 					{
@@ -609,6 +608,7 @@ namespace GLGame
 						item.x = (float)MousePosX;
 						item.y = (float)MousePosY;
 						item.layer = 0;
+
 						item_id = (ObjectIDList->at(RadioObjectSelected));
 
 						unordered_map<string, Object*>::iterator chk = SceneEditorGlobalObjects->find(item_id);
