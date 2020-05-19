@@ -12,6 +12,18 @@ namespace GLGame
 		Textures.clear();
 	}
 
+	Animation::Animation(vector<std::string> TexturePaths)
+	{
+		for (int i = 0; i < TexturePaths.size(); i++)
+		{
+			Texture* tex = new Texture;
+			tex->CreateTexture(TexturePaths[i]);
+			m_Textures.push_back(tex);
+
+			tex = nullptr;
+		}
+	}
+
 	pair<int, Texture*> Animation::GetFrame(int curr_frame)
 	{
 		pair<int, Texture*> ret_val;

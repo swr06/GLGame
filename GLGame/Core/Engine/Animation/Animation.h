@@ -14,6 +14,7 @@ namespace GLGame
 	{
 	public : 
 		Animation(vector<Texture*> Textures);
+		Animation(vector<std::string> TexturePaths);
 		pair<int, Texture*> GetFrame(int curr_frame); 
 		void AddFrame(Texture& Tex);
 

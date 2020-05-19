@@ -108,7 +108,25 @@ int main()
 {
 	Texture tex1, tex2, tile_sheet;
 	Scene scene; 
-	Animation ani({&tex1, &tex2});
+	//Animation ani({&tex1, &tex2});
+
+	Animation ani({ 
+		(string)"Core\\Resources\\Animations\\Yoda\\Frame (1).gif", 
+		(string)"Core\\Resources\\Animations\\Yoda\\Frame (2).gif", 
+		(string)"Core\\Resources\\Animations\\Yoda\\Frame (3).gif", 
+		(string)"Core\\Resources\\Animations\\Yoda\\Frame (4).gif", 
+		(string)"Core\\Resources\\Animations\\Yoda\\Frame (5).gif", 
+		(string)"Core\\Resources\\Animations\\Yoda\\Frame (6).gif", 
+		(string)"Core\\Resources\\Animations\\Yoda\\Frame (7).gif", 
+		(string)"Core\\Resources\\Animations\\Yoda\\Frame (8).gif", 
+		(string)"Core\\Resources\\Animations\\Yoda\\Frame (9).gif", 
+		(string)"Core\\Resources\\Animations\\Yoda\\Frame (10).gif", 
+		(string)"Core\\Resources\\Animations\\Yoda\\Frame (11).gif", 
+		(string)"Core\\Resources\\Animations\\Yoda\\Frame (12).gif", 
+		(string)"Core\\Resources\\Animations\\Yoda\\Frame (13).gif", 
+		(string)"Core\\Resources\\Animations\\Yoda\\Frame (14).gif", 
+		});
+
 	bg = new Background("Core\\Resources\\grass_block.png");
 
 	bg->SetMovesWithCamera(false);
@@ -123,7 +141,7 @@ int main()
 	tex1.CreateTexture("Core\\Resources\\tree.png");
 	tex2.CreateTexture("Core\\Resources\\ghost.png"); // Alpha = 50.0%
 
-	Sprite spr("spr_1", ani, 45); 
+	Sprite spr("spr_1", ani, 5); 
 	Sprite spr_2("spr_2", tex2);
 	                               
 	obj.SetSprite(spr); // tex1
