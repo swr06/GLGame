@@ -74,7 +74,7 @@ namespace GLGame
 		Camera* SceneEditorCamera;
 
 		// Other needed structures
-		int CurrentOperationSelected ; // Has to be an int for imgui. Used as an enum class "Operations" 
+		int CurrentOperationSelected = 0; // Has to be an int for imgui. Used as an enum class "Operations" 
 
 		GLFWwindow* InitSceneEditor(unordered_map<string, Object*>* global_objects, unordered_map<string, Sprite*>* global_sprites, vector<string>* objid_list, vector<string>* sprid_list, GLFWwindow* window, ImGuiContext* context)
 		{
@@ -248,10 +248,18 @@ namespace GLGame
 		{
 			stbi_set_flip_vertically_on_load(true);
 
-			Object* obj = SceneEditorGlobalObjects->at("@#$*#Object_1");
+			/*Object* obj = SceneEditorGlobalObjects->at("@#$*#Object_1");*/
 
 			SceneEditorBatcher->StartSpriteBatch(SceneEditorCamera);
-			SceneEditorBatcher->AddGenericTextureToBatch(obj->GetSprite()->GetCurrentTexture(), glm::vec3(100.0f, 100.0f, 1.0f));
+
+			for (auto e = SceneEditorItemQueue.begin(); e != SceneEditorItemQueue.end(); e++)
+			{
+				for (int i = 0; i < e->second.size(); i++)
+				{
+					SceneEditorBatcher->AddGenericTextureToBatch(e->second.at(i).tex, glm::vec3(e->second.at(i).x, e->second.at(i).y, 1.0f));
+				}
+			}
+
 			SceneEditorBatcher->EndSpriteBatch();
 
 		}
@@ -441,11 +449,10 @@ namespace GLGame
 
 		bool RenderSceneEditor()
 		{
-			glfwGetFramebufferSize(SceneEditorWindow, &SceneEditorWidth, &SceneEditorWidth);
-
 			if (SE_window_destroyed == false)
 			{
 				glfwMakeContextCurrent(SceneEditorWindow);
+				glfwGetFramebufferSize(SceneEditorWindow, &SceneEditorWidth, &SceneEditorWidth);
 				glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
 				glClear(GL_COLOR_BUFFER_BIT);
 
@@ -588,13 +595,31 @@ namespace GLGame
 			}
 
 			glfwGetCursorPos(window, &MousePosX, &MousePosY);
+			std::cout << MousePosX << "    " << MousePosY << std::endl;
 
 			if (action == GLFW_PRESS)
 			{
-				if (ItemTypeSelected == ObjectSelection)
+				if (CurrentOperationSelected == PlaceItems && ItemTypeSelected == ObjectSelection)
 				{
-					
-					
+					if (ObjectIDList != nullptr)
+					{
+						SceneEditorRenderItem item;
+						string item_id;
+
+						item.x = (float)MousePosX;
+						item.y = (float)MousePosY;
+						item.layer = 0;
+						item_id = (ObjectIDList->at(RadioObjectSelected));
+
+						unordered_map<string, Object*>::iterator chk = SceneEditorGlobalObjects->find(item_id);
+						
+						// If the object exists in the map
+						if (chk != SceneEditorGlobalObjects->end())
+						{
+							item.tex = SceneEditorGlobalObjects->at(item_id)->GetSprite()->GetCurrentTexture();
+							SceneEditorItemQueue[item.layer].push_back(item);
+						}
+					}
 				}
 			}
 

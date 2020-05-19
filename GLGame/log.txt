@@ -4,49 +4,49 @@ Tiny 2D OpenGL Game Engine [GLGame] v01 By Samuel Wesley Rasquinha (samuelrasqui
 
 
 TIME : [0]	TYPE : INIT_LOG   
-TIME : [0.403188]	TYPE : INIT_WINDOW | WIDTH : 800 HEIGHT : 600	| FILE : Game.cpp	LINE : [34]  
+TIME : [0.335652]	TYPE : INIT_WINDOW | WIDTH : 800 HEIGHT : 600	| FILE : Game.cpp	LINE : [34]  
 
-TIME : [0.408181]	TYPE : INIT_GL 3.3	| FILE : Game.cpp	LINE : [42]
+TIME : [0.341187]	TYPE : INIT_GL 3.3	| FILE : Game.cpp	LINE : [42]
 
-TIME : [0.408364]	TYPE : EVENT_INIT	CALLBACKS SET : 13	| FILE : Game.cpp	LINE : [110]
+TIME : [0.341413]	TYPE : EVENT_INIT	CALLBACKS SET : 13	| FILE : Game.cpp	LINE : [110]
 
-TIME : [0.412368]	TYPE : CREATE_SHADER	ELAPSED TIME : 0.0020052
+TIME : [0.345905]	TYPE : CREATE_SHADER	ELAPSED TIME : 0.0020034
 	VERTEX PTH : Core\Shaders\DefaultBatchVertexShader.glsl
 	FRAGMENT PTH : Core\Shaders\DefaultBatchFragShader.glsl
 	| FILE : Shader.cpp	LINE : [103]
 
-TIME : [0.418813]	TYPE : CREATE_SHADER	ELAPSED TIME : 0.0038726
+TIME : [0.352016]	TYPE : CREATE_SHADER	ELAPSED TIME : 0.004471
 	VERTEX PTH : Core\Shaders\DefaultVertexShader.glsl
 	FRAGMENT PTH : Core\Shaders\DefaultFragmentShader.glsl
 	| FILE : Shader.cpp	LINE : [103]
 
-TIME : [0.419463]	TYPE : CREATE_SHADER	ELAPSED TIME : 0.0004423
+TIME : [0.352599]	TYPE : CREATE_SHADER	ELAPSED TIME : 0.0003817
 	VERTEX PTH : Core\Shaders\DefaultVertexShader.glsl
 	FRAGMENT PTH : Core\Shaders\DefaultFragmentShader.glsl
 	| FILE : Shader.cpp	LINE : [103]
 
-TIME : [0.477262]	TYPE : CREATE_SHADER	ELAPSED TIME : 0.0018567
+TIME : [0.415444]	TYPE : CREATE_SHADER	ELAPSED TIME : 0.0018079
 	VERTEX PTH : Core\Shaders\DefaultBatchVertexShader.glsl
 	FRAGMENT PTH : Core\Shaders\DefaultBatchFragShader.glsl
 	| FILE : Shader.cpp	LINE : [103]
 
-TIME : [0.481959]	TYPE : CREATE_SHADER	ELAPSED TIME : 0.0033146
+TIME : [0.420836]	TYPE : CREATE_SHADER	ELAPSED TIME : 0.0040037
 	VERTEX PTH : Core\Shaders\DefaultVertexShader.glsl
 	FRAGMENT PTH : Core\Shaders\DefaultFragmentShader.glsl
 	| FILE : Shader.cpp	LINE : [103]
 
-TIME : [0.482185]	TYPE : CREATE_OBJECT [@#$*#Object_1]	ELAPSED_TIME : 3.78e-05
+TIME : [0.42111]	TYPE : CREATE_OBJECT [@#$*#Object_1]	ELAPSED_TIME : 9.78e-05
 	VISIBLE : 1
 	HAS_SPRITE : 1
 	CULL : 1	| FILE : Object.cpp	LINE : [30]	
 
-TIME : [0.482289]	TYPE : CREATE_OBJECT [@#$*#Object_2]	ELAPSED_TIME : 1.25e-05
+TIME : [0.421214]	TYPE : CREATE_OBJECT [@#$*#Object_2]	ELAPSED_TIME : 1.26e-05
 	VISIBLE : 1
 	HAS_SPRITE : 1
 	CULL : 1	| FILE : Object.cpp	LINE : [30]	
 
-TIME : [0.696005]	TYPE : CREATE_SPRITE	ELAPSED_TIME : 3.35e-05	PTH [Animation paths] ID : [$*$^(spr_1]	| FILE : Sprite.cpp	LINE : [75]	
+TIME : [0.652609]	TYPE : CREATE_SPRITE	ELAPSED_TIME : 5.09e-05	PTH [Animation paths] ID : [$*$^(spr_1]	| FILE : Sprite.cpp	LINE : [75]	
 
-TIME : [0.696174]	TYPE : CREATE_SPRITE	ELAPSED_TIME : 1.31e-05	PTH [Core\Resources\ghost.png] ID : [$*$^(spr_2]	| FILE : Sprite.cpp	LINE : [24]	
+TIME : [0.652733]	TYPE : CREATE_SPRITE	ELAPSED_TIME : 1.34e-05	PTH [Core\Resources\ghost.png] ID : [$*$^(spr_2]	| FILE : Sprite.cpp	LINE : [24]	
 
-TIME : [0.696302]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [354]	
+TIME : [0.652864]	TYPE : INIT_VSYNC : true	| FILE : Game.cpp	LINE : [354]	
