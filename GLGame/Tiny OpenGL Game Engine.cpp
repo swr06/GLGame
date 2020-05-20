@@ -136,6 +136,7 @@ int main()
 
 	scene.AddSceneBackground(bg, 1);
 	scene.AddObjectAtPosition(obj_2, 0, glm::vec3(200.0f, 200.0f, 0.0f));
+	scene.AddObjectAtPosition(obj_3, 0, glm::vec3(600.0f, 200.0f, 0.0f));
 	scene.AddObjectAtPosition(obj, -1, glm::vec3(170.0f, 10.0f, 0.0f));
 	scene.AddObjectAtPosition(obj, 1, glm::vec3(400.0f, 150.0f, 0.0f));
 	scene.AddObjectAtPosition(obj, 2, glm::vec3(400.0f, 400.0f, 0.0f));
@@ -145,10 +146,11 @@ int main()
 
 	Sprite spr("spr_1", ani, 5); 
 	Sprite spr_2("spr_2", tex2);
+	Sprite spr_3("spr_3", ani, 10);
 	                               
 	obj.SetSprite(spr); // tex1
 	obj_2.SetSprite(spr_2); // tex2
-
+	obj_3.SetSprite(spr_3);
 
 	game.SetCurrentScene(scene);
 	game.DisplayFpsOnWindowTitleBar(true);
