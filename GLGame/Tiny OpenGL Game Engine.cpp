@@ -25,7 +25,7 @@ void Game::OnImGuiRender(long long frame)
 {
 	static float x = 0, y = 0;
 
-	ImGui::ShowDemoWindow();
+	//ImGui::ShowDemoWindow();
 
 
 	/*

@@ -29,6 +29,10 @@ namespace GLGame
 		static int SceneEditorHeight = 750;
 		static bool SE_window_destroyed = false;
 
+		// Scene Editor event variables
+		static double StartPanX = 0;
+		static double StartPanY = 0;
+
 		// Data to display/store/show
 		static unordered_map<string, Object*>* SceneEditorGlobalObjects = nullptr;
 		static unordered_map<string, Sprite*>* SceneEditorGlobalSprites = nullptr;
@@ -108,6 +112,7 @@ namespace GLGame
 			glfwSetScrollCallback(SceneEditorWindow, SEScrollCallback);
 			glfwSetFramebufferSizeCallback(SceneEditorWindow, SEWindowResizeCallback);
 			glfwSetWindowCloseCallback(SceneEditorWindow, SEWindowCloseCallback);
+			glfwSetCursorPosCallback(SceneEditorWindow, SECursorPosCallback);
 
 			SceneEditorInitialized = true;
 
@@ -585,6 +590,22 @@ namespace GLGame
 			}
 		}
 
+		void SECursorPosCallback(GLFWwindow* window, double xpos, double ypos)
+		{
+			if (window != SceneEditorWindow)
+			{
+				return;
+			}
+
+			if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_RELEASE)
+			{
+				return;
+			}
+
+			glfwGetCursorPos(window, &MousePosX, &MousePosY);
+			SceneEditorCamera->SetPosition(glm::vec3(StartPanX - MousePosX, MousePosY - StartPanY, 1.0f));
+		}
+
 		void SEMouseCallback(GLFWwindow* window, int button, int action, int mods)
 		{
 			if (window != SceneEditorWindow)
@@ -597,6 +618,9 @@ namespace GLGame
 
 			if (action == GLFW_PRESS)
 			{
+				StartPanX = MousePosX;
+				StartPanY = MousePosY;
+
 				if (CurrentOperationSelected == PlaceItems && ItemTypeSelected == ObjectSelection &&
 					RadioObjectSelected < ObjectIDList->size() && RadioObjectSelected > -1)
 				{

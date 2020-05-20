@@ -63,5 +63,6 @@ namespace GLGame
 		void SEMouseCallback(GLFWwindow* window, int button, int action, int mods);
 		void SEScrollCallback(GLFWwindow* window, double xoffset, double yoffset);
 		void SEWindowCloseCallback(GLFWwindow* window);
+		void SECursorPosCallback(GLFWwindow* window, double xpos, double ypos);
 	}
 }
