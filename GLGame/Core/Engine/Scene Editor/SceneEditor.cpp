@@ -331,11 +331,24 @@ namespace GLGame
 				ImGui::End();
 
 				{
+					ImGuiWindowFlags selected_item_window_flags = 0;
+					//selected_item_window_flags |= ImGuiWindowFlags_NoTitleBar;
+					//selected_item_window_flags |= ImGuiWindowFlags_NoMove;
+					//selected_item_window_flags |= ImGuiWindowFlags_NoNav;
+					bool selected_item_show_window = true;
+					selected_item_window_flags |= ImGuiWindowFlags_NoScrollbar;
+					selected_item_window_flags |= ImGuiWindowFlags_MenuBar;
+					selected_item_window_flags |= ImGuiWindowFlags_NoResize;
+					selected_item_window_flags |= ImGuiWindowFlags_NoCollapse;
+					selected_item_window_flags |= ImGuiWindowFlags_NoBackground;
+					selected_item_window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus;
+					selected_item_window_flags |= ImGuiWindowFlags_NoDocking;
+
 					Sprite* selected_obj_spr = SceneEditorGlobalObjects->at("@#$*#Object_1")->GetSprite();
 
 					ImGui::SetNextWindowPos(ImVec2(SceneEditorWidth - 270, SceneEditorHeight - 270), ImGuiCond_FirstUseEver);
 					ImGui::SetNextWindowSize(ImVec2(250, 250), ImGuiCond_Always);
-					ImGui::Begin("Selected Item");
+					ImGui::Begin("Selected Item", &selected_item_show_window, selected_item_window_flags);
 					ImGui::TextColored(ImVec4(0.0f, 1.0f, 1.0f, 1.0f), "SELECTED OBJECT ! \n\n\n");
 
 					// Add the item to the imgui draw list
@@ -643,6 +656,9 @@ namespace GLGame
 								
 								width = item.tex->GetWidth();
 								height = item.tex->GetHeight();
+
+								// Subtract width/2 and height/2 from MouseX and MouseY so that the origin of the object is in the center
+
 								item.x = (float)MousePosX - ((int)width / 2);
 								item.y = (float)(SceneEditorHeight - MousePosY);
 								item.y -= ((int)height / 2);
