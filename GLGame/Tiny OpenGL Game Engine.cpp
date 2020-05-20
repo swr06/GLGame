@@ -37,6 +37,8 @@ void Game::OnImGuiRender(long long frame)
 Camera cam(0.0f, game_width, 0.0f, game_height);
 Object obj("Object_1", true);
 Object obj_2("Object_2", true);
+Object obj_3("Object_3", true);
+
 Background* bg;
 
 bool increment_pos = true;

@@ -606,7 +606,7 @@ namespace GLGame
 						string item_id;
 
 						item.x = (float)MousePosX;
-						item.y = (float)MousePosY;
+						item.y = (float) SceneEditorHeight - MousePosY;
 						item.layer = 0;
 
 						item_id = (ObjectIDList->at(RadioObjectSelected));
@@ -616,8 +616,11 @@ namespace GLGame
 						// If the object exists in the map
 						if (chk != SceneEditorGlobalObjects->end())
 						{
-							item.tex = SceneEditorGlobalObjects->at(item_id)->GetSprite()->GetCurrentTexture();
-							SceneEditorItemQueue[item.layer].push_back(item);
+							if (SceneEditorGlobalObjects->at(item_id)->HasSprite())
+							{
+								item.tex = SceneEditorGlobalObjects->at(item_id)->GetSprite()->GetCurrentTexture();
+								SceneEditorItemQueue[item.layer].push_back(item);
+							}
 						}
 					}
 				}
