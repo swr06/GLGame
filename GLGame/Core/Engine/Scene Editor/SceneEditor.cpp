@@ -627,11 +627,8 @@ namespace GLGame
 					if (ObjectIDList != nullptr)
 					{
 						SceneEditorRenderItem item;
+						int width, height;
 						string item_id;
-
-						item.x = (float)MousePosX;
-						item.y = (float) SceneEditorHeight - MousePosY;
-						item.layer = 0;
 
 						item_id = (ObjectIDList->at(RadioObjectSelected));
 
@@ -643,6 +640,13 @@ namespace GLGame
 							if (SceneEditorGlobalObjects->at(item_id)->HasSprite())
 							{
 								item.tex = SceneEditorGlobalObjects->at(item_id)->GetSprite()->GetCurrentTexture();
+								
+								width = item.tex->GetWidth();
+								height = item.tex->GetHeight();
+								item.x = (float)MousePosX - ((int)width / 2);
+								item.y = (float)(SceneEditorHeight - MousePosY);
+								item.y -= ((int)height / 2);
+								item.layer = 0;
 								SceneEditorItemQueue[item.layer].push_back(item);
 							}
 						}
