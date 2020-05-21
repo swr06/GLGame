@@ -58,6 +58,8 @@ namespace GLGame
 		static double MousePosY = 0;
 		static int WindowSizeX = 0;
 		static int WindowSizeY = 0;
+		static int GridX = 64;
+		static int GridY = 64;
 		static double MouseScrollOffsetX = 0;
 		static double MouseScrollOffsetY = 0;
 
@@ -129,7 +131,7 @@ namespace GLGame
 			ImGuiIO& io = ImGui::GetIO();
 			io.Fonts->AddFontDefault();
 			io.Fonts->Build();
-			
+
 			// Imgui style
 			ImGuiStyle& style = ImGui::GetStyle();
 			if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
@@ -144,7 +146,7 @@ namespace GLGame
 			return SceneEditorWindow;
 		}
 
-		void _SetSEImGuiFlags() 
+		void _SetSEImGuiFlags()
 		{
 
 		}
@@ -345,7 +347,7 @@ namespace GLGame
 					//selected_item_window_flags |= ImGuiWindowFlags_NoMove;
 					//selected_item_window_flags |= ImGuiWindowFlags_NoNav;
 					//selected_item_window_flags |= ImGuiWindowFlags_NoBackground;
-				
+
 					selected_item_window_flags |= ImGuiWindowFlags_NoScrollbar;
 					selected_item_window_flags |= ImGuiWindowFlags_MenuBar;
 					selected_item_window_flags |= ImGuiWindowFlags_NoResize;
@@ -371,7 +373,7 @@ namespace GLGame
 
 					ImGui::End();
 				}
-				
+
 			}
 		}
 
@@ -481,7 +483,6 @@ namespace GLGame
 				glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
 				glClear(GL_COLOR_BUFFER_BIT);
 
-
 				// Draw the ImGui items
 				ImGui::SetCurrentContext(imcontext);
 
@@ -517,7 +518,7 @@ namespace GLGame
 							ImGui::Separator();
 
 							if (ImGui::Button("OK", ImVec2(120, 0)))
-							{ 
+							{
 								ImGui::CloseCurrentPopup();
 
 								if (SE_window_destroyed == false)
@@ -526,7 +527,7 @@ namespace GLGame
 									glfwDestroyWindow(SceneEditorWindow);
 									Log::LogToConsole("The Scene Editor was destroyed!");
 								}
-								
+
 								return 0;
 							}
 
@@ -534,9 +535,9 @@ namespace GLGame
 							ImGui::SameLine();
 
 							if (ImGui::Button("Cancel", ImVec2(120, 0)))
-							{ 
+							{
 								ShouldShowCloseModalWindow = false;
-								ImGui::CloseCurrentPopup(); 
+								ImGui::CloseCurrentPopup();
 							}
 
 							ImGui::EndPopup();
@@ -554,8 +555,8 @@ namespace GLGame
 			}
 
 			else
-			{ 
-				
+			{
+
 
 				return false;
 			}
@@ -585,6 +586,22 @@ namespace GLGame
 
 			// Set the view port
 			glViewport(0, 0, WindowSizeX, WindowSizeY);
+		}
+
+		// function to snap an object to a particular grid
+		float SnapToGrid(int value, int size) 
+		{
+			int temp = value % size;
+
+			if (temp < (size / 2))
+			{
+				return (value - temp);
+			}
+
+ 			else
+ 			{
+ 				return (value + size) - temp;
+ 			}
 		}
 
 		void SEKeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
@@ -617,6 +634,54 @@ namespace GLGame
 			if (window != SceneEditorWindow)
 			{
 				return;
+			}
+
+			if (CurrentOperationSelected == PlaceItems)
+			{
+				// Draw a ghost image of the current selected item
+
+
+				if (ItemTypeSelected == ObjectSelection)
+				{
+					if (ObjectIDList != nullptr && RadioObjectSelected != -1)
+					{
+						SceneEditorItemQueue[1000].erase(SceneEditorItemQueue[1000].begin(), SceneEditorItemQueue[1000].end());
+
+						SceneEditorRenderItem item;
+						int width, height;
+						string item_id;
+
+						item_id = (ObjectIDList->at(RadioObjectSelected));
+
+						unordered_map<string, Object*>::iterator chk = SceneEditorGlobalObjects->find(item_id);
+
+						// If the object exists in the map
+						if (chk != SceneEditorGlobalObjects->end())
+						{
+							if (SceneEditorGlobalObjects->at(item_id)->HasSprite())
+							{
+								item.tex = SceneEditorGlobalObjects->at(item_id)->GetSprite()->GetCurrentTexture();
+
+								// Get the width and height of the textures
+								width = item.tex->GetWidth();
+								height = item.tex->GetHeight();
+
+								// Subtract width/2 and height/2 from MouseX and MouseY so that the origin of the object is in the center
+
+								item.x = (float)xpos - ((int)width / 2);
+								item.y = (float)(SceneEditorHeight - ypos);
+								item.y -= ((int)height / 2);
+
+								// Snap the X and Y to the grid
+								item.x = SnapToGrid(item.x, GridX);
+								item.y = SnapToGrid(item.y, GridY);
+
+								item.layer = 1000;
+								SceneEditorItemQueue[1000].push_back(item);
+							}
+						}
+					}
+				}
 			}
 
 			if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_RELEASE)
@@ -666,6 +731,7 @@ namespace GLGame
 							{
 								item.tex = SceneEditorGlobalObjects->at(item_id)->GetSprite()->GetCurrentTexture();
 								
+								// Get the width and height of the textures
 								width = item.tex->GetWidth();
 								height = item.tex->GetHeight();
 
@@ -674,6 +740,11 @@ namespace GLGame
 								item.x = (float)MousePosX - ((int)width / 2);
 								item.y = (float)(SceneEditorHeight - MousePosY);
 								item.y -= ((int)height / 2);
+
+								// Snap the X and Y to the grid
+								item.x = SnapToGrid(item.x, GridX);
+								item.y = SnapToGrid(item.y, GridY);
+
 								item.layer = CurrentSceneEditorLayer;
 								SceneEditorItemQueue[item.layer].push_back(item);
 							}
@@ -688,8 +759,8 @@ namespace GLGame
 
 				o1.x = (float)MousePosX;
 				o1.y = (float)(SceneEditorHeight - MousePosY);
-				o1.w = 16;
-				o1.h = 16;
+				o1.w = 4;
+				o1.h = 4;
 
 				for (int i = 0; i < SceneEditorItemQueue[CurrentSceneEditorLayer].size(); i++)
 				{
