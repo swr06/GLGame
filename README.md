@@ -2,7 +2,7 @@
 
 ![GLGame Logo](https://github.com/swr06/GLGame/blob/master/Branding/Logo.png)
 <p align=center>
-Created by Samuel Rasquinha with :heart:
+Created by Samuel Rasquinha using C++17 and OpenGL 3.3
 </p>
 
 A Tiny 2D OpenGL based C++ Game Engine that is fast, lightweight and comes with a level editor and the below features :
