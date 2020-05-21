@@ -32,11 +32,11 @@ Just call the ``SceneEditor::LaunchSceneEditor()`` function and it will launch t
 
 GLGame has very humble dependencies.
 
-- C++17 (for ``std::filesystem``)
-- stb_image (for reading texture files)
-- ImGui (Bloat free immediate mode GUI interface by Omar Ocurnut)
-- GLEW (OpenGL wrangler library)
-- GLFW (Windowing environment)
+- ``C++17`` (for ``std::filesystem``)
+- ``stb_image`` (for reading texture files)
+- ``ImGui`` (Bloat free immediate mode GUI interface by Omar Ocurnut)
+- ``GLEW`` (OpenGL wrangler library)
+- ``GLFW`` (Windowing environment)
 
 # About the Author
 
@@ -45,7 +45,7 @@ My name is Samuel Rasquinha (samuelrasquinha@gmail.com) and I am a 14 year old p
 # Contact Me : 
 
 - Discord : @swr06 #1899 
-- Gmail   : samuelrasquinha@gmail.com
+- Gmail   : ``samuelrasquinha@gmail.com``
 - Instagram : Samuel Rasquinha
 
 # Supporting this project
