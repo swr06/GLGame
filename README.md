@@ -1,6 +1,9 @@
 # GLGame (A Tiny OpenGL based C++ Game Engine)
 
 ![GLGame Logo](https://github.com/swr06/GLGame/blob/master/Branding/Logo.png)
+<p align=center>
+Created by Samuel Rasquinha with :heart:
+</p>
 
 A Tiny 2D OpenGL based C++ Game Engine that is fast, lightweight and comes with a level editor and the below features :
 - Abstract OpenGL (To write custom code)
