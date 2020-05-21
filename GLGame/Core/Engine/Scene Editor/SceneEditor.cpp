@@ -615,8 +615,11 @@ namespace GLGame
 				return;
 			}
 
-			glfwGetCursorPos(window, &MousePosX, &MousePosY);
-			SceneEditorCamera->SetPosition(glm::vec3(StartPanX - MousePosX, MousePosY - StartPanY, 1.0f));
+			if (CurrentOperationSelected == ViewScene)
+			{
+				glfwGetCursorPos(window, &MousePosX, &MousePosY);
+				SceneEditorCamera->SetPosition(glm::vec3(StartPanX - MousePosX, MousePosY - StartPanY, 1.0f));
+			}
 		}
 
 		void SEMouseCallback(GLFWwindow* window, int button, int action, int mods)
@@ -627,7 +630,6 @@ namespace GLGame
 			}
 
 			glfwGetCursorPos(window, &MousePosX, &MousePosY);
-			std::cout << MousePosX << "    " << MousePosY << std::endl;
 
 			if (action == GLFW_PRESS)
 			{
@@ -690,16 +692,19 @@ namespace GLGame
 
 			glfwGetCursorPos(window, &MousePosX, &MousePosY);
 
-			if (yoffset < 0)
+			if (CurrentOperationSelected == ViewScene)
 			{
-				const glm::vec3 scale = SceneEditorCamera->GetScale();
-				SceneEditorCamera->SetScale(glm::vec3(scale.x - 0.1, scale.y - 0.1, 1.0f));
-			}
+				if (yoffset < 0)
+				{
+					const glm::vec3 scale = SceneEditorCamera->GetScale();
+					SceneEditorCamera->SetScale(glm::vec3(scale.x - 0.1, scale.y - 0.1, 1.0f));
+				}
 
-			else if (yoffset > 0)
-			{
-				const glm::vec3 scale = SceneEditorCamera->GetScale();
-				SceneEditorCamera->SetScale(glm::vec3(scale.x + 0.1, scale.y + 0.1, 1.0f));
+				else if (yoffset > 0)
+				{
+					const glm::vec3 scale = SceneEditorCamera->GetScale();
+					SceneEditorCamera->SetScale(glm::vec3(scale.x + 0.1, scale.y + 0.1, 1.0f));
+				}
 			}
 		}
 
