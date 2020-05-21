@@ -12,7 +12,7 @@ namespace GLGame
 
 		m_MaximumTextureSlots = 32;
 		memset(m_SlottedTextures, -1, 32 * sizeof(GLuint));
-		m_VertexBuffer = new GLfloat[m_MaximumTextureSlots * 24 * m_MaximumQuads];
+		m_VertexBuffer = new GLfloat[m_MaximumTextureSlots * 28 * m_MaximumQuads];
 		m_IndexBuffer = new GLuint[m_MaximumTextureSlots * 6 * m_MaximumQuads];
 		m_Shader.CreateShaderProgram(GLGAME_DEFAULT_BATCH_VERTEX, GLGAME_DEFAULT_BATCH_FRAGMENT);
 		m_LastElementTex = 0;
@@ -45,14 +45,16 @@ namespace GLGame
 		m_IBO.Bind();
 		m_IBO.BufferData(index_size * sizeof(GLuint), m_IndexBuffer, GL_STATIC_DRAW);
 
-		// Attributes
+		// Attributes (4)
 		// 0 : Position
 		// 1 : Texture Coordinates
-		// 2 : Texture Element
+		// 2 : Texture Opacity 
+		// 3 : Texture Element
 
-		m_VBO.VertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)0);
-		m_VBO.VertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
-		m_VBO.VertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)(5 * sizeof(GLfloat)));
+		m_VBO.VertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 7 * sizeof(GLfloat), (GLvoid*)0);
+		m_VBO.VertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 7 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+		m_VBO.VertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, 7 * sizeof(GLfloat), (GLvoid*)(5 * sizeof(GLfloat)));
+		m_VBO.VertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, 7 * sizeof(GLfloat), (GLvoid*)(6 * sizeof(GLfloat)));
 		m_VAO.Unbind();
 	}
 
@@ -97,7 +99,7 @@ namespace GLGame
 		m_ViewProjectionMatrix = glm::mat4(1.0f);
 	}
 
-	void SpriteBatcher::AddSpriteToBatch(SceneDataItem item)
+	void SpriteBatcher::AddSpriteToBatch(SceneDataItem item, float opacity)
 	{
 		AABB item_cull;
 		const glm::vec3& camera_pos = m_CameraPos;
@@ -230,35 +232,39 @@ namespace GLGame
 			m_VertexBuffer[m_LastElementVBuff + 2] = v1.z;
 			m_VertexBuffer[m_LastElementVBuff + 3] = TextureCoordinates[0];
 			m_VertexBuffer[m_LastElementVBuff + 4] = TextureCoordinates[1];
-			m_VertexBuffer[m_LastElementVBuff + 5] = (float)tex_element;
+			m_VertexBuffer[m_LastElementVBuff + 5] = opacity;
+			m_VertexBuffer[m_LastElementVBuff + 6] = (float)tex_element;
 
-			m_VertexBuffer[m_LastElementVBuff + 6] = v2.x;
-			m_VertexBuffer[m_LastElementVBuff + 7] = v2.y;
-			m_VertexBuffer[m_LastElementVBuff + 8] = v2.z;
-			m_VertexBuffer[m_LastElementVBuff + 9] = TextureCoordinates[2];
-			m_VertexBuffer[m_LastElementVBuff + 10] = TextureCoordinates[3];
-			m_VertexBuffer[m_LastElementVBuff + 11] = (float)tex_element;
+			m_VertexBuffer[m_LastElementVBuff + 7] = v2.x;
+			m_VertexBuffer[m_LastElementVBuff + 8] = v2.y;
+			m_VertexBuffer[m_LastElementVBuff + 9] = v2.z;
+			m_VertexBuffer[m_LastElementVBuff + 10] = TextureCoordinates[2];
+			m_VertexBuffer[m_LastElementVBuff + 11] = TextureCoordinates[3];
+			m_VertexBuffer[m_LastElementVBuff + 12] = opacity;
+			m_VertexBuffer[m_LastElementVBuff + 13] = (float)tex_element;
 
-			m_VertexBuffer[m_LastElementVBuff + 12] = v3.x;
-			m_VertexBuffer[m_LastElementVBuff + 13] = v3.y;
-			m_VertexBuffer[m_LastElementVBuff + 14] = v3.z;
-			m_VertexBuffer[m_LastElementVBuff + 15] = TextureCoordinates[4];
-			m_VertexBuffer[m_LastElementVBuff + 16] = TextureCoordinates[5];
-			m_VertexBuffer[m_LastElementVBuff + 17] = (float)tex_element;
+			m_VertexBuffer[m_LastElementVBuff + 14] = v3.x;
+			m_VertexBuffer[m_LastElementVBuff + 15] = v3.y;
+			m_VertexBuffer[m_LastElementVBuff + 16] = v3.z;
+			m_VertexBuffer[m_LastElementVBuff + 17] = TextureCoordinates[4];
+			m_VertexBuffer[m_LastElementVBuff + 18] = TextureCoordinates[5];
+			m_VertexBuffer[m_LastElementVBuff + 19] = opacity;
+			m_VertexBuffer[m_LastElementVBuff + 20] = (float)tex_element;
 
-			m_VertexBuffer[m_LastElementVBuff + 18] = v4.x;
-			m_VertexBuffer[m_LastElementVBuff + 19] = v4.y;
-			m_VertexBuffer[m_LastElementVBuff + 20] = v4.z;
-			m_VertexBuffer[m_LastElementVBuff + 21] = TextureCoordinates[6];
-			m_VertexBuffer[m_LastElementVBuff + 22] = TextureCoordinates[7];
-			m_VertexBuffer[m_LastElementVBuff + 23] = (float)tex_element;
+			m_VertexBuffer[m_LastElementVBuff + 21] = v4.x;
+			m_VertexBuffer[m_LastElementVBuff + 22] = v4.y;
+			m_VertexBuffer[m_LastElementVBuff + 23] = v4.z;
+			m_VertexBuffer[m_LastElementVBuff + 24] = TextureCoordinates[6];
+			m_VertexBuffer[m_LastElementVBuff + 25] = TextureCoordinates[7];
+			m_VertexBuffer[m_LastElementVBuff + 26] = opacity;
+			m_VertexBuffer[m_LastElementVBuff + 27] = (float)tex_element;
 
-			m_LastElementVBuff += 24;
+			m_LastElementVBuff += 28;
 			m_VerticesWritten++;
 		}
 	}
 
-	void SpriteBatcher::AddGenericTextureToBatch(Texture* texture, const glm::vec3& pos)
+	void SpriteBatcher::AddGenericTextureToBatch(Texture* texture, const glm::vec3& pos, float opacity)
 	{
 		if (m_VerticesWritten == m_MaximumQuads)
 		{
@@ -305,30 +311,34 @@ namespace GLGame
 		m_VertexBuffer[m_LastElementVBuff + 2] = pos.z;
 		m_VertexBuffer[m_LastElementVBuff + 3] = TextureCoordinates[0];
 		m_VertexBuffer[m_LastElementVBuff + 4] = TextureCoordinates[1];
-		m_VertexBuffer[m_LastElementVBuff + 5] = (float)tex_element;
+		m_VertexBuffer[m_LastElementVBuff + 5] = opacity;
+		m_VertexBuffer[m_LastElementVBuff + 6] = (float)tex_element;
 
-		m_VertexBuffer[m_LastElementVBuff + 6] = width;
-		m_VertexBuffer[m_LastElementVBuff + 7] = height;
-		m_VertexBuffer[m_LastElementVBuff + 8] = pos.z;
-		m_VertexBuffer[m_LastElementVBuff + 9] = TextureCoordinates[2];
-		m_VertexBuffer[m_LastElementVBuff + 10] = TextureCoordinates[3];
-		m_VertexBuffer[m_LastElementVBuff + 11] = (float)tex_element;
+		m_VertexBuffer[m_LastElementVBuff + 7] = width;
+		m_VertexBuffer[m_LastElementVBuff + 8] = height;
+		m_VertexBuffer[m_LastElementVBuff + 9] = pos.z;
+		m_VertexBuffer[m_LastElementVBuff + 10] = TextureCoordinates[2];
+		m_VertexBuffer[m_LastElementVBuff + 11] = TextureCoordinates[3];
+		m_VertexBuffer[m_LastElementVBuff + 12] = opacity;
+		m_VertexBuffer[m_LastElementVBuff + 13] = (float)tex_element;
 
-		m_VertexBuffer[m_LastElementVBuff + 12] = pos.x;
-		m_VertexBuffer[m_LastElementVBuff + 13] = height;
-		m_VertexBuffer[m_LastElementVBuff + 14] = pos.z;
-		m_VertexBuffer[m_LastElementVBuff + 15] = TextureCoordinates[4];
-		m_VertexBuffer[m_LastElementVBuff + 16] = TextureCoordinates[5];
-		m_VertexBuffer[m_LastElementVBuff + 17] = (float)tex_element;
+		m_VertexBuffer[m_LastElementVBuff + 14] = pos.x;
+		m_VertexBuffer[m_LastElementVBuff + 15] = height;
+		m_VertexBuffer[m_LastElementVBuff + 16] = pos.z;
+		m_VertexBuffer[m_LastElementVBuff + 17] = TextureCoordinates[4];
+		m_VertexBuffer[m_LastElementVBuff + 18] = TextureCoordinates[5];
+		m_VertexBuffer[m_LastElementVBuff + 19] = opacity;
+		m_VertexBuffer[m_LastElementVBuff + 20] = (float)tex_element;
 
-		m_VertexBuffer[m_LastElementVBuff + 18] = pos.x;
-		m_VertexBuffer[m_LastElementVBuff + 19] = pos.y;
-		m_VertexBuffer[m_LastElementVBuff + 20] = pos.z;
-		m_VertexBuffer[m_LastElementVBuff + 21] = TextureCoordinates[6];
-		m_VertexBuffer[m_LastElementVBuff + 22] = TextureCoordinates[7];
-		m_VertexBuffer[m_LastElementVBuff + 23] = (float)tex_element;
+		m_VertexBuffer[m_LastElementVBuff + 21] = pos.x;
+		m_VertexBuffer[m_LastElementVBuff + 22] = pos.y;
+		m_VertexBuffer[m_LastElementVBuff + 23] = pos.z;
+		m_VertexBuffer[m_LastElementVBuff + 24] = TextureCoordinates[6];
+		m_VertexBuffer[m_LastElementVBuff + 25] = TextureCoordinates[7];
+		m_VertexBuffer[m_LastElementVBuff + 26] = opacity;
+		m_VertexBuffer[m_LastElementVBuff + 27] = (float)tex_element;
 
-		m_LastElementVBuff += 24;
+		m_LastElementVBuff += 28;
 		m_VerticesWritten++;
 	}
 
@@ -346,7 +356,7 @@ namespace GLGame
 		m_Shader.SetIntegerArray("u_Textures", m_SamplerArray, 32, 0);
 		
 		m_VAO.Bind();
-		m_VBO.BufferData((m_VerticesWritten * 24) * sizeof(GLfloat), m_VertexBuffer, GL_STATIC_DRAW);
+		m_VBO.BufferData((m_VerticesWritten * 28) * sizeof(GLfloat), m_VertexBuffer, GL_STATIC_DRAW);
 		glDrawElements(GL_TRIANGLES, 6 * m_VerticesWritten, GL_UNSIGNED_INT, (void*)0);
 		m_VAO.Unbind();
 

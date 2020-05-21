@@ -50,6 +50,7 @@ namespace GLGame
 		// Render queue and layering
 		static float CurrentSceneEditorLayer = 0;
 		static map<int, vector<SceneEditorRenderItem>> SceneEditorItemQueue;
+		static SceneEditorRenderItem GhostObjectImage;
 
 		static Shader SceneEditorRenderItemShader;
 
@@ -256,6 +257,7 @@ namespace GLGame
 		{
 			stbi_set_flip_vertically_on_load(true);
 
+			// Draw all the Scene editor objects that are written in the map
 			SceneEditorBatcher->StartSpriteBatch(SceneEditorCamera);
 
 			for (auto e = SceneEditorItemQueue.begin(); e != SceneEditorItemQueue.end(); e++)
@@ -268,6 +270,25 @@ namespace GLGame
 
 			SceneEditorBatcher->EndSpriteBatch();
 
+			// Object Drawing ends here..
+
+			// Draw the ghost mouse image
+
+			if (CurrentOperationSelected == PlaceItems && ItemTypeSelected == ObjectSelection 
+				&& ObjectIDList != nullptr && GhostObjectImage.tex != nullptr && RadioObjectSelected != -1)
+			{
+				string item_id = (ObjectIDList->at(RadioObjectSelected));
+				unordered_map<string, Object*>::iterator chk = SceneEditorGlobalObjects->find(item_id);
+
+				if (chk != SceneEditorGlobalObjects->end() && SceneEditorGlobalObjects->at(item_id)->HasSprite())
+				{
+					SceneEditorBatcher->StartSpriteBatch(SceneEditorCamera);
+					SceneEditorBatcher->AddGenericTextureToBatch(GhostObjectImage.tex, glm::vec3(GhostObjectImage.x, GhostObjectImage.y, 1.0f), 0.5f);
+					SceneEditorBatcher->EndSpriteBatch();
+				}
+			}
+
+			// Drawing the ghost mouse image ends..
 		}
 
 		void _DrawSEWidgets()
@@ -640,19 +661,14 @@ namespace GLGame
 			{
 				// Draw a ghost image of the current selected item
 
-
 				if (ItemTypeSelected == ObjectSelection)
 				{
 					if (ObjectIDList != nullptr && RadioObjectSelected != -1)
 					{
-						SceneEditorItemQueue[1000].erase(SceneEditorItemQueue[1000].begin(), SceneEditorItemQueue[1000].end());
-
-						SceneEditorRenderItem item;
 						int width, height;
 						string item_id;
 
 						item_id = (ObjectIDList->at(RadioObjectSelected));
-
 						unordered_map<string, Object*>::iterator chk = SceneEditorGlobalObjects->find(item_id);
 
 						// If the object exists in the map
@@ -660,24 +676,21 @@ namespace GLGame
 						{
 							if (SceneEditorGlobalObjects->at(item_id)->HasSprite())
 							{
-								item.tex = SceneEditorGlobalObjects->at(item_id)->GetSprite()->GetCurrentTexture();
+								GhostObjectImage.tex = SceneEditorGlobalObjects->at(item_id)->GetSprite()->GetCurrentTexture();
 
 								// Get the width and height of the textures
-								width = item.tex->GetWidth();
-								height = item.tex->GetHeight();
+								width = GhostObjectImage.tex->GetWidth();
+								height = GhostObjectImage.tex->GetHeight();
 
 								// Subtract width/2 and height/2 from MouseX and MouseY so that the origin of the object is in the center
 
-								item.x = (float)xpos - ((int)width / 2);
-								item.y = (float)(SceneEditorHeight - ypos);
-								item.y -= ((int)height / 2);
+								GhostObjectImage.x = (float)xpos - ((int)width / 2);
+								GhostObjectImage.y = (float)(SceneEditorHeight - ypos);
+								GhostObjectImage.y -= ((int)height / 2);
 
-								// Snap the X and Y to the grid
-								item.x = SnapToGrid(item.x, GridX);
-								item.y = SnapToGrid(item.y, GridY);
-
-								item.layer = 1000;
-								SceneEditorItemQueue[1000].push_back(item);
+								// Snap the Ghost object to the grid
+								GhostObjectImage.x = SnapToGrid(GhostObjectImage.x, GridX);
+								GhostObjectImage.y = SnapToGrid(GhostObjectImage.y, GridY);
 							}
 						}
 					}
