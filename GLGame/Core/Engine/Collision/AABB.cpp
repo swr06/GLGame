@@ -53,7 +53,7 @@ namespace GLGame
 		return collisionX && collisionY;
 	}
 
-	bool CheckAABBCollision(AABB one, AABB two, AABBCollisionMask* mask)
+	bool CheckAABBCollision(AABB one, AABB two)
 	{
 		float one_width = one.x + one.w;
 		float one_height = one.y + one.h;
@@ -68,25 +68,25 @@ namespace GLGame
 			// These was a collision on both the axes.
 
 			//mask->CheckPosition();
-			if (one.x < two.x)
-			{
-				std::cout << "\nThe right side of square 1 collided with the left side of square 2";
-			}
-
-			if (one.x > two.x)
-			{
-				std::cout << "\nThe left side of square 1 collided with the right side of square 2";
-			}
-
-			if (one.y < two.y)
-			{
-				std::cout << "\nThe bottom side of square 1 collided with the top side of square 2";
-			}
-
-			if (one.y > two.y)
-			{
-				std::cout << "\nThe top side of square 1 collided with the bottom side of square 2";
-			}
+// 			if (one.x < two.x)
+// 			{
+// 				std::cout << "\nThe right side of square 1 collided with the left side of square 2";
+// 			}
+// 
+// 			if (one.x > two.x)
+// 			{
+// 				std::cout << "\nThe left side of square 1 collided with the right side of square 2";
+// 			}
+// 
+// 			if (one.y < two.y)
+// 			{
+// 				std::cout << "\nThe bottom side of square 1 collided with the top side of square 2";
+// 			}
+// 
+// 			if (one.y > two.y)
+// 			{
+// 				std::cout << "\nThe top side of square 1 collided with the bottom side of square 2";
+// 			}
 
 			return true;
 		}

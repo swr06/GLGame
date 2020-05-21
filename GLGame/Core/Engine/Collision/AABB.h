@@ -135,7 +135,7 @@ namespace GLGame
 
 	struct CircleCollision {};
 
-	bool CheckAABBCollision(AABB one, AABB two, AABBCollisionMask* mask);
+	bool CheckAABBCollision(AABB one, AABB two);
 	bool ObjectInCameraView(AABB Camera, AABB Object);
 	
 }

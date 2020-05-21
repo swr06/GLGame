@@ -47,7 +47,8 @@ namespace GLGame
 		static int RadioSpriteSelected = -1;
 		static int ItemTypeSelected = Nothing;
 
-		// Render queue
+		// Render queue and layering
+		static float CurrentSceneEditorLayer = 0;
 		static map<int, vector<SceneEditorRenderItem>> SceneEditorItemQueue;
 
 		static Shader SceneEditorRenderItemShader;
@@ -288,6 +289,10 @@ namespace GLGame
 
 			if (CurrentOperationSelected == PlaceItems)
 			{
+				// Reset the scene editor :
+				SceneEditorCamera->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+				SceneEditorCamera->SetScale(glm::vec3(1.0f, 1.0f, 1.0f));
+
 				if (ImGui::Begin("Place GLGame::SceneItems", &show_window))
 				{
 					if (ImGui::CollapsingHeader("Place Scene Items"))
@@ -323,24 +328,28 @@ namespace GLGame
 						ImGui::Text("\nTYPE OF SCENE ITEM THAT YOU WOULD LIKE TO PLACE : \n\n");
 						ImGui::RadioButton("GLGame::Object", &ItemTypeSelected, ObjectSelection);
 						ImGui::RadioButton("GLGame::Sprite", &ItemTypeSelected, SpriteSelection);
-
 						// Draw the "Selected Item" ImGui window
 					}
+
+					ImGui::Text("\n\n");
+					ImGui::InputFloat("Layer/Depth", &CurrentSceneEditorLayer);
 				}
 
 				ImGui::End();
 
 				{
 					ImGuiWindowFlags selected_item_window_flags = 0;
+					bool selected_item_show_window = true;
+
 					//selected_item_window_flags |= ImGuiWindowFlags_NoTitleBar;
 					//selected_item_window_flags |= ImGuiWindowFlags_NoMove;
 					//selected_item_window_flags |= ImGuiWindowFlags_NoNav;
-					bool selected_item_show_window = true;
+					//selected_item_window_flags |= ImGuiWindowFlags_NoBackground;
+				
 					selected_item_window_flags |= ImGuiWindowFlags_NoScrollbar;
 					selected_item_window_flags |= ImGuiWindowFlags_MenuBar;
 					selected_item_window_flags |= ImGuiWindowFlags_NoResize;
 					selected_item_window_flags |= ImGuiWindowFlags_NoCollapse;
-					selected_item_window_flags |= ImGuiWindowFlags_NoBackground;
 					selected_item_window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus;
 					selected_item_window_flags |= ImGuiWindowFlags_NoDocking;
 
@@ -615,6 +624,7 @@ namespace GLGame
 				return;
 			}
 
+			// Sneaky way to handle mouse drag events
 			if (CurrentOperationSelected == ViewScene)
 			{
 				glfwGetCursorPos(window, &MousePosX, &MousePosY);
@@ -631,7 +641,7 @@ namespace GLGame
 
 			glfwGetCursorPos(window, &MousePosX, &MousePosY);
 
-			if (action == GLFW_PRESS)
+			if (action == GLFW_PRESS && button == GLFW_MOUSE_BUTTON_LEFT)
 			{
 				StartPanX = MousePosX;
 				StartPanY = MousePosY;
@@ -664,10 +674,34 @@ namespace GLGame
 								item.x = (float)MousePosX - ((int)width / 2);
 								item.y = (float)(SceneEditorHeight - MousePosY);
 								item.y -= ((int)height / 2);
-								item.layer = 0;
+								item.layer = CurrentSceneEditorLayer;
 								SceneEditorItemQueue[item.layer].push_back(item);
 							}
 						}
+					}
+				}
+			}
+
+			if (action == GLFW_PRESS && button == GLFW_MOUSE_BUTTON_RIGHT)
+			{
+				AABB o1, o2;
+
+				o1.x = (float)MousePosX;
+				o1.y = (float)(SceneEditorHeight - MousePosY);
+				o1.w = 16;
+				o1.h = 16;
+
+				for (int i = 0; i < SceneEditorItemQueue[CurrentSceneEditorLayer].size(); i++)
+				{
+					o2.x = SceneEditorItemQueue[CurrentSceneEditorLayer].at(i).x;
+					o2.y = SceneEditorItemQueue[CurrentSceneEditorLayer].at(i).y;
+					o2.w = SceneEditorItemQueue[CurrentSceneEditorLayer].at(i).tex->GetWidth();
+					o2.h = SceneEditorItemQueue[CurrentSceneEditorLayer].at(i).tex->GetHeight();
+
+					// If the mouse collided with the object, erase it from the editor queue
+					if (CheckAABBCollision(o1, o2))
+					{
+						SceneEditorItemQueue[CurrentSceneEditorLayer].erase(SceneEditorItemQueue[CurrentSceneEditorLayer].begin() + i);
 					}
 				}
 			}

@@ -458,7 +458,7 @@ namespace GLGame
 						obj2_AABB.w = obj2_bounding_box.z;
 						obj2_AABB.h = obj2_bounding_box.w;
 
-						if (CheckAABBCollision(obj1_AABB, obj2_AABB, obj1_item_list[i]->ItemObjectInstance.m_CollisionMask))
+						if (CheckAABBCollision(obj1_AABB, obj2_AABB))
 						{
 							return_val = true;
 							break;

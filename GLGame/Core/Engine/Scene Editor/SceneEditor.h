@@ -25,6 +25,7 @@
 
 #include "Core\Engine\Logger\Log.h"
 #include "Core\Engine\Macros\Macros.h"
+#include "Core\Engine\Collision\AABB.h"
 #include "Core\OpenGL Classes\Texture\Texture.h"
 #include "Core\Engine\Rendering\BatchRendering.h"
 #include "Core\Engine\Rendering\Rendering.h"
