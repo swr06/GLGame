@@ -6,7 +6,7 @@ namespace GLGame
 
 	// Sprite Batch Class functions
 
-	SpriteBatcher::SpriteBatcher() : m_VBO(GL_ARRAY_BUFFER), m_ViewProjectionMatrix(glm::mat4(1.0f)), m_VerticesWritten(0), m_MaximumQuads(1000), m_VertexSize(28)
+	SpriteBatcher::SpriteBatcher() : m_VBO(GL_ARRAY_BUFFER), m_ViewProjectionMatrix(glm::mat4(1.0f)), m_VerticesWritten(0), m_MaximumQuads(1000), m_VertexSize(40)
 	{
 		// Todo : Query the driver to get the maximum texture slots
 
@@ -51,10 +51,10 @@ namespace GLGame
 		// 2 : Texture Opacity 
 		// 3 : Texture Element
 
-		m_VBO.VertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 7 * sizeof(GLfloat), (GLvoid*)0);
-		m_VBO.VertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 7 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
-		m_VBO.VertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, 7 * sizeof(GLfloat), (GLvoid*)(5 * sizeof(GLfloat)));
-		m_VBO.VertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, 7 * sizeof(GLfloat), (GLvoid*)(6 * sizeof(GLfloat)));
+		m_VBO.VertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 10 * sizeof(GLfloat), (GLvoid*)0);
+		m_VBO.VertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 10 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+		m_VBO.VertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, 10 * sizeof(GLfloat), (GLvoid*)(5 * sizeof(GLfloat)));
+		m_VBO.VertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, 10 * sizeof(GLfloat), (GLvoid*)(9 * sizeof(GLfloat)));
 		m_VAO.Unbind();
 	}
 
@@ -99,7 +99,7 @@ namespace GLGame
 		m_ViewProjectionMatrix = glm::mat4(1.0f);
 	}
 
-	void SpriteBatcher::AddSpriteToBatch(SceneDataItem item, float opacity)
+	void SpriteBatcher::AddSpriteToBatch(SceneDataItem item, const glm::vec4& color)
 	{
 		AABB item_cull;
 		const glm::vec3& camera_pos = m_CameraPos;
@@ -232,39 +232,51 @@ namespace GLGame
 			m_VertexBuffer[m_LastElementVBuff + 2] = v1.z;
 			m_VertexBuffer[m_LastElementVBuff + 3] = TextureCoordinates[0];
 			m_VertexBuffer[m_LastElementVBuff + 4] = TextureCoordinates[1];
-			m_VertexBuffer[m_LastElementVBuff + 5] = opacity;
-			m_VertexBuffer[m_LastElementVBuff + 6] = (float)tex_element;
+			m_VertexBuffer[m_LastElementVBuff + 5] = color.r;
+			m_VertexBuffer[m_LastElementVBuff + 6] = color.g;
+			m_VertexBuffer[m_LastElementVBuff + 7] = color.b;
+			m_VertexBuffer[m_LastElementVBuff + 8] = color.a;
+			m_VertexBuffer[m_LastElementVBuff + 9] = (float)tex_element;
 
-			m_VertexBuffer[m_LastElementVBuff + 7] = v2.x;
-			m_VertexBuffer[m_LastElementVBuff + 8] = v2.y;
-			m_VertexBuffer[m_LastElementVBuff + 9] = v2.z;
-			m_VertexBuffer[m_LastElementVBuff + 10] = TextureCoordinates[2];
-			m_VertexBuffer[m_LastElementVBuff + 11] = TextureCoordinates[3];
-			m_VertexBuffer[m_LastElementVBuff + 12] = opacity;
-			m_VertexBuffer[m_LastElementVBuff + 13] = (float)tex_element;
+			m_VertexBuffer[m_LastElementVBuff + 10] = v2.x;
+			m_VertexBuffer[m_LastElementVBuff + 11] = v2.y;
+			m_VertexBuffer[m_LastElementVBuff + 12] = v2.z;
+			m_VertexBuffer[m_LastElementVBuff + 13] = TextureCoordinates[2];
+			m_VertexBuffer[m_LastElementVBuff + 14] = TextureCoordinates[3];
+			m_VertexBuffer[m_LastElementVBuff + 15] = color.r;
+			m_VertexBuffer[m_LastElementVBuff + 16] = color.g;
+			m_VertexBuffer[m_LastElementVBuff + 17] = color.b;
+			m_VertexBuffer[m_LastElementVBuff + 18] = color.a;
+			m_VertexBuffer[m_LastElementVBuff + 19] = (float)tex_element;
 
-			m_VertexBuffer[m_LastElementVBuff + 14] = v3.x;
-			m_VertexBuffer[m_LastElementVBuff + 15] = v3.y;
-			m_VertexBuffer[m_LastElementVBuff + 16] = v3.z;
-			m_VertexBuffer[m_LastElementVBuff + 17] = TextureCoordinates[4];
-			m_VertexBuffer[m_LastElementVBuff + 18] = TextureCoordinates[5];
-			m_VertexBuffer[m_LastElementVBuff + 19] = opacity;
-			m_VertexBuffer[m_LastElementVBuff + 20] = (float)tex_element;
+			m_VertexBuffer[m_LastElementVBuff + 20] = v3.x;
+			m_VertexBuffer[m_LastElementVBuff + 21] = v3.y;
+			m_VertexBuffer[m_LastElementVBuff + 22] = v3.z;
+			m_VertexBuffer[m_LastElementVBuff + 23] = TextureCoordinates[4];
+			m_VertexBuffer[m_LastElementVBuff + 24] = TextureCoordinates[5];
+			m_VertexBuffer[m_LastElementVBuff + 25] = color.r;
+			m_VertexBuffer[m_LastElementVBuff + 26] = color.g;
+			m_VertexBuffer[m_LastElementVBuff + 27] = color.b;
+			m_VertexBuffer[m_LastElementVBuff + 28] = color.a;
+			m_VertexBuffer[m_LastElementVBuff + 29] = (float)tex_element;
 
-			m_VertexBuffer[m_LastElementVBuff + 21] = v4.x;
-			m_VertexBuffer[m_LastElementVBuff + 22] = v4.y;
-			m_VertexBuffer[m_LastElementVBuff + 23] = v4.z;
-			m_VertexBuffer[m_LastElementVBuff + 24] = TextureCoordinates[6];
-			m_VertexBuffer[m_LastElementVBuff + 25] = TextureCoordinates[7];
-			m_VertexBuffer[m_LastElementVBuff + 26] = opacity;
-			m_VertexBuffer[m_LastElementVBuff + 27] = (float)tex_element;
+			m_VertexBuffer[m_LastElementVBuff + 30] = v4.x;
+			m_VertexBuffer[m_LastElementVBuff + 31] = v4.y;
+			m_VertexBuffer[m_LastElementVBuff + 32] = v4.z;
+			m_VertexBuffer[m_LastElementVBuff + 33] = TextureCoordinates[6];
+			m_VertexBuffer[m_LastElementVBuff + 34] = TextureCoordinates[7];
+			m_VertexBuffer[m_LastElementVBuff + 35] = color.r;
+			m_VertexBuffer[m_LastElementVBuff + 36] = color.g;
+			m_VertexBuffer[m_LastElementVBuff + 37] = color.b;
+			m_VertexBuffer[m_LastElementVBuff + 38] = color.a;
+			m_VertexBuffer[m_LastElementVBuff + 39] = (float)tex_element;
 
 			m_LastElementVBuff += m_VertexSize;
 			m_VerticesWritten++;
 		}
 	}
 
-	void SpriteBatcher::AddGenericTextureToBatch(Texture* texture, const glm::vec3& pos, float opacity)
+	void SpriteBatcher::AddGenericTextureToBatch(Texture* texture, const glm::vec3& pos, const glm::vec4& color)
 	{
 		if (m_VerticesWritten == m_MaximumQuads)
 		{
@@ -311,32 +323,44 @@ namespace GLGame
 		m_VertexBuffer[m_LastElementVBuff + 2] = pos.z;
 		m_VertexBuffer[m_LastElementVBuff + 3] = TextureCoordinates[0];
 		m_VertexBuffer[m_LastElementVBuff + 4] = TextureCoordinates[1];
-		m_VertexBuffer[m_LastElementVBuff + 5] = opacity;
-		m_VertexBuffer[m_LastElementVBuff + 6] = (float)tex_element;
+		m_VertexBuffer[m_LastElementVBuff + 5] = color.r;
+		m_VertexBuffer[m_LastElementVBuff + 6] = color.g;
+		m_VertexBuffer[m_LastElementVBuff + 7] = color.b;
+		m_VertexBuffer[m_LastElementVBuff + 8] = color.a;
+		m_VertexBuffer[m_LastElementVBuff + 9] = (float)tex_element;
 
-		m_VertexBuffer[m_LastElementVBuff + 7] = width;
-		m_VertexBuffer[m_LastElementVBuff + 8] = height;
-		m_VertexBuffer[m_LastElementVBuff + 9] = pos.z;
-		m_VertexBuffer[m_LastElementVBuff + 10] = TextureCoordinates[2];
-		m_VertexBuffer[m_LastElementVBuff + 11] = TextureCoordinates[3];
-		m_VertexBuffer[m_LastElementVBuff + 12] = opacity;
-		m_VertexBuffer[m_LastElementVBuff + 13] = (float)tex_element;
+		m_VertexBuffer[m_LastElementVBuff + 10] = width;
+		m_VertexBuffer[m_LastElementVBuff + 11] = height;
+		m_VertexBuffer[m_LastElementVBuff + 12] = pos.z;
+		m_VertexBuffer[m_LastElementVBuff + 13] = TextureCoordinates[2];
+		m_VertexBuffer[m_LastElementVBuff + 14] = TextureCoordinates[3];
+		m_VertexBuffer[m_LastElementVBuff + 15] = color.r;
+		m_VertexBuffer[m_LastElementVBuff + 16] = color.g;
+		m_VertexBuffer[m_LastElementVBuff + 17] = color.b;
+		m_VertexBuffer[m_LastElementVBuff + 18] = color.a;
+		m_VertexBuffer[m_LastElementVBuff + 19] = (float)tex_element;
 
-		m_VertexBuffer[m_LastElementVBuff + 14] = pos.x;
-		m_VertexBuffer[m_LastElementVBuff + 15] = height;
-		m_VertexBuffer[m_LastElementVBuff + 16] = pos.z;
-		m_VertexBuffer[m_LastElementVBuff + 17] = TextureCoordinates[4];
-		m_VertexBuffer[m_LastElementVBuff + 18] = TextureCoordinates[5];
-		m_VertexBuffer[m_LastElementVBuff + 19] = opacity;
-		m_VertexBuffer[m_LastElementVBuff + 20] = (float)tex_element;
+		m_VertexBuffer[m_LastElementVBuff + 20] = pos.x;
+		m_VertexBuffer[m_LastElementVBuff + 21] = height;
+		m_VertexBuffer[m_LastElementVBuff + 22] = pos.z;
+		m_VertexBuffer[m_LastElementVBuff + 23] = TextureCoordinates[4];
+		m_VertexBuffer[m_LastElementVBuff + 24] = TextureCoordinates[5];
+		m_VertexBuffer[m_LastElementVBuff + 25] = color.r;
+		m_VertexBuffer[m_LastElementVBuff + 26] = color.g;
+		m_VertexBuffer[m_LastElementVBuff + 27] = color.b;
+		m_VertexBuffer[m_LastElementVBuff + 28] = color.a;
+		m_VertexBuffer[m_LastElementVBuff + 29] = (float)tex_element;
 
-		m_VertexBuffer[m_LastElementVBuff + 21] = pos.x;
-		m_VertexBuffer[m_LastElementVBuff + 22] = pos.y;
-		m_VertexBuffer[m_LastElementVBuff + 23] = pos.z;
-		m_VertexBuffer[m_LastElementVBuff + 24] = TextureCoordinates[6];
-		m_VertexBuffer[m_LastElementVBuff + 25] = TextureCoordinates[7];
-		m_VertexBuffer[m_LastElementVBuff + 26] = opacity;
-		m_VertexBuffer[m_LastElementVBuff + 27] = (float)tex_element;
+		m_VertexBuffer[m_LastElementVBuff + 30] = pos.x;
+		m_VertexBuffer[m_LastElementVBuff + 31] = pos.y;
+		m_VertexBuffer[m_LastElementVBuff + 32] = pos.z;
+		m_VertexBuffer[m_LastElementVBuff + 33] = TextureCoordinates[6];
+		m_VertexBuffer[m_LastElementVBuff + 34] = TextureCoordinates[7];
+		m_VertexBuffer[m_LastElementVBuff + 35] = color.r;
+		m_VertexBuffer[m_LastElementVBuff + 36] = color.g;
+		m_VertexBuffer[m_LastElementVBuff + 37] = color.b;
+		m_VertexBuffer[m_LastElementVBuff + 38] = color.a;
+		m_VertexBuffer[m_LastElementVBuff + 39] = (float)tex_element;
 
 		m_LastElementVBuff += m_VertexSize;
 		m_VerticesWritten++;

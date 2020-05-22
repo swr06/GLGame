@@ -296,7 +296,7 @@ namespace GLGame
 				if (chk != SceneEditorGlobalObjects->end() && SceneEditorGlobalObjects->at(item_id)->HasSprite())
 				{
 					SceneEditorBatcher->StartSpriteBatch(SceneEditorCamera);
-					SceneEditorBatcher->AddGenericTextureToBatch(GhostObjectImage.tex, glm::vec3(GhostObjectImage.x, GhostObjectImage.y, 1.0f), 0.5f);
+					SceneEditorBatcher->AddGenericTextureToBatch(GhostObjectImage.tex, glm::vec3(GhostObjectImage.x, GhostObjectImage.y, 1.0f), glm::vec4(1.0f, 2.0f, 1.0f, 0.5f));
 					SceneEditorBatcher->EndSpriteBatch();
 				}
 			}

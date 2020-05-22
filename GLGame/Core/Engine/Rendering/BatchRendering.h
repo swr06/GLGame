@@ -45,8 +45,8 @@ namespace GLGame
 		void StartSpriteBatch(const glm::mat4& view_projection_matrix);
 		void StartSpriteBatch();
 		void EndSpriteBatch();
-		void AddGenericTextureToBatch(Texture* texture, const glm::vec3 &pos, float opacity = 1.0f);
-		void AddSpriteToBatch(SceneDataItem item, float opacity = 1.0f);
+		void AddGenericTextureToBatch(Texture* texture, const glm::vec3 &pos, const glm::vec4& color = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+		void AddSpriteToBatch(SceneDataItem item, const glm::vec4& color = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 
 	private : 
 
