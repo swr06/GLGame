@@ -75,6 +75,8 @@ namespace GLGame
 		static bool ShouldShowWITWindow = false; // What is this window
 		static bool ShouldShowDependenciesWindow = false;
 
+		static bool ShouldBlockInput = false;
+
 		// IMGUI context => Scene editor window
 		ImGuiContext* imcontext;
 
@@ -163,6 +165,8 @@ namespace GLGame
 
 				if (ImGui::BeginPopupModal("About the author", NULL, ImGuiWindowFlags_AlwaysAutoResize))
 				{
+					ShouldBlockInput = true;
+
 					ImGui::Text("Programmed by Samuel Rasquinha\n");
 					ImGui::Text("GitHub : Samuel Rasquinha");
 					ImGui::Text("Gmail : samuelrasquinha@gmail.com");
@@ -174,6 +178,7 @@ namespace GLGame
 
 					if (ImGui::Button("OK", ImVec2(120, 0)))
 					{
+						ShouldBlockInput = false;
 						ShouldShowAboutTheAuthorWindow = false;
 						ImGui::CloseCurrentPopup();
 					}
@@ -188,6 +193,8 @@ namespace GLGame
 
 				if (ImGui::BeginPopupModal("Support me", NULL, ImGuiWindowFlags_AlwaysAutoResize))
 				{
+					ShouldBlockInput = true;
+
 					ImGui::Text("The entire GLGame project was made by Samuel Rasquinha (samuelrasquinha@gmail.com)");
 					ImGui::Text("Since I am only 14 years old, I don't have paypal. But you can show your support by starring this project on GitHub.");
 
@@ -195,6 +202,7 @@ namespace GLGame
 
 					if (ImGui::Button("OK", ImVec2(120, 0)))
 					{
+						ShouldBlockInput = false;
 						ShouldShowSupportMeWindow = false;
 						ImGui::CloseCurrentPopup();
 					}
@@ -209,6 +217,8 @@ namespace GLGame
 
 				if (ImGui::BeginPopupModal("What is this?", NULL, ImGuiWindowFlags_AlwaysAutoResize))
 				{
+					ShouldBlockInput = true;
+
 					ImGui::Text("This is a debug tool and scene editor I made to run along with GLGame");
 					ImGui::Text("This is to be run during runtime.");
 
@@ -216,6 +226,7 @@ namespace GLGame
 
 					if (ImGui::Button("OK", ImVec2(120, 0)))
 					{
+						ShouldBlockInput = false;
 						ShouldShowWITWindow = false;
 						ImGui::CloseCurrentPopup();
 					}
@@ -229,9 +240,10 @@ namespace GLGame
 			{
 				ImGui::OpenPopup("Dependencies");
 
-
 				if (ImGui::BeginPopupModal("Dependencies", NULL, ImGuiWindowFlags_AlwaysAutoResize))
 				{
+					ShouldBlockInput = true;
+
 					ImGui::Text("GLGame the minimal open-source dependencies. All of the below are open-source and free");
 					ImGui::Text("GLGame uses the following dependencies : ");
 					ImGui::Text("C++17 (For std::filesystem)");
@@ -244,6 +256,7 @@ namespace GLGame
 
 					if (ImGui::Button("OK", ImVec2(120, 0)))
 					{
+						ShouldBlockInput = false;
 						ShouldShowDependenciesWindow = false;
 						ImGui::CloseCurrentPopup();
 					}
@@ -303,6 +316,10 @@ namespace GLGame
 			ImGui::RadioButton("See properties of a GLGame::Object or GLGame::Sprite", &CurrentOperationSelected, SeeProperties);
 			ImGui::RadioButton("Debug", &CurrentOperationSelected, Debug);
 			ImGui::RadioButton("View or Look at the scene.", &CurrentOperationSelected, ViewScene);
+			ImGui::Text("\n\nEditor settings : \n");
+			ImGui::InputInt("Grid Size X (in pixels)", &GridX);
+			ImGui::InputInt("Grid Size Y (in pixels)", &GridY);
+			ImGui::Text("\n");
 			ImGui::End();
 		}
 
@@ -360,6 +377,7 @@ namespace GLGame
 
 				ImGui::End();
 
+				// Draw Selected item window
 				{
 					ImGuiWindowFlags selected_item_window_flags = 0;
 					bool selected_item_show_window = true;
@@ -507,14 +525,24 @@ namespace GLGame
 				// Draw the ImGui items
 				ImGui::SetCurrentContext(imcontext);
 
+				if (ImGui::IsAnyWindowHovered())
+				{
+					ShouldBlockInput = true;
+				}
+
+				else
+				{
+					ShouldBlockInput = false;
+				}
+
 				// Render the test item
 				RenderSceneEditorItems();
 
 				bool display_title_place_item = true;
 				bool display_title_selected_item = true;
 
-				ImGui::SetNextWindowPos(ImVec2(SceneEditorWidth * 0.75, 20), ImGuiCond_Always);
-				ImGui::SetNextWindowSize(ImVec2(555, 760), ImGuiCond_Always);
+				ImGui::SetNextWindowPos(ImVec2(SceneEditorWidth * 0.75, 20), ImGuiCond_FirstUseEver);
+				ImGui::SetNextWindowSize(ImVec2(555, 760), ImGuiCond_FirstUseEver);
 
 				ImGui::SetCurrentContext(imcontext);
 				ImGui_ImplOpenGL3_NewFrame();
@@ -537,9 +565,11 @@ namespace GLGame
 						{
 							ImGui::Text("The Scene you just created will be lost forever! This action cannot be undone!\n");
 							ImGui::Separator();
+							ShouldBlockInput = true;
 
 							if (ImGui::Button("OK", ImVec2(120, 0)))
 							{
+								ShouldBlockInput = false;
 								ImGui::CloseCurrentPopup();
 
 								if (SE_window_destroyed == false)
@@ -557,6 +587,7 @@ namespace GLGame
 
 							if (ImGui::Button("Cancel", ImVec2(120, 0)))
 							{
+								ShouldBlockInput = false;
 								ShouldShowCloseModalWindow = false;
 								ImGui::CloseCurrentPopup();
 							}
@@ -632,6 +663,11 @@ namespace GLGame
 				return;
 			}
 
+			if (ShouldBlockInput)
+			{
+				return;
+			}
+
 			glfwGetCursorPos(window, &MousePosX, &MousePosY);
 
 			if (action == GLFW_PRESS)
@@ -653,6 +689,11 @@ namespace GLGame
 		void SECursorPosCallback(GLFWwindow* window, double xpos, double ypos)
 		{
 			if (window != SceneEditorWindow)
+			{
+				return;
+			}
+
+			if (ShouldBlockInput)
 			{
 				return;
 			}
@@ -713,6 +754,11 @@ namespace GLGame
 		void SEMouseCallback(GLFWwindow* window, int button, int action, int mods)
 		{
 			if (window != SceneEditorWindow)
+			{
+				return;
+			}
+
+			if (ShouldBlockInput)
 			{
 				return;
 			}
@@ -804,6 +850,11 @@ namespace GLGame
 		void SEScrollCallback(GLFWwindow* window, double xoffset, double yoffset)
 		{
 			if (window != SceneEditorWindow)
+			{
+				return;
+			}
+
+			if (ShouldBlockInput)
 			{
 				return;
 			}
