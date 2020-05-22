@@ -40,12 +40,20 @@ namespace GLGame
 	{
 		using namespace std;
 
+		enum SceneEditorItemTypes
+		{
+			SE_ObjectType,
+			SE_SpriteType,
+		};
+
 		struct SceneEditorRenderItem
 		{
-			Texture* tex;
+			Object* obj = nullptr; 
+			Sprite* spr = nullptr;
 			float x;
 			float y;
 			int layer;
+			SceneEditorItemTypes item_type;
 		};
 
 		GLFWwindow* _Init(GLFWwindow* share_window, ImGuiContext* context);

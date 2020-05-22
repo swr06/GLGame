@@ -277,7 +277,15 @@ namespace GLGame
 			{
 				for (int i = 0; i < e->second.size(); i++)
 				{
-					SceneEditorBatcher->AddGenericTextureToBatch(e->second.at(i).tex, glm::vec3(e->second.at(i).x, e->second.at(i).y, 1.0f));
+					if (e->second.at(i).item_type == SE_ObjectType && e->second.at(i).obj != nullptr)
+					{
+						SceneEditorBatcher->AddGenericTextureToBatch(e->second.at(i).obj->GetSprite()->GetCurrentTexture(), glm::vec3(e->second.at(i).x, e->second.at(i).y, 1.0f));
+					}
+
+					else if (e->second.at(i).item_type == SE_SpriteType && e->second.at(i).spr != nullptr)
+					{
+						SceneEditorBatcher->AddGenericTextureToBatch(e->second.at(i).spr->GetCurrentTexture(), glm::vec3(e->second.at(i).x, e->second.at(i).y, 1.0f));
+					}
 				}
 			}
 
@@ -287,17 +295,36 @@ namespace GLGame
 
 			// Draw the ghost mouse image
 
-			if (CurrentOperationSelected == PlaceItems && ItemTypeSelected == ObjectSelection 
-				&& ObjectIDList != nullptr && GhostObjectImage.tex != nullptr && RadioObjectSelected != -1)
+			if (CurrentOperationSelected == PlaceItems)
 			{
-				string item_id = (ObjectIDList->at(RadioObjectSelected));
-				unordered_map<string, Object*>::iterator chk = SceneEditorGlobalObjects->find(item_id);
-
-				if (chk != SceneEditorGlobalObjects->end() && SceneEditorGlobalObjects->at(item_id)->HasSprite())
+				if (GhostObjectImage.item_type == SE_ObjectType && GhostObjectImage.obj != nullptr
+					&& ItemTypeSelected == ObjectSelection
+					&& ObjectIDList != nullptr && RadioObjectSelected != -1)
 				{
-					SceneEditorBatcher->StartSpriteBatch(SceneEditorCamera);
-					SceneEditorBatcher->AddGenericTextureToBatch(GhostObjectImage.tex, glm::vec3(GhostObjectImage.x, GhostObjectImage.y, 1.0f), glm::vec4(1.0f, 2.0f, 1.0f, 0.5f));
-					SceneEditorBatcher->EndSpriteBatch();
+					string item_id = (ObjectIDList->at(RadioObjectSelected));
+					unordered_map<string, Object*>::iterator chk = SceneEditorGlobalObjects->find(item_id);
+
+					if (chk != SceneEditorGlobalObjects->end() && SceneEditorGlobalObjects->at(item_id)->HasSprite())
+					{
+						SceneEditorBatcher->StartSpriteBatch(SceneEditorCamera);
+						SceneEditorBatcher->AddGenericTextureToBatch(GhostObjectImage.obj->GetSprite()->GetCurrentTexture(), glm::vec3(GhostObjectImage.x, GhostObjectImage.y, 1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 0.5f));
+						SceneEditorBatcher->EndSpriteBatch();
+					}
+				}
+
+				else if (GhostObjectImage.item_type == SE_SpriteType && GhostObjectImage.spr != nullptr
+					&& ItemTypeSelected == SpriteSelection
+					&& SpriteIDList != nullptr && RadioSpriteSelected != -1)
+				{
+					string item_id = (SpriteIDList->at(RadioSpriteSelected));
+					unordered_map<string, Sprite*>::iterator chk = SceneEditorGlobalSprites->find(item_id);
+
+					if (chk != SceneEditorGlobalSprites->end())
+					{
+						SceneEditorBatcher->StartSpriteBatch(SceneEditorCamera);
+						SceneEditorBatcher->AddGenericTextureToBatch(GhostObjectImage.spr->GetCurrentTexture(), glm::vec3(GhostObjectImage.x, GhostObjectImage.y, 1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 0.5f));
+						SceneEditorBatcher->EndSpriteBatch();
+					}
 				}
 			}
 
@@ -306,6 +333,7 @@ namespace GLGame
 
 		void _DrawSEWidgets()
 		{
+			static ImVec4 color = ImVec4(114.0f / 255.0f, 144.0f / 255.0f, 154.0f / 255.0f, 200.0f / 255.0f);
 			ImGui::SetNextWindowPos(ImVec2(SceneEditorWidth * 0.75, 20), ImGuiCond_FirstUseEver);
 			ImGui::SetNextWindowSize(ImVec2(400, 400), ImGuiCond_FirstUseEver);
 
@@ -319,6 +347,8 @@ namespace GLGame
 			ImGui::Text("\n\nEditor settings : \n");
 			ImGui::InputInt("Grid Size X (in pixels)", &GridX);
 			ImGui::InputInt("Grid Size Y (in pixels)", &GridY);
+		
+			ImGui::ColorPicker4("Multiplication color", (float*)&color);
 			ImGui::Text("\n");
 			ImGui::End();
 		}
@@ -704,7 +734,7 @@ namespace GLGame
 
 				if (ItemTypeSelected == ObjectSelection)
 				{
-					if (ObjectIDList != nullptr && RadioObjectSelected != -1)
+					if (ObjectIDList != nullptr && RadioObjectSelected != -1 && RadioObjectSelected < ObjectIDList->size() && RadioObjectSelected >= 0)
 					{
 						int width, height;
 						string item_id;
@@ -717,11 +747,12 @@ namespace GLGame
 						{
 							if (SceneEditorGlobalObjects->at(item_id)->HasSprite())
 							{
-								GhostObjectImage.tex = SceneEditorGlobalObjects->at(item_id)->GetSprite()->GetCurrentTexture();
+								GhostObjectImage.item_type = SE_ObjectType;
+								GhostObjectImage.obj = SceneEditorGlobalObjects->at(item_id);
 
 								// Get the width and height of the textures
-								width = GhostObjectImage.tex->GetWidth();
-								height = GhostObjectImage.tex->GetHeight();
+								width = GhostObjectImage.obj->GetSprite()->GetCurrentTextureWidth();
+								height = GhostObjectImage.obj->GetSprite()->GetCurrentTextureWidth();
 
 								// Subtract width/2 and height/2 from MouseX and MouseY so that the origin of the object is in the center
 
@@ -733,6 +764,38 @@ namespace GLGame
 								GhostObjectImage.x = SnapToGrid(GhostObjectImage.x, GridX);
 								GhostObjectImage.y = SnapToGrid(GhostObjectImage.y, GridY);
 							}
+						}
+					}
+				}
+
+				else if (ItemTypeSelected == SpriteSelection)
+				{
+					if (SpriteIDList != nullptr && RadioSpriteSelected != -1 && RadioSpriteSelected < SpriteIDList->size() && RadioSpriteSelected >= 0)
+					{
+						int width, height;
+						string item_id;
+
+						item_id = (SpriteIDList->at(RadioSpriteSelected));
+						unordered_map<string, Sprite*>::iterator chk = SceneEditorGlobalSprites->find(item_id);
+
+						// If the object exists in the map
+						if (chk != SceneEditorGlobalSprites->end())
+						{
+							GhostObjectImage.item_type = SE_SpriteType;
+							GhostObjectImage.spr = SceneEditorGlobalSprites->at(item_id);
+
+							width = GhostObjectImage.spr->GetCurrentTextureWidth();
+							height = GhostObjectImage.spr->GetCurrentTextureWidth();
+
+							// Subtract width/2 and height/2 from MouseX and MouseY so that the origin of the object is in the center
+
+							GhostObjectImage.x = (float)xpos - ((int)width / 2);
+							GhostObjectImage.y = (float)(SceneEditorHeight - ypos);
+							GhostObjectImage.y -= ((int)height / 2);
+
+							// Snap the Ghost object to the grid
+							GhostObjectImage.x = SnapToGrid(GhostObjectImage.x, GridX);
+							GhostObjectImage.y = SnapToGrid(GhostObjectImage.y, GridY);
 						}
 					}
 				}
@@ -770,42 +833,88 @@ namespace GLGame
 				StartPanX = MousePosX;
 				StartPanY = MousePosY;
 
-				if (CurrentOperationSelected == PlaceItems && ItemTypeSelected == ObjectSelection &&
-					RadioObjectSelected < ObjectIDList->size() && RadioObjectSelected > -1)
+				if (CurrentOperationSelected == PlaceItems)
 				{
-					if (ObjectIDList != nullptr)
+					if (ItemTypeSelected == ObjectSelection &&
+						RadioObjectSelected < ObjectIDList->size() && RadioObjectSelected > -1)
 					{
-						SceneEditorRenderItem item;
-						int width, height;
-						string item_id;
-
-						item_id = (ObjectIDList->at(RadioObjectSelected));
-
-						unordered_map<string, Object*>::iterator chk = SceneEditorGlobalObjects->find(item_id);
-						
-						// If the object exists in the map
-						if (chk != SceneEditorGlobalObjects->end())
+						if (ObjectIDList != nullptr)
 						{
-							if (SceneEditorGlobalObjects->at(item_id)->HasSprite())
+							SceneEditorRenderItem item;
+							int width, height;
+							string item_id;
+
+							item_id = (ObjectIDList->at(RadioObjectSelected));
+
+							unordered_map<string, Object*>::iterator chk = SceneEditorGlobalObjects->find(item_id);
+
+							// If the object exists in the map
+							if (chk != SceneEditorGlobalObjects->end())
 							{
-								item.tex = SceneEditorGlobalObjects->at(item_id)->GetSprite()->GetCurrentTexture();
-								
-								// Get the width and height of the textures
-								width = item.tex->GetWidth();
-								height = item.tex->GetHeight();
+								if (SceneEditorGlobalObjects->at(item_id)->HasSprite())
+								{
+									item.item_type = SE_ObjectType;
+									item.obj = SceneEditorGlobalObjects->at(item_id);
 
-								// Subtract width/2 and height/2 from MouseX and MouseY so that the origin of the object is in the center
+									// Get the width and height of the textures
+									width = item.obj->GetSprite()->GetCurrentTextureWidth();
+									height = item.obj->GetSprite()->GetCurrentTextureHeight();
 
-								item.x = (float)MousePosX - ((int)width / 2);
-								item.y = (float)(SceneEditorHeight - MousePosY);
-								item.y -= ((int)height / 2);
+									// Subtract width/2 and height/2 from MouseX and MouseY so that the origin of the object is in the center
 
-								// Snap the X and Y to the grid
-								item.x = SnapToGrid(item.x, GridX);
-								item.y = SnapToGrid(item.y, GridY);
+									item.x = (float)MousePosX - ((int)width / 2);
+									item.y = (float)(SceneEditorHeight - MousePosY);
+									item.y -= ((int)height / 2);
 
-								item.layer = CurrentSceneEditorLayer;
-								SceneEditorItemQueue[item.layer].push_back(item);
+									// Snap the X and Y to the grid
+									item.x = SnapToGrid(item.x, GridX);
+									item.y = SnapToGrid(item.y, GridY);
+
+									item.layer = CurrentSceneEditorLayer;
+									SceneEditorItemQueue[item.layer].push_back(item);
+								}
+							}
+						}
+					}
+
+					else if (ItemTypeSelected == SpriteSelection &&
+						RadioSpriteSelected < SpriteIDList->size() && RadioSpriteSelected > -1)
+					{
+						if (SpriteIDList != nullptr)
+						{
+							SceneEditorRenderItem item;
+							int width, height;
+							string item_id;
+
+							item_id = (SpriteIDList->at(RadioSpriteSelected));
+
+							unordered_map<string, Sprite*>::iterator chk = SceneEditorGlobalSprites->find(item_id);
+
+							// If the object exists in the map
+							if (chk != SceneEditorGlobalSprites->end())
+							{
+								if (SceneEditorGlobalSprites->at(item_id))
+								{
+									item.item_type = SE_SpriteType;
+									item.spr = SceneEditorGlobalSprites->at(item_id);
+
+									// Get the width and height of the textures
+									width = item.spr->GetCurrentTextureWidth();
+									height = item.spr->GetCurrentTextureHeight();
+
+									// Subtract width/2 and height/2 from MouseX and MouseY so that the origin of the object is in the center
+
+									item.x = (float)MousePosX - ((int)width / 2);
+									item.y = (float)(SceneEditorHeight - MousePosY);
+									item.y -= ((int)height / 2);
+
+									// Snap the X and Y to the grid
+									item.x = SnapToGrid(item.x, GridX);
+									item.y = SnapToGrid(item.y, GridY);
+
+									item.layer = CurrentSceneEditorLayer;
+									SceneEditorItemQueue[item.layer].push_back(item);
+								}
 							}
 						}
 					}
@@ -825,13 +934,30 @@ namespace GLGame
 				{
 					o2.x = SceneEditorItemQueue[CurrentSceneEditorLayer].at(i).x;
 					o2.y = SceneEditorItemQueue[CurrentSceneEditorLayer].at(i).y;
-					o2.w = SceneEditorItemQueue[CurrentSceneEditorLayer].at(i).tex->GetWidth();
-					o2.h = SceneEditorItemQueue[CurrentSceneEditorLayer].at(i).tex->GetHeight();
 
-					// If the mouse collided with the object, erase it from the editor queue
-					if (CheckAABBCollision(o1, o2))
+					if (SceneEditorItemQueue[CurrentSceneEditorLayer].at(i).item_type == SE_ObjectType)
 					{
-						SceneEditorItemQueue[CurrentSceneEditorLayer].erase(SceneEditorItemQueue[CurrentSceneEditorLayer].begin() + i);
+						o2.w = SceneEditorItemQueue[CurrentSceneEditorLayer].at(i).obj->GetSprite()->GetCurrentTextureWidth();
+						o2.h = SceneEditorItemQueue[CurrentSceneEditorLayer].at(i).obj->GetSprite()->GetCurrentTextureHeight();
+
+						// If the mouse collided with the object, erase it from the editor queue
+						if (CheckAABBCollision(o1, o2))
+						{
+							SceneEditorItemQueue[CurrentSceneEditorLayer].erase(SceneEditorItemQueue[CurrentSceneEditorLayer].begin() + i);
+							break;
+						}
+					}
+
+					else if (SceneEditorItemQueue[CurrentSceneEditorLayer].at(i).item_type == SE_SpriteType)
+					{
+						o2.w = SceneEditorItemQueue[CurrentSceneEditorLayer].at(i).spr->GetCurrentTextureWidth();
+						o2.h = SceneEditorItemQueue[CurrentSceneEditorLayer].at(i).spr->GetCurrentTextureHeight();
+
+						if (CheckAABBCollision(o1, o2))
+						{
+							SceneEditorItemQueue[CurrentSceneEditorLayer].erase(SceneEditorItemQueue[CurrentSceneEditorLayer].begin() + i);
+							break;
+						}
 					}
 				}
 			}
@@ -886,7 +1012,7 @@ namespace GLGame
 
 			ShouldShowCloseModalWindow = true;
 		}
-	}
+	} 
 }
 
 // Scene Editor End..
