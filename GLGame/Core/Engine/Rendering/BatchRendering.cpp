@@ -6,13 +6,13 @@ namespace GLGame
 
 	// Sprite Batch Class functions
 
-	SpriteBatcher::SpriteBatcher() : m_VBO(GL_ARRAY_BUFFER), m_ViewProjectionMatrix(glm::mat4(1.0f)), m_VerticesWritten(0), m_MaximumQuads(1000)
+	SpriteBatcher::SpriteBatcher() : m_VBO(GL_ARRAY_BUFFER), m_ViewProjectionMatrix(glm::mat4(1.0f)), m_VerticesWritten(0), m_MaximumQuads(1000), m_VertexSize(28)
 	{
 		// Todo : Query the driver to get the maximum texture slots
 
 		m_MaximumTextureSlots = 32;
 		memset(m_SlottedTextures, -1, 32 * sizeof(GLuint));
-		m_VertexBuffer = new GLfloat[m_MaximumTextureSlots * 28 * m_MaximumQuads];
+		m_VertexBuffer = new GLfloat[m_MaximumTextureSlots * m_VertexSize * m_MaximumQuads];
 		m_IndexBuffer = new GLuint[m_MaximumTextureSlots * 6 * m_MaximumQuads];
 		m_Shader.CreateShaderProgram(GLGAME_DEFAULT_BATCH_VERTEX, GLGAME_DEFAULT_BATCH_FRAGMENT);
 		m_LastElementTex = 0;
@@ -259,7 +259,7 @@ namespace GLGame
 			m_VertexBuffer[m_LastElementVBuff + 26] = opacity;
 			m_VertexBuffer[m_LastElementVBuff + 27] = (float)tex_element;
 
-			m_LastElementVBuff += 28;
+			m_LastElementVBuff += m_VertexSize;
 			m_VerticesWritten++;
 		}
 	}
@@ -338,7 +338,7 @@ namespace GLGame
 		m_VertexBuffer[m_LastElementVBuff + 26] = opacity;
 		m_VertexBuffer[m_LastElementVBuff + 27] = (float)tex_element;
 
-		m_LastElementVBuff += 28;
+		m_LastElementVBuff += m_VertexSize;
 		m_VerticesWritten++;
 	}
 
@@ -356,7 +356,7 @@ namespace GLGame
 		m_Shader.SetIntegerArray("u_Textures", m_SamplerArray, 32, 0);
 		
 		m_VAO.Bind();
-		m_VBO.BufferData((m_VerticesWritten * 28) * sizeof(GLfloat), m_VertexBuffer, GL_STATIC_DRAW);
+		m_VBO.BufferData((m_VerticesWritten * m_VertexSize) * sizeof(GLfloat), m_VertexBuffer, GL_STATIC_DRAW);
 		glDrawElements(GL_TRIANGLES, 6 * m_VerticesWritten, GL_UNSIGNED_INT, (void*)0);
 		m_VAO.Unbind();
 

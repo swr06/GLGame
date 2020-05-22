@@ -57,6 +57,7 @@ namespace GLGame
 
 		int m_MaximumTextureSlots;
 		const int m_MaximumQuads;
+		const int m_VertexSize;
 		int m_LastElementTex;
 		int m_LastElementVBuff;
 		unsigned int m_VerticesWritten;
