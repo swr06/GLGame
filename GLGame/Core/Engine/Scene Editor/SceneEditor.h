@@ -54,6 +54,7 @@ namespace GLGame
 			float y;
 			int layer;
 			SceneEditorItemTypes item_type;
+			glm::vec4 item_color = glm::vec4(1.0f);
 		};
 
 		GLFWwindow* _Init(GLFWwindow* share_window, ImGuiContext* context);
