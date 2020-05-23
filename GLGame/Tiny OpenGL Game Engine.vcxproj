@@ -175,6 +175,7 @@
     <ClCompile Include="Core\Engine\Events\Events.cpp" />
     <ClCompile Include="Core\Engine\Game\Game.cpp" />
     <ClCompile Include="Core\Engine\Instance\Instance.cpp" />
+    <ClCompile Include="Core\Engine\Lighting\LightBatcher.cpp" />
     <ClCompile Include="Core\Engine\Lighting\Lighting.cpp" />
     <ClCompile Include="Core\Engine\Logger\Log.cpp" />
     <ClCompile Include="Core\Engine\Object\Object.cpp" />
@@ -219,6 +220,7 @@
     <ClInclude Include="Core\Engine\Events\Events.h" />
     <ClInclude Include="Core\Engine\Game\Game.h" />
     <ClInclude Include="Core\Engine\Instance\Instance.h" />
+    <ClInclude Include="Core\Engine\Lighting\LightBatcher.h" />
     <ClInclude Include="Core\Engine\Lighting\Lighting.h" />
     <ClInclude Include="Core\Engine\Logger\Log.h" />
     <ClInclude Include="Core\Engine\Macros\Macros.h" />
@@ -268,6 +270,8 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</DeploymentContent>
     </None>
+    <None Include="Core\Shaders\DefaultLightingFragShader.glsl" />
+    <None Include="Core\Shaders\DefaultLightingVertexShader.glsl" />
     <None Include="Core\Shaders\DefaultVertexShader.glsl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</DeploymentContent>

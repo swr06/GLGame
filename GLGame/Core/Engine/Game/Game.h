@@ -34,6 +34,8 @@
 #include "Core\Engine\TextureAtlas\TextureAtlas.h"
 #include "Core\Engine\Logger\Log.h"
 #include "Core\Engine\Rendering\BatchRendering.h"
+#include "Core\Engine\Lighting\LightBatcher.h"
+#include "Core\Engine\Lighting\Lighting.h"
 
 namespace GLGame
 {

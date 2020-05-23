@@ -2,8 +2,7 @@
 
 namespace GLGame
 {
-	
-	static bool init_scene_editor = true;
+	static bool init_scene_editor = false;
 	static Game* GameRef = nullptr;
 	static GameInternal::_GlobalGameData GameData;
 
@@ -267,7 +266,9 @@ namespace GLGame
 						{
 							if (e->second[0].ItemObjectInstance.m_Object->HasSprite() && e->second[0].ItemObjectInstance.m_Object->IsVisible())
 							{
-								BatchRenderObjectInstances(e->second, *(e->second[0].ItemObjectInstance.m_Object->GetShader()), e->second[0].ItemObjectInstance.m_Object->GetModelMatrix(), m_CurrentScene->GetSceneCamera()->GetTransformMatrix(), m_CurrentScene->GetSceneCamera()->GetViewProjectionMatrix(), m_CurrentScene->GetSceneCamera()->GetScale(), camera_cull);
+								// TODO!
+
+								//BatchRenderObjectInstances(e->second, *(e->second[0].ItemObjectInstance.m_Object->GetShader()), e->second[0].ItemObjectInstance.m_Object->GetModelMatrix(), m_CurrentScene->GetSceneCamera()->GetTransformMatrix(), m_CurrentScene->GetSceneCamera()->GetViewProjectionMatrix(), m_CurrentScene->GetSceneCamera()->GetScale(), camera_cull);
 							}
 						}
 					}
@@ -281,6 +282,20 @@ namespace GLGame
 		}
 
 		m_Batcher->EndSpriteBatch();
+
+		double mx, my;
+		int w = 0, h = 0;
+		glfwGetCursorPos(m_GameWindow, &mx, &my);
+		glfwGetFramebufferSize(m_GameWindow, &w, &h);
+
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+
+		Light light_1(glm::vec3(mx, h - my, 0.0f), glm::vec4(1.0f,0.0f, 0.0f,1.0f), 800.0f);
+		Light light_2(glm::vec3(400.0f, 400.0f, 0.0f), glm::vec4(0.0f,1.0f, 0.0f,1.0f), 800.0f);
+		DrawLight(light_1);
+		DrawLight(light_2);
+
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 		// ImGui
 		{

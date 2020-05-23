@@ -48,7 +48,7 @@ namespace GLGame
 		// Attributes (4)
 		// 0 : Position
 		// 1 : Texture Coordinates
-		// 2 : Texture Opacity 
+		// 2 : Color
 		// 3 : Texture Element
 
 		m_VBO.VertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 10 * sizeof(GLfloat), (GLvoid*)0);

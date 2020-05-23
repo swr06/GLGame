@@ -16,11 +16,11 @@ namespace GLGame
 	{
 	public : 
 
-		void DrawLight();
+		Light(const glm::vec3& pos, const glm::vec4& color, float diameter);
 
-		glm::vec3 position;
-		glm::vec4 color;
-		float radius;
+		glm::vec3 m_Position;
+		glm::vec4 m_Color;
+		float m_Diameter;
 
 	};
 }

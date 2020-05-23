@@ -129,12 +129,12 @@ int main()
 		(string)"Core\\Resources\\Animations\\Yoda\\Frame (14).gif", 
 		});
 
-	bg = new Background("Core\\Resources\\grass_block.png");
+	//bg = new Background("Core\\Resources\\grass_block.png");
 
-	bg->SetMovesWithCamera(false);
+	//bg->SetMovesWithCamera(false);
 	scene.SetSceneCamera(cam);
 
-	scene.AddSceneBackground(bg, 1);
+	//scene.AddSceneBackground(bg, 1);
 	scene.AddObjectAtPosition(obj_2, 0, glm::vec3(200.0f, 200.0f, 0.0f));
 	scene.AddObjectAtPosition(obj_3, 0, glm::vec3(600.0f, 200.0f, 0.0f));
 	scene.AddObjectAtPosition(obj, -1, glm::vec3(170.0f, 10.0f, 0.0f));
@@ -155,7 +155,7 @@ int main()
 	game.SetCurrentScene(scene);
 	game.DisplayFpsOnWindowTitleBar(true);
 	game.SetBlend(true);
-	game.SetVSync(true);
+	game.SetVSync(false);
 
 	while (!game.GameWindowShouldClose())
 	{

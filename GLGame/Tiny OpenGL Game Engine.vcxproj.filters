@@ -238,6 +238,9 @@
     <ClCompile Include="Core\Engine\Logger\Log.cpp">
       <Filter>Source Files\Engine\Logger</Filter>
     </ClCompile>
+    <ClCompile Include="Core\Engine\Lighting\LightBatcher.cpp">
+      <Filter>Source Files\Engine\Lighting</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\Engine\Rendering\BatchRendering.h">
@@ -372,6 +375,9 @@
     <ClInclude Include="Core\Engine\Logger\Log.h">
       <Filter>Source Files\Engine\Logger</Filter>
     </ClInclude>
+    <ClInclude Include="Core\Engine\Lighting\LightBatcher.h">
+      <Filter>Source Files\Engine\Lighting</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Core\Resources\container.jpg">
@@ -405,6 +411,12 @@
     </None>
     <None Include="Core\Dependencies\imgui\imgui_main.cpp">
       <Filter>Source Files\Dependencies\imgui</Filter>
+    </None>
+    <None Include="Core\Shaders\DefaultLightingFragShader.glsl">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="Core\Shaders\DefaultLightingVertexShader.glsl">
+      <Filter>Source Files\Shaders</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
