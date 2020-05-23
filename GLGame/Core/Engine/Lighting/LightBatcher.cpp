@@ -38,37 +38,11 @@ namespace GLGame
 		float x = light.m_Position.x - light.m_Diameter / 2;
 		float y = light.m_Position.y - light.m_Diameter / 2;
 
-		//float width = light.m_Position.x + light.m_Diameter / 2;
-		//float height = light.m_Position.y + light.m_Diameter / 2;
-
 		float width = light.m_Diameter + x;
 		float height = light.m_Diameter + y;
 
-		//array<GLfloat, 8> UVCoords = { 1.0f, 1.0f,  1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f };
-		//array<GLfloat, 8> UVCoords = { 2.0f, 2.0f,  2.0f, -1.0f, -1.0f, -1.0f, -1.0f, 2.0f };
-
-		//// Best
-		//array<GLfloat, 8> UVCoords = { -1.0f, -1.0f,
-		//								-1.0f, 2.0f,
-		//								2.0f, 2.0f,
-		//								2.0f, -1.0f };
-
-		//// BEST!
-		//array<GLfloat, 8> UVCoords = {  2.0f, -1.0f,
-		//								-1.0f, -1.0f,
-		//								-1.0f, 2.0f,
-		//								 2.0f, 2.0f
-		//								};
-
-		// BEST!
-		array<GLfloat, 8> UVCoords = {  -1.0f, 2.0f,
-										-1.0f, -1.0f,
-										2.0f, -1.0f,
-										 2.0f, 2.0f
-		};
-
-
-		
+		array<GLfloat, 8> UVCoords = {  -1.0f, 2.0f, -1.0f, -1.0f, 2.0f, -1.0f, 2.0f, 2.0f };
+	
 		vertex_buffer[0] = width;
 		vertex_buffer[1] = y;
 		vertex_buffer[2] = light.m_Position.z;
