@@ -10,7 +10,7 @@ uniform mat4 u_ViewProjectionMatrix = mat4(1.0f);
 
 void main()
 {
+	gl_Position = u_ViewProjectionMatrix * vec4(position, 1.0f); 
 	FragColor = _color;
 	UVCoords = uv_coords; 
-	gl_Position = u_ViewProjectionMatrix * vec4(position, 1.0f); 
 }

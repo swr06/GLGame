@@ -18,6 +18,39 @@
 
 namespace GLGame
 {
+	class LightBatcher
+	{
+	public :
+
+		LightBatcher();
+		~LightBatcher();
+		void AddLightToBatch(const Light& light);
+		void StartLightBatch(const glm::mat4& vp_matrix);
+		void EndLightBatch();
+
+	private : 
+
+		void DrawFullBatch();
+
+		unsigned int m_CurrentElement;
+		int m_VerticesWritten;
+		const int m_MaxLights;
+
+		array<GLfloat, 8> m_UVCoords = { -1.0f, 2.0f, -1.0f, -1.0f, 2.0f, -1.0f, 2.0f, 2.0f };
+
+		// Vertex and index data
+		GLfloat* m_VertexBuffer;
+		GLuint* m_IndexBuffer;
+
+		// OpenGL Abstracted objects
+		VertexBuffer m_VBO;
+		VertexArray m_VAO;
+		IndexBuffer m_IBO;
+		Shader m_Shader;
+
+		glm::mat4 m_VPMatrix = glm::mat4(1.0f);
+	};
+
 	void DrawLight(Light light);
 
 }

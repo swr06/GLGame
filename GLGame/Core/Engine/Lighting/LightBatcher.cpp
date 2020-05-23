@@ -89,4 +89,137 @@ namespace GLGame
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)0);
 		VAO.Unbind();
 	}
+
+	LightBatcher::LightBatcher() : m_VBO(GL_ARRAY_BUFFER), m_MaxLights(10), m_VertexBuffer(nullptr), m_IndexBuffer(nullptr)
+	{
+		m_VertexBuffer = new GLfloat[35 * m_MaxLights];
+		m_IndexBuffer = new GLuint[6 * m_MaxLights];
+		m_VerticesWritten = 0;
+		m_CurrentElement = 0;
+
+		// Generating the index buffer
+		int index_offset = 0;
+
+		for (size_t i = 0; i < 6 * m_MaxLights; i += 6)
+		{
+			m_IndexBuffer[i] = 0 + index_offset;
+			m_IndexBuffer[i + 1] = 1 + index_offset;
+			m_IndexBuffer[i + 2] = 2 + index_offset;
+			m_IndexBuffer[i + 3] = 2 + index_offset;
+			m_IndexBuffer[i + 4] = 3 + index_offset;
+			m_IndexBuffer[i + 5] = 0 + index_offset;
+
+			index_offset = index_offset + 4;
+		}
+
+		m_Shader.CreateShaderProgram(GLGAME_DEFAULT_LIGHT_VERTEX, GLGAME_DEFAULT_LIGHT_FRAGMENT);
+		DebugGL;
+		m_VAO.Bind();
+		m_IBO.BufferData(6 * m_MaxLights * sizeof(GLuint), m_IndexBuffer, GL_STATIC_DRAW);
+		DebugGL;
+		// Position attribute
+		m_VBO.VertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), (GLvoid*)0);
+
+		// Color attribute
+		m_VBO.VertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+
+		// UV Coordinates
+		m_VBO.VertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), (GLvoid*)(7 * sizeof(GLfloat)));
+		DebugGL;
+		m_VAO.Unbind();
+		DebugGL;
+	}
+
+	LightBatcher::~LightBatcher()
+	{
+		delete[] m_VertexBuffer;
+		delete[] m_IndexBuffer;
+	}
+
+	void LightBatcher::AddLightToBatch(const Light& light)
+	{
+		if (m_VerticesWritten == m_MaxLights)
+		{
+			DrawFullBatch();
+		}
+
+		float x = light.m_Position.x - light.m_Diameter / 2;
+		float y = light.m_Position.y - light.m_Diameter / 2;
+
+		float width = light.m_Diameter + x;
+		float height = light.m_Diameter + y;
+
+		m_VertexBuffer[m_CurrentElement + 0] = width;
+		m_VertexBuffer[m_CurrentElement + 1] = y;
+		m_VertexBuffer[m_CurrentElement + 2] = light.m_Position.z;
+		m_VertexBuffer[m_CurrentElement + 3] = light.m_Color.r;
+		m_VertexBuffer[m_CurrentElement + 4] = light.m_Color.g;
+		m_VertexBuffer[m_CurrentElement + 5] = light.m_Color.b;
+		m_VertexBuffer[m_CurrentElement + 6] = light.m_Color.a;
+		m_VertexBuffer[m_CurrentElement + 7] = m_UVCoords[0];
+		m_VertexBuffer[m_CurrentElement + 8] = m_UVCoords[1];
+
+		m_VertexBuffer[m_CurrentElement + 9] = width;
+		m_VertexBuffer[m_CurrentElement + 10] = height;
+		m_VertexBuffer[m_CurrentElement + 11] = light.m_Position.z;
+		m_VertexBuffer[m_CurrentElement + 12] = light.m_Color.r;
+		m_VertexBuffer[m_CurrentElement + 13] = light.m_Color.g;
+		m_VertexBuffer[m_CurrentElement + 14] = light.m_Color.b;
+		m_VertexBuffer[m_CurrentElement + 15] = light.m_Color.a;
+		m_VertexBuffer[m_CurrentElement + 16] = m_UVCoords[2];
+		m_VertexBuffer[m_CurrentElement + 17] = m_UVCoords[3];
+
+		m_VertexBuffer[m_CurrentElement + 18] = x;
+		m_VertexBuffer[m_CurrentElement + 19] = height;
+		m_VertexBuffer[m_CurrentElement + 20] = light.m_Position.z;
+		m_VertexBuffer[m_CurrentElement + 21] = light.m_Color.r;
+		m_VertexBuffer[m_CurrentElement + 22] = light.m_Color.g;
+		m_VertexBuffer[m_CurrentElement + 23] = light.m_Color.b;
+		m_VertexBuffer[m_CurrentElement + 24] = light.m_Color.a;
+		m_VertexBuffer[m_CurrentElement + 25] = m_UVCoords[4];
+		m_VertexBuffer[m_CurrentElement + 26] = m_UVCoords[5];
+
+		m_VertexBuffer[m_CurrentElement + 27] = x;
+		m_VertexBuffer[m_CurrentElement + 28] = y;
+		m_VertexBuffer[m_CurrentElement + 29] = light.m_Position.z;
+		m_VertexBuffer[m_CurrentElement + 30] = light.m_Color.r;
+		m_VertexBuffer[m_CurrentElement + 31] = light.m_Color.g;
+		m_VertexBuffer[m_CurrentElement + 32] = light.m_Color.b;
+		m_VertexBuffer[m_CurrentElement + 33] = light.m_Color.a;
+		m_VertexBuffer[m_CurrentElement + 34] = m_UVCoords[6];
+		m_VertexBuffer[m_CurrentElement + 35] = m_UVCoords[7];
+
+		m_CurrentElement += 35;
+		m_VerticesWritten += 1;
+	}
+
+	void LightBatcher::StartLightBatch(const glm::mat4& vp_matrix)
+	{
+		// Clear the previous batch of lights
+
+		DrawFullBatch();
+
+		m_VPMatrix = vp_matrix;
+		m_CurrentElement = 0;
+		m_VerticesWritten = 0;
+	}
+
+	void LightBatcher::EndLightBatch()
+	{
+		DrawFullBatch();
+	}
+
+	void LightBatcher::DrawFullBatch()
+	{
+		m_Shader.Use();
+		DebugGL;
+		m_Shader.SetMatrix4("u_ViewProjectionMatrix", m_VPMatrix, 0);
+		m_VAO.Bind();
+		m_VBO.BufferData((m_VerticesWritten * 35) * sizeof(GLfloat), m_VertexBuffer, GL_STATIC_DRAW);
+		glDrawElements(GL_TRIANGLES, m_VerticesWritten * 6, GL_UNSIGNED_INT, (void*)0);
+		m_VAO.Unbind();
+	
+		m_CurrentElement = 0;
+		m_VerticesWritten = 0;
+	} 
 }

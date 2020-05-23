@@ -135,6 +135,7 @@ namespace GLGame
 		Shader m_DefaultBackgroundShader;
 
 		bool* m_KeyHoldEventBuffer = nullptr;
-		SpriteBatcher *m_Batcher;
+		SpriteBatcher *m_SpriteBatcher;
+		LightBatcher* m_LightBatcher;
 	};
 }

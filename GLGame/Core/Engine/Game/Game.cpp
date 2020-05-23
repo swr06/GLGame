@@ -112,7 +112,8 @@ namespace GLGame
 		GameData = this->_GetGlobalData();
 
 		// Create the sprite batcher
-		m_Batcher = new SpriteBatcher;
+		m_SpriteBatcher = new SpriteBatcher;
+		m_LightBatcher = new LightBatcher;
 
 		// Set the key hold buffer
 		m_KeyHoldEventBuffer = GLGameInternalGetKeyVal();
@@ -239,7 +240,7 @@ namespace GLGame
 
 		// Goes through each layer and batches a group of objects and then draws it 
 
-		m_Batcher->StartSpriteBatch(m_CurrentScene->GetSceneCamera());
+		m_SpriteBatcher->StartSpriteBatch(m_CurrentScene->GetSceneCamera());
 
 		for (auto layer_iterator = current_scene_data.begin(); layer_iterator != current_scene_data.end(); layer_iterator++)
 		{
@@ -257,7 +258,7 @@ namespace GLGame
 							{
 								for (int i = 0; i < e->second.size(); i++)
 								{
-									m_Batcher->AddSpriteToBatch(e->second[i]);
+									m_SpriteBatcher->AddSpriteToBatch(e->second[i]);
 								}
 							}
 						}
@@ -281,7 +282,7 @@ namespace GLGame
 			}
 		}
 
-		m_Batcher->EndSpriteBatch();
+		m_SpriteBatcher->EndSpriteBatch();
 
 		double mx, my;
 		int w = 0, h = 0;
@@ -290,10 +291,12 @@ namespace GLGame
 
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE);
 
-		Light light_1(glm::vec3(mx, h - my, 0.0f), glm::vec4(1.0f,0.0f, 0.0f,1.0f), 800.0f);
-		Light light_2(glm::vec3(400.0f, 400.0f, 0.0f), glm::vec4(0.0f,1.0f, 0.0f,1.0f), 800.0f);
-		DrawLight(light_1);
-		DrawLight(light_2);
+		Light light_1(glm::vec3(mx, h - my, 0.0f), glm::vec4(1.0f,0.0f, 0.0f,1.0f), 100.0f);
+		Light light_2(glm::vec3(400.0f, 400.0f, 0.0f), glm::vec4(0.0f,1.0f, 0.0f,1.0f), 100.0f);
+		m_LightBatcher->StartLightBatch(m_CurrentScene->GetSceneCamera()->GetViewMatrix());
+		m_LightBatcher->AddLightToBatch(light_1);
+		m_LightBatcher->AddLightToBatch(light_2);
+		m_LightBatcher->EndLightBatch();
 
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
