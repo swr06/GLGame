@@ -9,6 +9,10 @@ A Tiny 2D OpenGL based C++ Game Engine that is fast, lightweight and comes with 
 - Abstract OpenGL (To write custom code) ✓
 - Camera Culling ✓
 - Sprite Batching ✓
+- Light Batching ✓
+- Animations ✓
+  - Custom animation speed ✓
+ - Scene Editor (W.I.P)
 - Transformations ✓
 - Logger ✓
 - Audio 
