@@ -4,8 +4,8 @@ namespace GLGame
 {
 	void DrawLight(Light light)
 	{
-		GLfloat* vertex_buffer = new GLfloat[35 * 4];
-		GLuint index_buffer[] = { 0,1,2,2,3,0 };
+		GLfloat* vertex_buffer = new GLfloat[36];
+		GLuint index_buffer[] = { 0,1,3,1,2,3 };
 
 		// OpenGL abstracted variables
 		Shader light_shader;
@@ -85,7 +85,7 @@ namespace GLGame
 
 		// Draw the triangles
 		VAO.Bind();
-		VBO.BufferData(35 * sizeof(GLfloat), vertex_buffer, GL_STATIC_DRAW);
+		VBO.BufferData(36 * sizeof(GLfloat), vertex_buffer, GL_STATIC_DRAW);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)0);
 		VAO.Unbind();
 	}
@@ -104,19 +104,18 @@ namespace GLGame
 		{
 			m_IndexBuffer[i] = 0 + index_offset;
 			m_IndexBuffer[i + 1] = 1 + index_offset;
-			m_IndexBuffer[i + 2] = 2 + index_offset;
-			m_IndexBuffer[i + 3] = 2 + index_offset;
-			m_IndexBuffer[i + 4] = 3 + index_offset;
-			m_IndexBuffer[i + 5] = 0 + index_offset;
+			m_IndexBuffer[i + 2] = 3 + index_offset;
+			m_IndexBuffer[i + 3] = 1 + index_offset;
+			m_IndexBuffer[i + 4] = 2 + index_offset;
+			m_IndexBuffer[i + 5] = 3 + index_offset;
 
 			index_offset = index_offset + 4;
 		}
 
 		m_Shader.CreateShaderProgram(GLGAME_DEFAULT_LIGHT_VERTEX, GLGAME_DEFAULT_LIGHT_FRAGMENT);
-		DebugGL;
 		m_VAO.Bind();
+
 		m_IBO.BufferData(6 * m_MaxLights * sizeof(GLuint), m_IndexBuffer, GL_STATIC_DRAW);
-		DebugGL;
 		// Position attribute
 		m_VBO.VertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), (GLvoid*)0);
 
@@ -125,9 +124,7 @@ namespace GLGame
 
 		// UV Coordinates
 		m_VBO.VertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), (GLvoid*)(7 * sizeof(GLfloat)));
-		DebugGL;
 		m_VAO.Unbind();
-		DebugGL;
 	}
 
 	LightBatcher::~LightBatcher()
@@ -212,10 +209,10 @@ namespace GLGame
 	void LightBatcher::DrawFullBatch()
 	{
 		m_Shader.Use();
-		DebugGL;
+
 		m_Shader.SetMatrix4("u_ViewProjectionMatrix", m_VPMatrix, 0);
 		m_VAO.Bind();
-		m_VBO.BufferData((m_VerticesWritten * 35) * sizeof(GLfloat), m_VertexBuffer, GL_STATIC_DRAW);
+		m_VBO.BufferData((m_VerticesWritten * 36) * sizeof(GLfloat), m_VertexBuffer, GL_STATIC_DRAW);
 		glDrawElements(GL_TRIANGLES, m_VerticesWritten * 6, GL_UNSIGNED_INT, (void*)0);
 		m_VAO.Unbind();
 	
