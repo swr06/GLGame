@@ -108,6 +108,9 @@ void EventCallback(Event e)
 
 int main()
 {
+	//Light light_1(glm::vec3(mx, h - my, 0.0f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f), 200.0f);
+	Light light_2(glm::vec3(400.0f, 400.0f, 0.0f), glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), 200.0f);
+	Light light_3(glm::vec3(600.0f, 400.0f, 0.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), 200.0f);
 	Texture tex1, tex2, tile_sheet;
 	Scene scene; 
 	//Animation ani({&tex1, &tex2});
@@ -131,6 +134,9 @@ int main()
 
 	//bg = new Background("Core\\Resources\\grass_block.png");
 
+	scene.AddLightAtPosition(light_2);
+	scene.AddLightAtPosition(light_3);
+
 	//bg->SetMovesWithCamera(false);
 	scene.SetSceneCamera(cam);
 
@@ -139,7 +145,7 @@ int main()
 	scene.AddObjectAtPosition(obj_3, 0, glm::vec3(600.0f, 200.0f, 0.0f));
 	scene.AddObjectAtPosition(obj, -1, glm::vec3(170.0f, 10.0f, 0.0f));
 	scene.AddObjectAtPosition(obj, 1, glm::vec3(400.0f, 150.0f, 0.0f));
-	scene.AddObjectAtPosition(obj, 2, glm::vec3(400.0f, 400.0f, 0.0f));
+	//scene.AddObjectAtPosition(obj, 2, glm::vec3(400.0f, 400.0f, 0.0f));
 
 	tex1.CreateTexture("Core\\Resources\\tree.png");
 	tex2.CreateTexture("Core\\Resources\\ghost.png"); // Alpha = 50.0%

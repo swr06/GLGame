@@ -64,6 +64,11 @@ namespace GLGame
 		m_SceneItems[layer][object_id].push_back(item);
 	}
 
+	void Scene::AddLightAtPosition(Light& light)
+	{
+		m_SceneLights.push_back(&light);
+	}
+
 	void Scene::UpdateObjectPosition(Object& object, const glm::vec3& position)
 	{
 		size_t size = 0;

@@ -218,18 +218,21 @@ namespace GLGame
 
 		for (auto background_iterator = current_scene_background_data.begin(); background_iterator != current_scene_background_data.end(); background_iterator++)
 		{
-			if (background_iterator->second.background->MovesWithCamera())
+			if (background_iterator->second.background != nullptr)
 			{
-				NormallyRenderBackgrounds(&background_iterator->second,
-					m_DefaultBackgroundShader, window_width, window_height, glm::mat4(1.0f),
-					glm::mat4(1.0f), m_CurrentScene->GetSceneCamera()->GetViewProjectionMatrix());
-			}
+				if (background_iterator->second.background->MovesWithCamera())
+				{
+					NormallyRenderBackgrounds(&background_iterator->second,
+						m_DefaultBackgroundShader, window_width, window_height, glm::mat4(1.0f),
+						glm::mat4(1.0f), m_CurrentScene->GetSceneCamera()->GetViewProjectionMatrix());
+				}
 
-			else
-			{
-				NormallyRenderBackgrounds(&background_iterator->second,
-					m_DefaultBackgroundShader, window_width, window_height, glm::mat4(1.0f),
-					glm::mat4(1.0f), m_CurrentScene->GetSceneCamera()->GetProjectionMatrix());
+				else
+				{
+					NormallyRenderBackgrounds(&background_iterator->second,
+						m_DefaultBackgroundShader, window_width, window_height, glm::mat4(1.0f),
+						glm::mat4(1.0f), m_CurrentScene->GetSceneCamera()->GetProjectionMatrix());
+				}
 			}
 		}
 
@@ -248,7 +251,7 @@ namespace GLGame
 			{
 				if (e->second.size() > 0)
 				{
-					if (e->second[0].ItemType == sitem_type_object)
+					if (e->second[0].ItemType == sitem_type_object && e->second[0].ItemObjectInstance.m_Object != nullptr)
 					{
 						e->second[0].ItemObjectInstance.m_Object->IntUpdate(m_FpsCount);
 
@@ -274,7 +277,7 @@ namespace GLGame
 						}
 					}
 
-					else if (e->second[0].ItemType == sitem_type_sprite)
+					else if (e->second[0].ItemType == sitem_type_sprite && e->second[0].ItemSpriteInstance.m_Sprite != nullptr)
 					{
 						// Render the layer's sprites
 					}
@@ -289,17 +292,26 @@ namespace GLGame
 		glfwGetCursorPos(m_GameWindow, &mx, &my);
 		glfwGetFramebufferSize(m_GameWindow, &w, &h);
 
+		// Set the lighting blend function
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE);
 
-		Light light_1(glm::vec3(mx, h - my, 0.0f), glm::vec4(1.0f,0.0f, 0.0f,1.0f), 200.0f);
-		Light light_2(glm::vec3(400.0f, 400.0f, 0.0f), glm::vec4(0.0f,1.0f, 0.0f, 1.0f), 200.0f);
-		Light light_3(glm::vec3(400.0f, 400.0f, 0.0f), glm::vec4(1.0f,1.0f, 1.0f, 1.0f), 200.0f);
-		
+		vector<Light*> SceneLightData = m_CurrentScene->IntGetSceneLightData();
+
  		m_LightBatcher->StartLightBatch(m_CurrentScene->GetSceneCamera()->GetViewProjectionMatrix());
- 		m_LightBatcher->AddLightToBatch(light_1);
- 		m_LightBatcher->AddLightToBatch(light_2);
+
+		// Draw lights 
+		for (int i = 0; i < SceneLightData.size(); i++)
+		{
+			if (SceneLightData.at(i) != nullptr)
+			{
+				m_LightBatcher->AddLightToBatch(*(SceneLightData.at(i)));
+			}
+		}
+
  		m_LightBatcher->EndLightBatch();
 
+		// Revert the lighting blend function
+		// TODO : REVERT IT TO THE USER DEFINED BLEND FUNCTION
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 		// ImGui

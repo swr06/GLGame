@@ -13,6 +13,7 @@
 #include "Core\Engine\Instance\Instance.h"
 #include "Core\Engine\Camera\Camera.h"
 #include "Core\Engine\Background\Background.h"
+#include "Core\Engine\Lighting\Lighting.h"
 
 namespace GLGame
 {
@@ -41,6 +42,7 @@ namespace GLGame
 
 		// Object Functions
 		void AddObjectAtPosition(Object &object, int layer, const glm::vec3& position);
+		void AddLightAtPosition(Light& light);
 		void UpdateObjectPosition(Object& object, const glm::vec3& position);
 		void IncrementObjectPosition(Object& object, const glm::vec3& increment);
 
@@ -50,11 +52,13 @@ namespace GLGame
 
 		map<int, unordered_map<string, vector<SceneDataItem>>>* IntGetSceneData() { return &m_SceneItems; };
 		map<int, SceneBackground>& IntGetSceneBackgroundData() { return m_SceneBackgrounds; }
+		vector<Light*> IntGetSceneLightData() { return m_SceneLights; }
 
 	private : 
 
 		map<int, SceneBackground> m_SceneBackgrounds;
 		map<int, unordered_map<string, vector<SceneDataItem>>> m_SceneItems;
+		vector<Light*> m_SceneLights;
 
 		Camera* m_SceneCamera;
 		uint32_t m_ID; 
