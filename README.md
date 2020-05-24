@@ -6,14 +6,14 @@ Created by Samuel Rasquinha using C++17 and OpenGL 3.3
 </p>
 
 A Tiny 2D OpenGL based C++ Game Engine that is fast, lightweight and comes with a level editor and the below features :
-- Abstract OpenGL (To write custom code)
-- Camera Culling
-- Sprite Batching
-- Transformations
-- Logger
+- Abstract OpenGL (To write custom code) ✓
+- Camera Culling ✓
+- Sprite Batching ✓
+- Transformations ✓
+- Logger ✓
 - Audio 
 - Post Processing (W.I.P)
-- Lighting 
+- Lighting ✓
 - Particles
 - Physics
 - Helper functions (such as windowing functions etc..)
