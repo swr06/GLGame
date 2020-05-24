@@ -1,12 +1,13 @@
 #pragma once
 
-#include <thread>
 #include <GL/glew.h>
 
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+
+#include <vector>
 
 #include "Core\OpenGL Classes\GLDebug\GLDebug.h"
 
@@ -22,5 +23,21 @@ namespace GLGame
 		glm::vec3 m_Position;
 		glm::vec4 m_Color;
 		float m_Diameter;
+	};
+
+	class BlinkingLight
+	{
+	public : 
+		BlinkingLight(Light light, int speed, int frames, float max_brightness);
+		const Light& GetCurrentLightFrame();
+		void UpdateLightPulse(long long CurrFrame);
+
+	private : 
+
+		std::vector<Light> m_Frames;
+		Light m_CurrentFrame;
+		int m_Speed;
+		int m_CurrFrameNo;
+		float m_MaxBrightness;
 	};
 }

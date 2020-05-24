@@ -109,8 +109,10 @@ void EventCallback(Event e)
 int main()
 {
 	//Light light_1(glm::vec3(mx, h - my, 0.0f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f), 200.0f);
-	Light light_2(glm::vec3(400.0f, 400.0f, 0.0f), glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), 200.0f);
-	Light light_3(glm::vec3(600.0f, 400.0f, 0.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), 200.0f);
+	Light light_2(glm::vec3(400.0f, 400.0f, 0.0f), glm::vec4(0.0f, 1.0f, 0.0f, 2.0f), 400.0f);
+	Light light_t(glm::vec3(100.0f, 300.0f, 0.0f), glm::vec4(0.0f, 1.0f, 0.0f, 2.0f), 400.0f);
+	Light light_3(glm::vec3(600.0f, 400.0f, 0.0f), glm::vec4(0.0f, 1.0f, 1.0f, 2.0f), 400.0f);
+	BlinkingLight pLight(light_t, 1, 100, 1.0f);
 	Texture tex1, tex2, tile_sheet;
 	Scene scene; 
 	//Animation ani({&tex1, &tex2});
@@ -136,6 +138,7 @@ int main()
 
 	scene.AddLightAtPosition(light_2);
 	scene.AddLightAtPosition(light_3);
+	scene.AddBlinkingLightAtPosition(pLight);
 
 	//bg->SetMovesWithCamera(false);
 	scene.SetSceneCamera(cam);
@@ -161,7 +164,7 @@ int main()
 	game.SetCurrentScene(scene);
 	game.DisplayFpsOnWindowTitleBar(true);
 	game.SetBlend(true);
-	game.SetVSync(false);
+	game.SetVSync(true);
 
 	while (!game.GameWindowShouldClose())
 	{

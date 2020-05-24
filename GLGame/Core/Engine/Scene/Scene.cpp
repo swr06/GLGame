@@ -69,6 +69,11 @@ namespace GLGame
 		m_SceneLights.push_back(&light);
 	}
 
+	void Scene::AddBlinkingLightAtPosition(BlinkingLight& blinking_light)
+	{
+		m_SceneBlinkingLights.push_back(&blinking_light);
+	}
+
 	void Scene::UpdateObjectPosition(Object& object, const glm::vec3& position)
 	{
 		size_t size = 0;

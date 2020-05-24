@@ -43,6 +43,7 @@ namespace GLGame
 		// Object Functions
 		void AddObjectAtPosition(Object &object, int layer, const glm::vec3& position);
 		void AddLightAtPosition(Light& light);
+		void AddBlinkingLightAtPosition(BlinkingLight& blinking_light);
 		void UpdateObjectPosition(Object& object, const glm::vec3& position);
 		void IncrementObjectPosition(Object& object, const glm::vec3& increment);
 
@@ -50,15 +51,18 @@ namespace GLGame
 		inline Camera* GetSceneCamera() { return m_SceneCamera; }; 
 		inline uint32_t GetSceneID() const { return m_ID; }
 
+		// Internal functions
 		map<int, unordered_map<string, vector<SceneDataItem>>>* IntGetSceneData() { return &m_SceneItems; };
 		map<int, SceneBackground>& IntGetSceneBackgroundData() { return m_SceneBackgrounds; }
-		vector<Light*> IntGetSceneLightData() { return m_SceneLights; }
+		vector<Light*>& IntGetSceneLightData() { return m_SceneLights; }
+		vector<BlinkingLight*>& IntGetSceneBlinkingLightData() { return m_SceneBlinkingLights; }
 
 	private : 
 
 		map<int, SceneBackground> m_SceneBackgrounds;
 		map<int, unordered_map<string, vector<SceneDataItem>>> m_SceneItems;
 		vector<Light*> m_SceneLights;
+		vector<BlinkingLight*> m_SceneBlinkingLights;
 
 		Camera* m_SceneCamera;
 		uint32_t m_ID; 

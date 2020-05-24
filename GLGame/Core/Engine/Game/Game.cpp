@@ -295,7 +295,7 @@ namespace GLGame
 		// Set the lighting blend function
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE);
 
-		vector<Light*> SceneLightData = m_CurrentScene->IntGetSceneLightData();
+		const vector<Light*> &SceneLightData = m_CurrentScene->IntGetSceneLightData();
 
  		m_LightBatcher->StartLightBatch(m_CurrentScene->GetSceneCamera()->GetViewProjectionMatrix());
 
@@ -309,6 +309,26 @@ namespace GLGame
 		}
 
  		m_LightBatcher->EndLightBatch();
+
+		// Draw the Pulsating lights
+
+		vector<BlinkingLight*> &SceneBlinkingLightData = m_CurrentScene->IntGetSceneBlinkingLightData();
+
+		m_LightBatcher->StartLightBatch(m_CurrentScene->GetSceneCamera()->GetViewProjectionMatrix());
+
+		// Draw lights 
+		for (int i = 0; i < SceneBlinkingLightData.size(); i++)
+		{
+			if (SceneBlinkingLightData[i] != nullptr)
+			{
+				m_LightBatcher->AddLightToBatch(SceneBlinkingLightData[i]->GetCurrentLightFrame());
+				SceneBlinkingLightData[i]->UpdateLightPulse(m_FpsCount);
+			}
+		}
+
+		m_LightBatcher->EndLightBatch();
+
+		////////
 
 		// Revert the lighting blend function
 		// TODO : REVERT IT TO THE USER DEFINED BLEND FUNCTION
