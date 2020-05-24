@@ -291,17 +291,14 @@ namespace GLGame
 
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE);
 
-		Light light_1(glm::vec3(mx, h - my, 0.0f), glm::vec4(1.0f,0.0f, 0.0f,10.0f), 800.0f);
-		Light light_2(glm::vec3(400.0f, 400.0f, 0.0f), glm::vec4(0.0f,1.0f, 0.0f,10.0f), 800.0f);
-		Light light_3(glm::vec3(400.0f, 400.0f, 0.0f), glm::vec4(1.0f,1.0f, 1.0f,5.0f), 400.0f);
-	/*	DrawLight(light_1);
-		DrawLight(light_2);
-		DrawLight(light_3);*/
+		Light light_1(glm::vec3(mx, h - my, 0.0f), glm::vec4(1.0f,0.0f, 0.0f,1.0f), 200.0f);
+		Light light_2(glm::vec3(400.0f, 400.0f, 0.0f), glm::vec4(0.0f,1.0f, 0.0f, 1.0f), 200.0f);
+		Light light_3(glm::vec3(400.0f, 400.0f, 0.0f), glm::vec4(1.0f,1.0f, 1.0f, 1.0f), 200.0f);
 		
-		m_LightBatcher->StartLightBatch(m_CurrentScene->GetSceneCamera()->GetViewMatrix());
-		m_LightBatcher->AddLightToBatch(light_1);
-		m_LightBatcher->AddLightToBatch(light_2);
-		m_LightBatcher->EndLightBatch();
+ 		m_LightBatcher->StartLightBatch(m_CurrentScene->GetSceneCamera()->GetViewProjectionMatrix());
+ 		m_LightBatcher->AddLightToBatch(light_1);
+ 		m_LightBatcher->AddLightToBatch(light_2);
+ 		m_LightBatcher->EndLightBatch();
 
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 

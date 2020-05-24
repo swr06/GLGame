@@ -2,6 +2,7 @@
 
 namespace GLGame
 {
+	// This function is INCREDIBLY slow. It was originally only used to test my lighting concept. Please use LightBatcher
 	void DrawLight(Light light)
 	{
 		GLfloat* vertex_buffer = new GLfloat[36];
@@ -41,8 +42,8 @@ namespace GLGame
 		float width = light.m_Diameter + x;
 		float height = light.m_Diameter + y;
 
-		array<GLfloat, 8> UVCoords = {  -1.0f, 2.0f, -1.0f, -1.0f, 2.0f, -1.0f, 2.0f, 2.0f };
-	
+		array<GLfloat, 8> UVCoords = { -1.0f, 2.0f, -1.0f, -1.0f, 2.0f, -1.0f, 2.0f, 2.0f };
+
 		vertex_buffer[0] = width;
 		vertex_buffer[1] = y;
 		vertex_buffer[2] = light.m_Position.z;
@@ -53,7 +54,7 @@ namespace GLGame
 		vertex_buffer[7] = UVCoords[0];
 		vertex_buffer[8] = UVCoords[1];
 
-		vertex_buffer[9]  =  width;
+		vertex_buffer[9] = width;
 		vertex_buffer[10] = height;
 		vertex_buffer[11] = light.m_Position.z;
 		vertex_buffer[12] = light.m_Color.r;
@@ -90,7 +91,7 @@ namespace GLGame
 		VAO.Unbind();
 	}
 
-	LightBatcher::LightBatcher() : m_VBO(GL_ARRAY_BUFFER), m_MaxLights(10), m_VertexBuffer(nullptr), m_IndexBuffer(nullptr)
+	LightBatcher::LightBatcher() : m_VBO(GL_ARRAY_BUFFER), m_MaxLights(512), m_VertexBuffer(nullptr), m_IndexBuffer(nullptr)
 	{
 		m_VertexBuffer = new GLfloat[35 * m_MaxLights];
 		m_IndexBuffer = new GLuint[6 * m_MaxLights];
@@ -133,7 +134,7 @@ namespace GLGame
 		delete[] m_IndexBuffer;
 	}
 
-	void LightBatcher::AddLightToBatch(const Light& light)
+	void LightBatcher::AddLightToBatch(Light light)
 	{
 		if (m_VerticesWritten == m_MaxLights)
 		{
@@ -186,7 +187,7 @@ namespace GLGame
 		m_VertexBuffer[m_CurrentElement + 34] = m_UVCoords[6];
 		m_VertexBuffer[m_CurrentElement + 35] = m_UVCoords[7];
 
-		m_CurrentElement += 35;
+		m_CurrentElement += 36;
 		m_VerticesWritten += 1;
 	}
 
@@ -215,8 +216,8 @@ namespace GLGame
 		m_VBO.BufferData((m_VerticesWritten * 36) * sizeof(GLfloat), m_VertexBuffer, GL_STATIC_DRAW);
 		glDrawElements(GL_TRIANGLES, m_VerticesWritten * 6, GL_UNSIGNED_INT, (void*)0);
 		m_VAO.Unbind();
-	
+
 		m_CurrentElement = 0;
 		m_VerticesWritten = 0;
-	} 
+	}
 }

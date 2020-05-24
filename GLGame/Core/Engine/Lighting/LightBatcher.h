@@ -24,7 +24,7 @@ namespace GLGame
 
 		LightBatcher();
 		~LightBatcher();
-		void AddLightToBatch(const Light& light);
+		void AddLightToBatch(Light light);
 		void StartLightBatch(const glm::mat4& vp_matrix);
 		void EndLightBatch();
 
@@ -32,7 +32,7 @@ namespace GLGame
 
 		void DrawFullBatch();
 
-		unsigned int m_CurrentElement;
+		int m_CurrentElement;
 		int m_VerticesWritten;
 		const int m_MaxLights;
 
@@ -51,6 +51,7 @@ namespace GLGame
 		glm::mat4 m_VPMatrix = glm::mat4(1.0f);
 	};
 
+	// This function is INCREDIBLY slow. It was originally only used to test my lighting concept. Please use LightBatcher as it much more fast and reliable
 	void DrawLight(Light light);
 
 }

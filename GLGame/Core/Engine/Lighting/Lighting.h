@@ -16,11 +16,11 @@ namespace GLGame
 	{
 	public : 
 
+		// Since this class only has 3 variables that need to be changed, there's no practical use of making them private.
 		Light(const glm::vec3& pos, const glm::vec4& color, float diameter);
 
 		glm::vec3 m_Position;
 		glm::vec4 m_Color;
 		float m_Diameter;
-
 	};
 }
