@@ -10,6 +10,7 @@ namespace GLGame
 	{
 		// Todo : Query the driver to get the maximum texture slots
 
+		m_AmbientLight = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 		m_MaximumTextureSlots = 32;
 		memset(m_SlottedTextures, -1, 32 * sizeof(GLuint));
 		m_VertexBuffer = new GLfloat[m_MaximumTextureSlots * m_VertexSize * m_MaximumQuads];
@@ -64,11 +65,12 @@ namespace GLGame
 		delete[] m_IndexBuffer;
 	}
 
-	void SpriteBatcher::StartSpriteBatch(Camera* scene_camera)
+	void SpriteBatcher::StartSpriteBatch(Camera* scene_camera, const glm::vec4& ambient_light)
 	{
 		glm::vec4 camera_projection = scene_camera->GetProjectionCoords();
 		glm::vec3 camera_position = scene_camera->GetPosition();
 
+		m_AmbientLight = ambient_light;
 		m_ViewProjectionMatrix = scene_camera->GetViewProjectionMatrix();
 
 		m_CameraCull.x = camera_position.x;
@@ -376,6 +378,7 @@ namespace GLGame
 			glBindTexture(GL_TEXTURE_2D, (GLuint) m_SlottedTextures[i]);
 		}
 
+		m_Shader.SetVector4f("u_AmbientColor", m_AmbientLight, 0);
 		m_Shader.SetMatrix4("u_ViewProjectionMatrix", m_ViewProjectionMatrix, 0);
 		m_Shader.SetIntegerArray("u_Textures", m_SamplerArray, 32, 0);
 		
@@ -384,6 +387,8 @@ namespace GLGame
 		glDrawElements(GL_TRIANGLES, 6 * m_VerticesWritten, GL_UNSIGNED_INT, (void*)0);
 		m_VAO.Unbind();
 
+		m_ViewProjectionMatrix = glm::mat4(1.0f);
+		m_AmbientLight = glm::vec4(1.0f);
 		m_VerticesWritten = 0;
 		m_LastElementVBuff = 0;
 		m_LastElementTex = 0;

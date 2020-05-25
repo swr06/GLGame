@@ -271,7 +271,7 @@ namespace GLGame
 			stbi_set_flip_vertically_on_load(true);
 
 			// Draw all the Scene editor objects that are written in the map
-			SceneEditorBatcher->StartSpriteBatch(SceneEditorCamera);
+			SceneEditorBatcher->StartSpriteBatch(SceneEditorCamera, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 
 			for (auto e = SceneEditorItemQueue.begin(); e != SceneEditorItemQueue.end(); e++)
 			{
@@ -306,7 +306,7 @@ namespace GLGame
 
 					if (chk != SceneEditorGlobalObjects->end() && SceneEditorGlobalObjects->at(item_id)->HasSprite())
 					{
-						SceneEditorBatcher->StartSpriteBatch(SceneEditorCamera);
+						SceneEditorBatcher->StartSpriteBatch(SceneEditorCamera, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 						SceneEditorBatcher->AddGenericTextureToBatch(GhostObjectImage.obj->GetSprite()->GetCurrentTexture(), glm::vec3(GhostObjectImage.x, GhostObjectImage.y, 1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 0.5f));
 						SceneEditorBatcher->EndSpriteBatch();
 					}
@@ -321,7 +321,7 @@ namespace GLGame
 
 					if (chk != SceneEditorGlobalSprites->end())
 					{
-						SceneEditorBatcher->StartSpriteBatch(SceneEditorCamera);
+						SceneEditorBatcher->StartSpriteBatch(SceneEditorCamera, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 						SceneEditorBatcher->AddGenericTextureToBatch(GhostObjectImage.spr->GetCurrentTexture(), glm::vec3(GhostObjectImage.x, GhostObjectImage.y, 1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 0.5f));
 						SceneEditorBatcher->EndSpriteBatch();
 					}

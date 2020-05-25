@@ -14,7 +14,8 @@ namespace GLGame
 		m_SceneData.scene_pulsating_lights = &m_ScenePulsatingLights;
 		m_SceneData.scene_pulsating_radius_lights = &m_ScenePulsatingRadiusLights;
 
-		m_SceneCamera = new Camera(0, window_width, 0, window_height);
+		m_AmbientLight = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+		m_SceneCamera = new Camera((float)0, (float)window_width, (float)0, (float)window_height);
 		m_ID = GenerateSceneID();
 		GameInternal::_IntRegisterScene(this);
 	}
@@ -32,6 +33,11 @@ namespace GLGame
 	void Scene::SetSceneCamera(Camera* camera)
 	{
 		m_SceneCamera = camera;
+	}
+
+	void Scene::SetSceneAmbientLight(const glm::vec4& ambient_light)
+	{
+		m_AmbientLight = ambient_light;
 	}
 
 	void Scene::AddSceneBackground(Background& background, int depth)

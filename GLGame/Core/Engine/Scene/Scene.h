@@ -50,6 +50,7 @@ namespace GLGame
 		// Scene set functions
 		void SetSceneCamera(Camera &camera); 
 		void SetSceneCamera(Camera *camera); 
+		void SetSceneAmbientLight(const glm::vec4& ambient_light);
 		void AddSceneBackground(Background& background, int depth);
 		void AddSceneBackground(Background* background, int depth);
 
@@ -63,6 +64,7 @@ namespace GLGame
 		// Camera getter functions
 		inline Camera* GetSceneCamera() { return m_SceneCamera; }; 
 		inline uint32_t GetSceneID() const { return m_ID; }
+		inline const glm::vec4 GetSceneAmbientLight() const { return m_AmbientLight; }
 
 		// To get all the scene data
 		// This function is only meant to be used internally
@@ -70,6 +72,7 @@ namespace GLGame
 
 	private : 
 
+		glm::vec4 m_AmbientLight;
 		map<int, SceneBackground> m_SceneBackgrounds;
 		map<int, unordered_map<string, vector<SceneDataItem>>> m_SceneItems;
 

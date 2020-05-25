@@ -243,7 +243,7 @@ namespace GLGame
 
 		// Goes through each layer and batches a group of objects and then draws it 
 
-		m_SpriteBatcher->StartSpriteBatch(m_CurrentScene->GetSceneCamera());
+		m_SpriteBatcher->StartSpriteBatch(m_CurrentScene->GetSceneCamera(), m_CurrentScene->GetSceneAmbientLight());
 
 		for (auto layer_iterator = current_scene_data.scene_items->begin(); layer_iterator != current_scene_data.scene_items->end(); layer_iterator++)
 		{

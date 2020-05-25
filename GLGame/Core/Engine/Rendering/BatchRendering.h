@@ -41,7 +41,7 @@ namespace GLGame
 
 		SpriteBatcher();
 		~SpriteBatcher();
-		void StartSpriteBatch(Camera* scene_camera);
+		void StartSpriteBatch(Camera* scene_camera, const glm::vec4& ambient_light);
 		void StartSpriteBatch(const glm::mat4& view_projection_matrix);
 		void StartSpriteBatch();
 		void EndSpriteBatch();
@@ -54,6 +54,7 @@ namespace GLGame
 
 		glm::mat4 m_ViewProjectionMatrix;
 		AABB m_CameraCull;
+		glm::vec4 m_AmbientLight;
 
 		int m_MaximumTextureSlots;
 		const int m_MaximumQuads;

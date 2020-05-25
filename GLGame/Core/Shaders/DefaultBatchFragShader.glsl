@@ -4,9 +4,10 @@ in flat int TexElement;
 in flat vec4 TexColor;
 out vec4 color;
 
+uniform vec4 u_AmbientColor;
 uniform sampler2D u_Textures[32];
 
 void main()
 {
-	color = TexColor * texture(u_Textures[TexElement], TexCoord);
+	color = u_AmbientColor * TexColor * texture(u_Textures[TexElement], TexCoord);
 }
