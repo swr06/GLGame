@@ -27,6 +27,19 @@ namespace GLGame
 		void _IntRegisterScene(Scene* scene);
 	}
 
+	struct _SceneData
+	{
+		// Item Data
+		map<int, unordered_map<string, vector<SceneDataItem>>>* scene_items;
+		map<int, SceneBackground>* scene_backgrounds;
+
+		// Light data
+		vector<Light*> *scene_lights;
+		vector<BlinkingLight*> *scene_blinking_lights;
+		vector<PulsatingLight*> *scene_pulsating_lights;
+		vector<PulsatingLightRadius*> *scene_pulsating_radius_lights;
+	};
+
 	class Scene
 	{
 	public : 
@@ -51,19 +64,23 @@ namespace GLGame
 		inline Camera* GetSceneCamera() { return m_SceneCamera; }; 
 		inline uint32_t GetSceneID() const { return m_ID; }
 
-		// Internal functions
-		map<int, unordered_map<string, vector<SceneDataItem>>>* IntGetSceneData() { return &m_SceneItems; };
-		map<int, SceneBackground>& IntGetSceneBackgroundData() { return m_SceneBackgrounds; }
-		vector<Light*>& IntGetSceneLightData() { return m_SceneLights; }
-		vector<BlinkingLight*>& IntGetSceneBlinkingLightData() { return m_SceneBlinkingLights; }
+		// To get all the scene data
+		// This function is only meant to be used internally
+		inline _SceneData IntGetSceneData() { return m_SceneData; }
 
 	private : 
 
 		map<int, SceneBackground> m_SceneBackgrounds;
 		map<int, unordered_map<string, vector<SceneDataItem>>> m_SceneItems;
+
+		// Scene lighting
 		vector<Light*> m_SceneLights;
 		vector<BlinkingLight*> m_SceneBlinkingLights;
+		vector<PulsatingLight*> m_ScenePulsatingLights;
+		vector<PulsatingLightRadius*> m_ScenePulsatingRadiusLights;
 
+		_SceneData m_SceneData;
+		
 		Camera* m_SceneCamera;
 		uint32_t m_ID; 
 	};

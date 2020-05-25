@@ -36,11 +36,11 @@ namespace GLGame
 
 		// Filling the vertex buffer
 
-		float x = light.m_Position.x - light.m_Diameter / 2;
-		float y = light.m_Position.y - light.m_Diameter / 2;
+		float x = light.m_Position.x - light.m_Size;
+		float y = light.m_Position.y - light.m_Size;
 
-		float width = light.m_Diameter + x;
-		float height = light.m_Diameter + y;
+		float width = light.m_Size + x;
+		float height = light.m_Size + y;
 
 		array<GLfloat, 8> UVCoords = { -1.0f, 2.0f, -1.0f, -1.0f, 2.0f, -1.0f, 2.0f, 2.0f };
 
@@ -141,11 +141,11 @@ namespace GLGame
 			DrawFullBatch();
 		}
 
-		float x = light.m_Position.x - light.m_Diameter / 2;
-		float y = light.m_Position.y - light.m_Diameter / 2;
+		float x = light.m_Position.x - light.m_Size;
+		float y = light.m_Position.y - light.m_Size;
 
-		float width = light.m_Diameter + x;
-		float height = light.m_Diameter + y;
+		float width = light.m_Size + x;
+		float height = light.m_Size + y;
 
 		m_VertexBuffer[m_CurrentElement + 0] = width;
 		m_VertexBuffer[m_CurrentElement + 1] = y;

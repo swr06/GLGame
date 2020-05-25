@@ -18,11 +18,11 @@ namespace GLGame
 	public : 
 
 		// Since this class only has 3 variables that need to be changed, there's no practical use of making them private.
-		Light(const glm::vec3& pos, const glm::vec4& color, float diameter);
+		Light(const glm::vec3& pos, const glm::vec4& color, float sz);
 
 		glm::vec3 m_Position;
 		glm::vec4 m_Color;
-		float m_Diameter;
+		float m_Size;
 	};
 
 	class BlinkingLight
@@ -30,9 +30,41 @@ namespace GLGame
 	public : 
 		BlinkingLight(Light light, int speed, int frames, float max_brightness);
 		const Light& GetCurrentLightFrame();
-		void UpdateLightPulse(long long CurrFrame);
+		void UpdateLightBlink(long long CurrFrame);
 
 	private : 
+
+		std::vector<Light> m_Frames;
+		Light m_CurrentFrame;
+		int m_Speed;
+		int m_CurrFrameNo;
+		float m_MaxBrightness;
+	};
+
+	class PulsatingLight
+	{
+	public:
+		PulsatingLight(Light light, int speed, int frames, float max_brightness);
+		const Light& GetCurrentLightFrame();
+		void UpdateLightPulse(long long CurrFrame);
+
+	private:
+
+		std::vector<Light> m_Frames;
+		Light m_CurrentFrame;
+		int m_Speed;
+		int m_CurrFrameNo;
+		float m_MaxBrightness;
+	};
+
+	class PulsatingLightRadius
+	{
+	public:
+		PulsatingLightRadius(Light light, int speed, int frames, float max_brightness);
+		const Light& GetCurrentLightFrame();
+		void UpdateLightPulse(long long CurrFrame);
+
+	private:
 
 		std::vector<Light> m_Frames;
 		Light m_CurrentFrame;

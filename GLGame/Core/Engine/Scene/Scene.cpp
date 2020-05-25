@@ -7,6 +7,13 @@ namespace GLGame
 
 	Scene::Scene()
 	{
+		m_SceneData.scene_items = &m_SceneItems;
+		m_SceneData.scene_backgrounds = &m_SceneBackgrounds;
+		m_SceneData.scene_lights = &m_SceneLights;
+		m_SceneData.scene_blinking_lights = &m_SceneBlinkingLights;
+		m_SceneData.scene_pulsating_lights = &m_ScenePulsatingLights;
+		m_SceneData.scene_pulsating_radius_lights = &m_ScenePulsatingRadiusLights;
+
 		m_SceneCamera = new Camera(0, window_width, 0, window_height);
 		m_ID = GenerateSceneID();
 		GameInternal::_IntRegisterScene(this);

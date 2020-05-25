@@ -109,10 +109,11 @@ void EventCallback(Event e)
 int main()
 {
 	//Light light_1(glm::vec3(mx, h - my, 0.0f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f), 200.0f);
-	Light light_2(glm::vec3(400.0f, 400.0f, 0.0f), glm::vec4(0.0f, 1.0f, 0.0f, 2.0f), 400.0f);
-	Light light_t(glm::vec3(100.0f, 300.0f, 0.0f), glm::vec4(0.0f, 1.0f, 0.0f, 2.0f), 400.0f);
-	Light light_3(glm::vec3(600.0f, 400.0f, 0.0f), glm::vec4(0.0f, 1.0f, 1.0f, 2.0f), 400.0f);
-	BlinkingLight pLight(light_t, 1, 100, 1.0f);
+	Light light_2(glm::vec3(400.0f, 400.0f, 0.0f), glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), 100.0f);
+	Light light_3(glm::vec3(600.0f, 400.0f, 0.0f), glm::vec4(0.0f, 1.0f, 1.0f, 1.0f), 100.0f);
+
+	Light light_t(glm::vec3(100.0f, 300.0f, 0.0f), glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), 100.0f);
+	BlinkingLight pLight(light_t, 1, 30, 1.0f);
 	Texture tex1, tex2, tile_sheet;
 	Scene scene; 
 	//Animation ani({&tex1, &tex2});
@@ -168,6 +169,7 @@ int main()
 
 	while (!game.GameWindowShouldClose())
 	{
+		std::cout << cam.GetPosition().x << "  " << cam.GetPosition().y << cam.GetPosition().z << "\n";
 		game.Render(); 
 
 		if (game.IsThereCollision(obj, obj_2))

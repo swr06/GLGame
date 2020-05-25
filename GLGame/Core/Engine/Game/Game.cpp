@@ -211,12 +211,13 @@ namespace GLGame
 
 		// Rendering the background data items
 
-		map<int, SceneBackground>& current_scene_background_data = m_CurrentScene->IntGetSceneBackgroundData();
+		_SceneData current_scene_data = m_CurrentScene->IntGetSceneData();
+
 		int window_width = 0, window_height = 0;
 
 		glfwGetFramebufferSize(m_GameWindow, &window_width, &window_height);
 
-		for (auto background_iterator = current_scene_background_data.begin(); background_iterator != current_scene_background_data.end(); background_iterator++)
+		for (auto background_iterator = current_scene_data.scene_backgrounds->begin(); background_iterator != current_scene_data.scene_backgrounds->end(); background_iterator++)
 		{
 			if (background_iterator->second.background != nullptr)
 			{
@@ -239,13 +240,12 @@ namespace GLGame
 		//Rendering the scene items
 
 		// Get the scene data
-		map<int, std::unordered_map<string, vector<SceneDataItem>>>& current_scene_data = *(m_CurrentScene->IntGetSceneData());
 
 		// Goes through each layer and batches a group of objects and then draws it 
 
 		m_SpriteBatcher->StartSpriteBatch(m_CurrentScene->GetSceneCamera());
 
-		for (auto layer_iterator = current_scene_data.begin(); layer_iterator != current_scene_data.end(); layer_iterator++)
+		for (auto layer_iterator = current_scene_data.scene_items->begin(); layer_iterator != current_scene_data.scene_items->end(); layer_iterator++)
 		{
 			for (auto e = layer_iterator->second.begin(); e != layer_iterator->second.end(); e++)
 			{
@@ -295,34 +295,24 @@ namespace GLGame
 		// Set the lighting blend function
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE);
 
-		const vector<Light*> &SceneLightData = m_CurrentScene->IntGetSceneLightData();
-
  		m_LightBatcher->StartLightBatch(m_CurrentScene->GetSceneCamera()->GetViewProjectionMatrix());
 
 		// Draw lights 
-		for (int i = 0; i < SceneLightData.size(); i++)
+		for (int i = 0; i < current_scene_data.scene_lights->size(); i++)
 		{
-			if (SceneLightData.at(i) != nullptr)
+			if (current_scene_data.scene_lights->at(i) != nullptr)
 			{
-				m_LightBatcher->AddLightToBatch(*(SceneLightData.at(i)));
+				m_LightBatcher->AddLightToBatch(*(current_scene_data.scene_lights->at(i)));
 			}
 		}
 
- 		m_LightBatcher->EndLightBatch();
-
-		// Draw the Pulsating lights
-
-		vector<BlinkingLight*> &SceneBlinkingLightData = m_CurrentScene->IntGetSceneBlinkingLightData();
-
-		m_LightBatcher->StartLightBatch(m_CurrentScene->GetSceneCamera()->GetViewProjectionMatrix());
-
 		// Draw lights 
-		for (int i = 0; i < SceneBlinkingLightData.size(); i++)
+		for (int i = 0; i < current_scene_data.scene_blinking_lights->size(); i++)
 		{
-			if (SceneBlinkingLightData[i] != nullptr)
+			if (current_scene_data.scene_blinking_lights->at(i) != nullptr)
 			{
-				m_LightBatcher->AddLightToBatch(SceneBlinkingLightData[i]->GetCurrentLightFrame());
-				SceneBlinkingLightData[i]->UpdateLightPulse(m_FpsCount);
+				m_LightBatcher->AddLightToBatch(current_scene_data.scene_blinking_lights->at(i)->GetCurrentLightFrame());
+				current_scene_data.scene_blinking_lights->at(i)->UpdateLightBlink(m_FpsCount);
 			}
 		}
 
@@ -434,10 +424,11 @@ namespace GLGame
 	// To test the collision between 2 objects
 	bool Game::IsThereCollision(Object& obj_1, Object& obj_2)
 	{
+		_SceneData curr_scene_data = m_CurrentScene->IntGetSceneData();
 		bool return_val = false;
 
 		// Reference the scene data
-		map<int, unordered_map<string, vector<SceneDataItem>>>& scene_data = *(m_CurrentScene->IntGetSceneData());
+		map<int, unordered_map<string, vector<SceneDataItem>>>& scene_data = *(curr_scene_data.scene_items);
 		const string& obj1_id = obj_1.GetObjectID();
 		const string& obj2_id = obj_2.GetObjectID();
 		int map_element_size = scene_data.size();
@@ -594,7 +585,9 @@ namespace GLGame
 	{
 		void _UpdateObjectPosition(const string& id, const glm::vec3& pos)
 		{
-			map<int, std::unordered_map<string, vector<SceneDataItem>>>& scene_data = *(GameRef->GetCurrentScene().IntGetSceneData());
+			_SceneData curr_scene_data = GameRef->GetCurrentScene().IntGetSceneData();
+
+			map<int, std::unordered_map<string, vector<SceneDataItem>>>& scene_data = *(curr_scene_data.scene_items);
 			size_t size = 0;
 
 			for (auto layer = scene_data.begin(); layer != scene_data.end(); layer++)
@@ -615,13 +608,17 @@ namespace GLGame
 
 		void _GetObjectPosition(const string& id, uint32_t instance_id, int layer, glm::vec3& pos)
 		{
-			map<int, std::unordered_map<string, vector<SceneDataItem>>>& scene_data = *(GameRef->GetCurrentScene().IntGetSceneData());
+			_SceneData curr_scene_data = GameRef->GetCurrentScene().IntGetSceneData();
+
+			map<int, std::unordered_map<string, vector<SceneDataItem>>>& scene_data = *(curr_scene_data.scene_items);
 			pos = scene_data[layer][id][instance_id].ItemPos;
 		}
 
 		void _IncrementObjectPosition(const string& id, const glm::vec3& amt)
 		{
-			map<int, std::unordered_map<string, vector<SceneDataItem>>>& scene_data = *(GameRef->GetCurrentScene().IntGetSceneData());
+			_SceneData curr_scene_data = GameRef->GetCurrentScene().IntGetSceneData();
+
+			map<int, std::unordered_map<string, vector<SceneDataItem>>>& scene_data = *(curr_scene_data.scene_items);
 			size_t size = 0;
 
 			for (auto layer = scene_data.begin(); layer != scene_data.end(); layer++)
@@ -639,7 +636,9 @@ namespace GLGame
 
 		void _SetBackgroundPosition(uint32_t id, const glm::vec3& pos)
 		{
-			map<int, SceneBackground>& background_data = GameRef->GetCurrentScene().IntGetSceneBackgroundData();
+			_SceneData curr_scene_data = GameRef->GetCurrentScene().IntGetSceneData();
+
+			map<int, SceneBackground>& background_data = *(curr_scene_data.scene_backgrounds);
 
 			for (auto e = background_data.begin(); e != background_data.end(); e++)
 			{
@@ -652,7 +651,9 @@ namespace GLGame
 
 		void _IncrementBackgroundPosition(uint32_t id, const glm::vec3& increment)
 		{
-			map<int, SceneBackground>& background_data = GameRef->GetCurrentScene().IntGetSceneBackgroundData();
+			_SceneData curr_scene_data = GameRef->GetCurrentScene().IntGetSceneData();
+
+			map<int, SceneBackground>& background_data = *(curr_scene_data.scene_backgrounds);
 
 			for (auto e = background_data.begin(); e != background_data.end(); e++)
 			{
