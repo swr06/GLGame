@@ -2,7 +2,7 @@
 
 namespace GLGame
 {
-	static bool init_scene_editor = false;
+	static bool init_scene_editor = true;
 	static Game* GameRef = nullptr;
 	static GameInternal::_GlobalGameData GameData;
 
@@ -261,7 +261,7 @@ namespace GLGame
 							{
 								for (int i = 0; i < e->second.size(); i++)
 								{
-									m_SpriteBatcher->AddSpriteToBatch(e->second[i]);
+									m_SpriteBatcher->AddGLGameItemToBatch(e->second[i]);
 								}
 							}
 						}

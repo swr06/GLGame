@@ -101,7 +101,7 @@ namespace GLGame
 		m_ViewProjectionMatrix = glm::mat4(1.0f);
 	}
 
-	void SpriteBatcher::AddSpriteToBatch(SceneDataItem item, const glm::vec4& color)
+	void SpriteBatcher::AddGLGameItemToBatch(SceneDataItem item, const glm::vec4& color)
 	{
 		AABB item_cull;
 		const glm::vec3& camera_pos = m_CameraPos;
@@ -356,6 +356,93 @@ namespace GLGame
 		m_VertexBuffer[m_LastElementVBuff + 30] = pos.x;
 		m_VertexBuffer[m_LastElementVBuff + 31] = pos.y;
 		m_VertexBuffer[m_LastElementVBuff + 32] = pos.z;
+		m_VertexBuffer[m_LastElementVBuff + 33] = TextureCoordinates[6];
+		m_VertexBuffer[m_LastElementVBuff + 34] = TextureCoordinates[7];
+		m_VertexBuffer[m_LastElementVBuff + 35] = color.r;
+		m_VertexBuffer[m_LastElementVBuff + 36] = color.g;
+		m_VertexBuffer[m_LastElementVBuff + 37] = color.b;
+		m_VertexBuffer[m_LastElementVBuff + 38] = color.a;
+		m_VertexBuffer[m_LastElementVBuff + 39] = (float)tex_element;
+
+		m_LastElementVBuff += m_VertexSize;
+		m_VerticesWritten++;
+	}
+
+	void SpriteBatcher::AddGenericObjectToBatch(GenericObject object)
+	{
+		if (m_VerticesWritten == m_MaximumQuads)
+		{
+			DrawFullBatch();
+		}
+
+		int tex_element = 0;
+		bool repeated_texture = false;
+
+		for (int i = 0; i < m_MaximumTextureSlots; i++)
+		{
+			if (m_SlottedTextures[i] == object.texture->GetTextureID())
+			{
+				tex_element = i;
+				repeated_texture = true;
+				break;
+			}
+		}
+
+		if (repeated_texture == false)
+		{
+			if (m_LastElementTex == m_MaximumTextureSlots)
+			{
+				DrawFullBatch();
+			}
+
+			else
+			{
+				m_SlottedTextures[m_CurrSlottedTexElement] = object.texture->GetTextureID();
+				m_CurrSlottedTexElement++;
+				tex_element = m_LastElementTex;
+				m_LastElementTex++;
+			}
+		}
+
+		GLfloat* TextureCoordinates = object.tex_coords;
+		glm::vec4 color = object.color;
+
+		m_VertexBuffer[m_LastElementVBuff + 0] = object.coords[0];
+		m_VertexBuffer[m_LastElementVBuff + 1] = object.coords[1];
+		m_VertexBuffer[m_LastElementVBuff + 2] = object.coords[2];
+		m_VertexBuffer[m_LastElementVBuff + 3] = TextureCoordinates[0];
+		m_VertexBuffer[m_LastElementVBuff + 4] = TextureCoordinates[1];
+		m_VertexBuffer[m_LastElementVBuff + 5] = color.r;
+		m_VertexBuffer[m_LastElementVBuff + 6] = color.g;
+		m_VertexBuffer[m_LastElementVBuff + 7] = color.b;
+		m_VertexBuffer[m_LastElementVBuff + 8] = color.a;
+		m_VertexBuffer[m_LastElementVBuff + 9] = (float)tex_element;
+
+		m_VertexBuffer[m_LastElementVBuff + 10] = object.coords[3];
+		m_VertexBuffer[m_LastElementVBuff + 11] = object.coords[4];
+		m_VertexBuffer[m_LastElementVBuff + 12] = object.coords[5];
+		m_VertexBuffer[m_LastElementVBuff + 13] = TextureCoordinates[2];
+		m_VertexBuffer[m_LastElementVBuff + 14] = TextureCoordinates[3];
+		m_VertexBuffer[m_LastElementVBuff + 15] = color.r;
+		m_VertexBuffer[m_LastElementVBuff + 16] = color.g;
+		m_VertexBuffer[m_LastElementVBuff + 17] = color.b;
+		m_VertexBuffer[m_LastElementVBuff + 18] = color.a;
+		m_VertexBuffer[m_LastElementVBuff + 19] = (float)tex_element;
+
+		m_VertexBuffer[m_LastElementVBuff + 20] = object.coords[6];
+		m_VertexBuffer[m_LastElementVBuff + 21] = object.coords[7];
+		m_VertexBuffer[m_LastElementVBuff + 22] = object.coords[8];
+		m_VertexBuffer[m_LastElementVBuff + 23] = TextureCoordinates[4];
+		m_VertexBuffer[m_LastElementVBuff + 24] = TextureCoordinates[5];
+		m_VertexBuffer[m_LastElementVBuff + 25] = color.r;
+		m_VertexBuffer[m_LastElementVBuff + 26] = color.g;
+		m_VertexBuffer[m_LastElementVBuff + 27] = color.b;
+		m_VertexBuffer[m_LastElementVBuff + 28] = color.a;
+		m_VertexBuffer[m_LastElementVBuff + 29] = (float)tex_element;
+
+		m_VertexBuffer[m_LastElementVBuff + 30] = object.coords[9];
+		m_VertexBuffer[m_LastElementVBuff + 31] = object.coords[10];
+		m_VertexBuffer[m_LastElementVBuff + 32] = object.coords[11];
 		m_VertexBuffer[m_LastElementVBuff + 33] = TextureCoordinates[6];
 		m_VertexBuffer[m_LastElementVBuff + 34] = TextureCoordinates[7];
 		m_VertexBuffer[m_LastElementVBuff + 35] = color.r;

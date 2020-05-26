@@ -31,6 +31,8 @@ namespace GLGame
 	{
 		GLfloat coords[12];
 		GLfloat tex_coords[8];
+		glm::vec4 color;
+		Texture* texture;
 	};
 
 	// Reliable batch renderer. Can render upto 10000 quads
@@ -46,7 +48,8 @@ namespace GLGame
 		void StartSpriteBatch();
 		void EndSpriteBatch();
 		void AddGenericTextureToBatch(Texture* texture, const glm::vec3 &pos, const glm::vec4& color = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-		void AddSpriteToBatch(SceneDataItem item, const glm::vec4& color = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+		void AddGenericObjectToBatch(GenericObject object);
+		void AddGLGameItemToBatch(SceneDataItem item, const glm::vec4& color = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 
 	private : 
 
@@ -114,6 +117,7 @@ namespace GLGame
 	};
 
 	// This is new type of batch rendering that I wanted to experiment with
+	// Do not use these functions. Use SpriteBatch instead
 	void BatchRenderGenericObjects(vector <GenericObject> &objects, unsigned int texture_id, Shader shader, glm::mat4 model);
 	void BatchRenderObjectInstances(vector <SceneDataItem>& objects, Shader shader, const glm::mat4& model_matrix, const glm::mat4& view_matrix, const glm::mat4& view_projection_matrix, const glm::vec3& camera_scale, AABB camera_view_cull);
 	void BatchRenderSpriteInstances(vector <SceneDataItem>& sprites);

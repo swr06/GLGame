@@ -85,6 +85,8 @@ namespace GLGame
 		bool IsThereCollision(Object& obj_1, Object& obj_2);
 
 		// Event handling
+
+		// It is recommended to handle the key hold/repeat events in the OnEvent callback.
 		bool KeyIsBeingPressed(int Key);
 		void PollEvents();
 
@@ -100,6 +102,8 @@ namespace GLGame
 
 		vector<string>* GetGlobalObjectIDs() { return &m_ObjectItemNames; }
 		vector<string>* GetGlobalSpriteIDs() { return &m_SpriteItemNames; }
+
+		// Internal functions.
 		void _RegisterObject(Object* object);
 		void _RegisterSprite(Sprite* sprite);
 		void _RegisterScene(Scene* scene);
