@@ -54,6 +54,12 @@ namespace GLGame
 
 		static Shader SceneEditorRenderItemShader;
 
+		// Saving file
+
+		static char* SceneFilePath = nullptr;
+		static bool SceneFilePathSet = false;
+		static const size_t SceneFilePthSize = 512;
+
 		// Mouse and window attributes
 		static double MousePosX = 0;
 		static double MousePosY = 0;
@@ -68,6 +74,8 @@ namespace GLGame
 		static const char* SpriteInsertString = "$*$^(\0";
 
 		// Modal windows
+
+		// Close modal window
 		static bool ShouldShowCloseModalWindow = false;
 
 		static bool ShouldShowAboutTheAuthorWindow = false;
@@ -75,7 +83,12 @@ namespace GLGame
 		static bool ShouldShowWITWindow = false; // What is this window
 		static bool ShouldShowDependenciesWindow = false;
 
+		// Saving modal window
+		static bool ShouldShowSaveAsWindow = false;
+		static bool ShouldShowFileErrWindow = false;
+
 		static bool ShouldBlockInput = false;
+		
 
 		// IMGUI context => Scene editor window
 		ImGuiContext* imcontext;
@@ -143,10 +156,105 @@ namespace GLGame
 				style.Colors[ImGuiCol_WindowBg].w = 1.0f;
 			}
 
+			// Set up character buffers
+			SceneFilePath = new char[SceneFilePthSize];
+			memset(SceneFilePath, '\0', SceneFilePthSize);
+
+			// Setup camera, batchers and shaders
 			SceneEditorCamera = new Camera(0.0f, (float)SceneEditorWidth, 0.0f, (float)SceneEditorHeight);
 			SceneEditorBatcher = new SpriteBatcher();
 			SceneEditorRenderItemShader.CreateShaderProgram(GLGAME_DEFAULT_SE_VERTEX, GLGAME_DEFAULT_SE_FRAGMENT);
 			return SceneEditorWindow;
+		}
+
+		void OpenSceneFile()
+		{
+			
+		}
+
+		void ExtendString(string& str, int ex_amt, const string& ex_c)
+		{
+			int temp = ex_amt - str.size();
+			ex_amt = abs(temp);
+
+			for (int i = 0; i < ex_amt; i++)
+			{
+				str.insert(0, ex_c);
+			}
+		}
+
+		void FlushSceneFile()
+		{
+			static string scene_file_header = GLGAME_SCENE_FILE_HEADER;
+			static string scene_garbage_str = (string)"#*@#(&$(";
+			fstream scene_file;
+
+			// item write strings
+			string item_type_str;
+			string layer;
+			string x, y;
+			string id;
+			string id_size;
+
+			scene_file.open(string(SceneFilePath), ios::out | ios::binary);
+
+			if (scene_file.good() && scene_file.is_open())
+			{
+				// Write the scene header
+				scene_file.write(scene_file_header.c_str(), scene_file_header.size());
+
+				for (auto e = SceneEditorItemQueue.begin(); e != SceneEditorItemQueue.end(); e++)
+				{
+					for (int i = 0; i < e->second.size(); i++)
+					{
+						SceneEditorRenderItem item;
+
+						item = e->second.at(i);
+						layer = to_string(item.layer);
+						x = to_string(item.x);
+						y = to_string(item.y);
+						
+						if (item.item_type == SE_ObjectType)
+						{
+							item_type_str = "OBJ";
+							id = item.obj->GetObjectID();
+						}
+
+						else if (item.item_type == SE_SpriteType)
+						{
+							item_type_str = "SPR";
+							id = item.spr->GetSpriteID();
+						}
+
+						else
+						{
+							// BAD TYPE
+						}
+
+						id_size = to_string(id.size());
+
+						ExtendString(layer, 8, "%");
+						ExtendString(x, 8, "@");
+						ExtendString(y, 8, "#");
+						ExtendString(id_size, 8, "^");
+						
+						scene_file.write(item_type_str.c_str(), item_type_str.size());
+						scene_file.write(layer.c_str(), 8);
+						scene_file.write(x.c_str(), 8);
+						scene_file.write(y.c_str(), 8);
+						scene_file.write(id_size.c_str(), 8);
+						scene_file.write(id.c_str(), id.size());
+						//scene_file.write(scene_garbage_str.c_str(), scene_garbage_str.size());
+					}
+				}
+			}
+
+			else
+			{
+				ShouldShowFileErrWindow = true;
+			}
+
+			scene_file.close();
 		}
 
 		void _SetSEImGuiFlags()
@@ -258,6 +366,55 @@ namespace GLGame
 					{
 						ShouldBlockInput = false;
 						ShouldShowDependenciesWindow = false;
+						ImGui::CloseCurrentPopup();
+					}
+
+					ImGui::EndPopup();
+				}
+			}
+
+			if (ShouldShowSaveAsWindow)
+			{
+				ImGui::OpenPopup("Save As");
+
+				if (ImGui::BeginPopupModal("Save As", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+				{
+					ShouldBlockInput = true;
+
+					ImGui::InputText("Path", SceneFilePath, SceneFilePthSize);
+
+					ImGui::SetItemDefaultFocus();
+
+					if (ImGui::Button("OK", ImVec2(120, 0)))
+					{
+						ShouldBlockInput = false;
+						ShouldShowSaveAsWindow = false;
+						SceneFilePathSet = true;
+						
+						ImGui::CloseCurrentPopup();
+					}
+
+					ImGui::EndPopup();
+				}
+			}
+
+			if (ShouldShowFileErrWindow)
+			{
+				ImGui::OpenPopup("File error");
+
+				if (ImGui::BeginPopupModal("File error", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+				{
+					ShouldBlockInput = true;
+
+					ImGui::SetItemDefaultFocus();
+
+					ImGui::Text("Error saving file..");
+					ImGui::Text("Click OK to continue..");
+
+					if (ImGui::Button("OK", ImVec2(120, 0)))
+					{
+						ShouldBlockInput = false;
+						ShouldShowFileErrWindow = false;
 						ImGui::CloseCurrentPopup();
 					}
 
@@ -454,7 +611,33 @@ namespace GLGame
 				{
 					if (ImGui::MenuItem("Save As", ""))
 					{
-						// Open Save AS
+						ShouldShowSaveAsWindow = true;
+					}
+
+					if (ImGui::MenuItem("Save", ""))
+					{
+						if (SceneFilePathSet == false)
+						{
+							ShouldShowSaveAsWindow = true;
+						}
+
+						else
+						{
+							fstream scene_file;
+
+							scene_file.open(string(SceneFilePath), ios::out | ios::binary);
+
+							if (scene_file.good() && scene_file.is_open())
+							{
+								scene_file.close();
+								FlushSceneFile();
+							}
+
+							else
+							{
+								ShouldShowFileErrWindow = true;
+							}
+						}
 					}
 
 					ImGui::EndMenu();
@@ -702,7 +885,32 @@ namespace GLGame
 
 			if (action == GLFW_PRESS)
 			{
-				
+				if (key == GLFW_KEY_S && mods & GLFW_MOD_CONTROL)
+				{
+					if (SceneFilePathSet == false)
+					{
+						ShouldShowSaveAsWindow = true;
+						
+					}
+
+					else
+					{
+						fstream scene_file;
+
+						scene_file.open(string(SceneFilePath), ios::out | ios::binary);
+
+						if (scene_file.good() && scene_file.is_open())
+						{
+							scene_file.close();
+							FlushSceneFile();
+						}
+
+						else
+						{
+							ShouldShowFileErrWindow = true;
+						}
+					}
+				}
 			}
 
 			else if (action == GLFW_RELEASE)

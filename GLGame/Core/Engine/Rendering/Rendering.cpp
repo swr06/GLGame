@@ -3,6 +3,7 @@
 namespace GLGame
 {
 	// Used to render backgrounds
+	// I'll probably move the rendering to SpriteBatcher
 	void NormallyRenderBackgrounds(SceneBackground* bg, Shader shader, float w, float h, const glm::mat4& model_matrix, const glm::mat4& view_matrix, const glm::mat4& view_projection_matrix) // camera view is for culling
 	{
 		static GLfloat* vertex_buffer = new GLfloat[20];

@@ -170,7 +170,6 @@ int main()
 
 	while (!game.GameWindowShouldClose())
 	{
-		std::cout << cam.GetPosition().x << "  " << cam.GetPosition().y << cam.GetPosition().z << "\n";
 		game.Render(); 
 
 		if (game.IsThereCollision(obj, obj_2))
