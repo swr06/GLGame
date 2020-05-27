@@ -504,8 +504,17 @@ namespace GLGame
 			ImGui::Text("\n\nEditor settings : \n");
 			ImGui::InputInt("Grid Size X (in pixels)", &GridX);
 			ImGui::InputInt("Grid Size Y (in pixels)", &GridY);
-		
-			ImGui::ColorPicker4("Multiplication color", (float*)&color);
+
+			if (GridX < 0)
+			{
+				GridX = 0;
+			}
+
+			if (GridY < 0)
+			{
+				GridY = 0;
+			}
+
 			ImGui::Text("\n");
 			ImGui::End();
 		}
