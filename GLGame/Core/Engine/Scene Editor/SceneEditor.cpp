@@ -171,7 +171,7 @@ namespace GLGame
 
 		void OpenSceneFile()
 		{
-			
+
 		}
 
 		void ExtendString(string& str, int ex_amt, const string& ex_c)
@@ -187,7 +187,7 @@ namespace GLGame
 
 		void FlushSceneFile()
 		{
-			static string scene_file_header = GLGAME_SCENE_FILE_HEADER;
+			static string scene_file_header = string(GLGAME_SCENE_FILE_HEADER);
 			static string scene_garbage_str = (string)"#*@#(&$(";
 			fstream scene_file;
 
@@ -213,9 +213,9 @@ namespace GLGame
 
 						item = e->second.at(i);
 						layer = to_string(item.layer);
-						x = to_string(item.x);
-						y = to_string(item.y);
-						
+						x = to_string((int)item.x);
+						y = to_string((int)item.y);
+
 						if (item.item_type == SE_ObjectType)
 						{
 							item_type_str = "OBJ";
@@ -236,14 +236,14 @@ namespace GLGame
 						id_size = to_string(id.size());
 
 						ExtendString(layer, 8, "%");
-						ExtendString(x, 12, "@");
-						ExtendString(y, 12, "#");
-						ExtendString(id_size, 8, "^");
-						
+						ExtendString(x, 12, "%");
+						ExtendString(y, 12, "%");
+						ExtendString(id_size, 8, "%");
+
 						scene_file.write(item_type_str.c_str(), item_type_str.size());
 						scene_file.write(layer.c_str(), 8);
-						scene_file.write(x.c_str(), 8);
-						scene_file.write(y.c_str(), 8);
+						scene_file.write(x.c_str(), 12);
+						scene_file.write(y.c_str(), 12);
 						scene_file.write(id_size.c_str(), 8);
 						scene_file.write(id.c_str(), id.size());
 						//scene_file.write(scene_garbage_str.c_str(), scene_garbage_str.size());
@@ -394,7 +394,7 @@ namespace GLGame
 						ShouldBlockInput = false;
 						ShouldShowSaveAsWindow = false;
 						SceneFilePathSet = true;
-						
+
 						ImGui::CloseCurrentPopup();
 					}
 
@@ -607,8 +607,8 @@ namespace GLGame
 						ImVec2(ImGui::GetCursorScreenPos()),
 						ImVec2(ImGui::GetCursorScreenPos().x + selected_obj_spr->GetCurrentTextureWidth(),
 							ImGui::GetCursorScreenPos().y + selected_obj_spr->GetCurrentTextureHeight()),
-						ImVec2(0, 1),
-						ImVec2(1, 0));
+						ImVec2(1, 0),
+						ImVec2(0, 1));
 
 					ImGui::End();
 				}
@@ -884,7 +884,7 @@ namespace GLGame
 		}
 
 		// function to snap an object to a particular grid
-		float SnapToGrid(int value, int size) 
+		float SnapToGrid(int value, int size)
 		{
 			int temp = value % size;
 
@@ -893,10 +893,10 @@ namespace GLGame
 				return (value - temp);
 			}
 
- 			else
- 			{
- 				return (value + size) - temp;
- 			}
+			else
+			{
+				return (value + size) - temp;
+			}
 		}
 
 		void SEKeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
@@ -920,7 +920,7 @@ namespace GLGame
 					if (SceneFilePathSet == false)
 					{
 						ShouldShowSaveAsWindow = true;
-						
+
 					}
 
 					else
@@ -945,12 +945,12 @@ namespace GLGame
 
 			else if (action == GLFW_RELEASE)
 			{
-				
+
 			}
 
 			else
 			{
-				
+
 			}
 		}
 
@@ -1208,12 +1208,12 @@ namespace GLGame
 
 			else if (action == GLFW_RELEASE)
 			{
-				
+
 			}
 
 			else
 			{
-				
+
 			}
 		}
 
@@ -1256,7 +1256,7 @@ namespace GLGame
 
 			ShouldShowCloseModalWindow = true;
 		}
-	} 
+	}
 }
 
 // Scene Editor End..

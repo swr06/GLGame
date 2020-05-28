@@ -28,9 +28,8 @@ namespace GLGame
 		{
 			SceneParsedItemType type;
 			string id;
-			int x;
-			int y;
-			int z;
+			float x;
+			float y;
 			int sx;
 			int sy;
 			int layer;

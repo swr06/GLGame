@@ -27,6 +27,11 @@ namespace GLGame
 		void _IntRegisterScene(Scene* scene);
 	}
 
+	namespace SceneParser
+	{
+		void ParseSceneData(const string& scene_file_pth, Scene* scene);
+	}
+
 	struct _SceneData
 	{
 		// Item Data
@@ -45,6 +50,8 @@ namespace GLGame
 	public : 
 
 		Scene(); 
+
+		// To handle scene files
 		void FromSceneFile(string scene_path);
 
 		// Scene set functions

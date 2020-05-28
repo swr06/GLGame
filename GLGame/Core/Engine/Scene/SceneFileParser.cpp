@@ -1,14 +1,14 @@
 #include "SceneFileParser.h"
 
-// Highly W.I.P
+// A GLGame Scene file parser
 
 namespace GLGame
 {
 	namespace SceneParser
 	{
-		static const string object_chunk_type = (string)"001";
-		static const string sprite_chunk_type = (string)"002";
-		static const string atlas_chunk_type = (string)"003";
+		static const string object_chunk_type = (string)"OBJ";
+		static const string sprite_chunk_type = (string)"SPR";
+		static const string atlas_chunk_type = (string)"ATL";
 
 		std::ifstream::pos_type GetFileSize(const string& filename)
 		{
@@ -34,12 +34,37 @@ namespace GLGame
 			{
 				if (items[i].type == ItemTypeObject)
 				{
-					obj = (Object*) GameInternal::_GetObjectFromGlobalArray(items[i].id);
+					obj = (Object*)GameInternal::_GetObjectFromGlobalArray(items[i].id);
 					pos.x = items[i].x;
 					pos.y = items[i].y;
-					pos.z = items[i].z;
+					pos.z = 1.0f;
 					scene->AddObjectAtPosition(*obj, items[i].layer, pos);
 				}
+			}
+		}
+
+		void RemoveCharacterFromArray(char* character_array, char character) // This overload is only to be used by the ExtractFile() header and implementation
+		{
+			string str = string(character_array);
+
+			for (int i = 0; i < str.size(); i++)
+			{
+				str.erase(std::find(str.begin(), str.end(), character));
+			}
+
+			for (int i = 0; i < str.size(); i++)
+			{
+				character_array[i] = str[i];
+			}
+
+			character_array[str.size()] = '\0';
+		}
+
+		void RemoveCharacterFromString(string& str, char character) // This overload is only to be used by the ExtractFile() header and implementation
+		{
+			for (int i = 0; i < str.size(); i++)
+			{
+				str.erase(std::find(str.begin(), str.end(), character));
 			}
 		}
 
@@ -55,86 +80,89 @@ namespace GLGame
 			const int buffer_size = 256;
 			const int min_file_size = (scene_header_text.size() * sizeof(char)) + 20;
 			int chunk_type = 0;
-			char* scene_data_buff = new char[buffer_size];
 
 			int scene_data_curr_idsz = 0;
 			const short default_schunk_size = 8; // default small chunk size
 
+			char* scene_data_curr_type = new char[4];
+			char* scene_header_buff = new char[scene_header_text.size() + 1];
 			char* scene_data_curr_id = new char[512];
-			char* scene_data_curr_x = new char[default_schunk_size];
-			char* scene_data_curr_y = new char[default_schunk_size];
-			char* scene_data_curr_z = new char[default_schunk_size];
-			char* scene_data_curr_sx = new char[default_schunk_size];
-			char* scene_data_curr_sy = new char[default_schunk_size];
-			char* scene_data_curr_layer = new char[default_schunk_size];
-			char* scene_data_curr_idsz_buff = new char[6]; 
+			char* scene_data_curr_x = new char[12];
+			char* scene_data_curr_y = new char[12];
+			char* scene_data_curr_sx = new char[12];
+			char* scene_data_curr_sy = new char[12];
+			char* scene_data_curr_layer = new char[8];
+			char* scene_data_curr_idsz_buff = new char[8];
 
 			// Fill all the character buffers with NULL
-			memset(scene_data_buff, '\0', buffer_size);
+			memset(scene_header_buff, '\0', scene_header_text.size() + 1);
 			memset(scene_data_curr_id, '\0', 512);
-			memset(scene_data_curr_x, '\0', default_schunk_size);
-			memset(scene_data_curr_y, '\0', default_schunk_size);
-			memset(scene_data_curr_z, '\0', default_schunk_size);
-			memset(scene_data_curr_sx, '\0', default_schunk_size);
-			memset(scene_data_curr_sy, '\0', default_schunk_size);
-			memset(scene_data_curr_layer, '\0', default_schunk_size);
-			memset(scene_data_curr_idsz_buff, '\0', 6);
+			memset(scene_data_curr_x, '\0', 12);
+			memset(scene_data_curr_y, '\0', 12);
+			memset(scene_data_curr_sx, '\0', 12);
+			memset(scene_data_curr_sy, '\0', 12);
+			memset(scene_data_curr_layer, '\0', 8);
+			memset(scene_data_curr_idsz_buff, '\0', 8);
+			memset(scene_data_curr_id, '\0', 512);
 
 			scene_data_file.open(scene_file, ios::in);
-			scene_data_file.seekg(0, ios::end);
 
 			if (scene_data_file.is_open() && scene_data_file.good())
 			{
 				// Checking if the file is valid
-				scene_data_file.read(scene_data_buff, scene_header_text.size());
+				scene_data_file.read(scene_header_buff, 23);
 
-				if (!strcmp(scene_data_buff, scene_header_text.c_str()))
+				if (!strcmp(scene_header_buff, scene_header_text.c_str()))
 				{
 					while (!scene_data_file.eof())
 					{
-						scene_data_file.read(scene_data_buff, 3);
-						scene_data_file.read(scene_data_curr_idsz_buff, 4);
-						scene_data_curr_idsz = atoi(scene_data_curr_idsz_buff);
+						scene_data_file.read(scene_data_curr_type, 3);
 
-						if (!strcmp(scene_data_buff, object_chunk_type.c_str()))
+						if (strcmp(scene_data_curr_type, object_chunk_type.c_str()))
 						{
 							// read format = object chunk
-							scene_data_file.read(scene_data_curr_id, scene_data_curr_idsz);
-							scene_data_file.read(scene_data_curr_x, 5);
-							scene_data_file.read(scene_data_curr_y, 5);
-							scene_data_file.read(scene_data_curr_z, 5);
-							scene_data_file.read(scene_data_curr_layer, 4);
-
+							scene_data_file.read(scene_data_curr_layer, 8);
+							scene_data_file.read(scene_data_curr_x, 12);
+							scene_data_file.read(scene_data_curr_y, 12);
+							scene_data_file.read(scene_data_curr_idsz_buff, 8);
+							RemoveCharacterFromArray(scene_data_curr_idsz_buff, '%');
+							scene_data_file.read(scene_data_curr_id, atoi(scene_data_curr_idsz_buff));
+							RemoveCharacterFromArray(scene_data_curr_layer, '%');
+							RemoveCharacterFromArray(scene_data_curr_x, '%');
+							RemoveCharacterFromArray(scene_data_curr_y, '%');
+		
 							// converting the values to a struct
 							item.type = ItemTypeObject;
-							item.id =scene_data_curr_id;
-							item.x = (uint32_t)atoi(scene_data_curr_x);
-							item.y = (uint32_t)atoi(scene_data_curr_y);
-							item.z = (uint32_t)atoi(scene_data_curr_z);
-							item.layer = (uint32_t)atoi(scene_data_curr_layer);
+							item.id = string(scene_data_curr_id);
+							item.x = (float)atoi(scene_data_curr_x);
+							item.y = (float)atoi(scene_data_curr_y);
+							item.layer = atoi(scene_data_curr_layer);
 
 							// adding it to the vector
 							scene_parsed_items.push_back(item);
 						}
 
-						else if (!strcmp(scene_data_buff, sprite_chunk_type.c_str()))
+						else if (!strcmp(scene_data_curr_type, sprite_chunk_type.c_str()))
 						{
 							// read format = object chunk
 
-							// read format = object chunk
-							scene_data_file.read(scene_data_curr_id, scene_data_curr_idsz);
-							scene_data_file.read(scene_data_curr_x, 5);
-							scene_data_file.read(scene_data_curr_y, 5);
-							scene_data_file.read(scene_data_curr_z, 5);
-							scene_data_file.read(scene_data_curr_layer, 4);
+							scene_data_file.read(scene_data_curr_layer, 8);
+							scene_data_file.read(scene_data_curr_x, 12);
+							scene_data_file.read(scene_data_curr_y, 12);
+							scene_data_file.read(scene_data_curr_idsz_buff, 8);
+							scene_data_file.read(scene_data_curr_id, atoi(scene_data_curr_idsz_buff));
+
+							RemoveCharacterFromArray(scene_data_curr_layer, '%');
+							RemoveCharacterFromArray(scene_data_curr_x, '%');
+							RemoveCharacterFromArray(scene_data_curr_y, '%');
+							RemoveCharacterFromArray(scene_data_curr_idsz_buff, '%');
 
 							// converting the values to a struct
-							item.type = ItemTypeSprite;
-							item.id = scene_data_curr_id;
-							item.x = (uint32_t)atoi(scene_data_curr_x);
-							item.y = (uint32_t)atoi(scene_data_curr_y);
-							item.z = (uint32_t)atoi(scene_data_curr_z);
-							item.layer = (uint32_t)atoi(scene_data_curr_layer);
+							item.type = ItemTypeObject;
+							item.id = string(scene_data_curr_id);
+							item.x = atof(scene_data_curr_x);
+							item.y = atof(scene_data_curr_y);
+							item.layer = atoi(scene_data_curr_layer);
 
 							// adding it to the vector
 							scene_parsed_items.push_back(item);

@@ -137,20 +137,18 @@ int main()
 
 	//bg = new Background("Core\\Resources\\grass_block.png");
 
-	scene.SetSceneAmbientLight(glm::vec4(0.5f, 0.5f, 0.5f, 1.0f));
-	scene.AddLightAtPosition(light_2);
-	scene.AddLightAtPosition(light_3);
-	scene.AddBlinkingLightAtPosition(pLight);
-
-	//bg->SetMovesWithCamera(false);
+	scene.FromSceneFile("TestScene.sce");
 	scene.SetSceneCamera(cam);
-
-	//scene.AddSceneBackground(bg, 1);
-	scene.AddObjectAtPosition(obj_2, 0, glm::vec3(200.0f, 200.0f, 0.0f));
-	scene.AddObjectAtPosition(obj_3, 0, glm::vec3(600.0f, 200.0f, 0.0f));
-	scene.AddObjectAtPosition(obj, -1, glm::vec3(170.0f, 10.0f, 0.0f));
-	scene.AddObjectAtPosition(obj, 1, glm::vec3(400.0f, 150.0f, 0.0f));
-	//scene.AddObjectAtPosition(obj, 2, glm::vec3(400.0f, 400.0f, 0.0f));
+	scene.SetSceneAmbientLight(glm::vec4(0.5f, 0.5f, 0.5f, 1.0f));
+// 	scene.AddLightAtPosition(light_2);
+// 	scene.AddLightAtPosition(light_3);
+// 	scene.AddBlinkingLightAtPosition(pLight);
+// 	scene.AddSceneBackground(bg, 1);
+// 	scene.AddObjectAtPosition(obj_2, 0, glm::vec3(200.0f, 200.0f, 0.0f));
+// 	scene.AddObjectAtPosition(obj_3, 0, glm::vec3(600.0f, 200.0f, 0.0f));
+// 	scene.AddObjectAtPosition(obj, -1, glm::vec3(170.0f, 10.0f, 0.0f));
+// 	scene.AddObjectAtPosition(obj, 1, glm::vec3(400.0f, 150.0f, 0.0f));
+// 	scene.AddObjectAtPosition(obj, 2, glm::vec3(400.0f, 400.0f, 0.0f));
 
 	tex1.CreateTexture("Core\\Resources\\tree.png");
 	tex2.CreateTexture("Core\\Resources\\ghost.png"); // Alpha = 50.0%

@@ -22,7 +22,7 @@ namespace GLGame
 
 	void Scene::FromSceneFile(string scene_path)
 	{
-		// TODO : Parse .scene file
+		SceneParser::ParseSceneData(scene_path, this);
 	}
 
 	void Scene::SetSceneCamera(Camera& camera)
