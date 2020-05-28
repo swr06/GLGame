@@ -137,7 +137,7 @@ int main()
 
 	//bg = new Background("Core\\Resources\\grass_block.png");
 
-	scene.FromSceneFile("TestScene.sce");
+	scene.LoadSceneFile("SceneFile.sce");
 	scene.SetSceneCamera(cam);
 	scene.SetSceneAmbientLight(glm::vec4(0.5f, 0.5f, 0.5f, 1.0f));
 // 	scene.AddLightAtPosition(light_2);

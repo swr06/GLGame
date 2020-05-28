@@ -20,7 +20,7 @@ namespace GLGame
 		GameInternal::_IntRegisterScene(this);
 	}
 
-	void Scene::FromSceneFile(string scene_path)
+	void Scene::LoadSceneFile(string scene_path)
 	{
 		SceneParser::ParseSceneData(scene_path, this);
 	}
@@ -69,12 +69,27 @@ namespace GLGame
 
 		instance.m_Object = &object;
 		instance.m_ObjectID = object_id;
-		instance.m_CollisionMask = new AABBCollisionMask;
 
 		item.ItemObjectInstance = instance;
 		item.ItemPos = position;
 		item.ItemType = sitem_type_object;
 		m_SceneItems[layer][object_id].push_back(item);
+	}
+
+	void Scene::AddSpriteAtPosition(Sprite& sprite, int layer, const glm::vec3& position)
+	{
+		SpriteInstance instance;
+		SceneDataItem item;
+
+		string sprite_id = sprite.GetSpriteID();
+
+		instance.m_Sprite = &sprite;
+		instance.m_SpriteID = sprite_id;
+
+		item.ItemSpriteInstance = instance;
+		item.ItemPos = position;
+		item.ItemType = sitem_type_sprite;
+		m_SceneItems[layer][sprite_id].push_back(item);
 	}
 
 	void Scene::AddLightAtPosition(Light& light)

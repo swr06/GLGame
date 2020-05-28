@@ -103,6 +103,8 @@ namespace GLGame
 		vector<string>* GetGlobalObjectIDs() { return &m_ObjectItemNames; }
 		vector<string>* GetGlobalSpriteIDs() { return &m_SpriteItemNames; }
 
+		bool ShouldDrawImGui() const { return m_DisplayImGui; }
+
 		// Internal functions.
 		void _RegisterObject(Object* object);
 		void _RegisterSprite(Sprite* sprite);
@@ -110,8 +112,9 @@ namespace GLGame
 		void _QueueEvent(Event e);
 		GameInternal::_GlobalGameData _GetGlobalData();
 
-		bool ShouldDrawImGui() const { return m_DisplayImGui; }
+		Sprite* _GetSpriteFromArr(const string& id);
 		Object* _GetObjectFromArr(const string& id);
+
 
 	private:
 		uint32_t m_GameWindowWidth = 0;

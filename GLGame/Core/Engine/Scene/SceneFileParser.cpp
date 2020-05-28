@@ -28,6 +28,8 @@ namespace GLGame
 		void _FillInParsedSceneData(vector<SceneParsedDataItem>& items, Scene* scene)
 		{
 			Object* obj;
+			Sprite* spr;
+
 			glm::vec3 pos;
 
 			for (int i = 0; i < items.size(); i++)
@@ -35,19 +37,36 @@ namespace GLGame
 				if (items[i].type == ItemTypeObject)
 				{
 					obj = (Object*)GameInternal::_GetObjectFromGlobalArray(items[i].id);
-					pos.x = items[i].x;
-					pos.y = items[i].y;
-					pos.z = 1.0f;
-					scene->AddObjectAtPosition(*obj, items[i].layer, pos);
+
+					if (obj != nullptr)
+					{
+						pos.x = items[i].x;
+						pos.y = items[i].y;
+						pos.z = 1.0f;
+						scene->AddObjectAtPosition(*obj, items[i].layer, pos);
+					}
+				}
+
+				if (items[i].type == ItemTypeSprite)
+				{
+					spr = (Sprite*)GameInternal::_GetSpriteFromGlobalArray(items[i].id);
+
+					if (spr != nullptr)
+					{
+						pos.x = items[i].x;
+						pos.y = items[i].y;
+						pos.z = 1.0f;
+						scene->AddSpriteAtPosition(*spr, items[i].layer, pos);
+					}
 				}
 			}
 		}
 
-		void RemoveCharacterFromArray(char* character_array, char character) // This overload is only to be used by the ExtractFile() header and implementation
+		void RemoveCharacterFromArray(char* character_array, char character, size_t size) // This overload is only to be used by the ExtractFile() header and implementation
 		{
 			string str = string(character_array);
 
-			for (int i = 0; i < str.size(); i++)
+			for (int i = 0; i < size; i++)
 			{
 				str.erase(std::find(str.begin(), str.end(), character));
 			}
@@ -73,7 +92,6 @@ namespace GLGame
 		{
 			SceneParsedDataItem item;
 			vector<SceneParsedDataItem> scene_parsed_items;
-			ifstream::pos_type scene_file_size = GetFileSize(scene_file);
 
 			ifstream scene_data_file;
 			const string scene_header_text = string(GLGAME_SCENE_FILE_HEADER);
@@ -87,23 +105,22 @@ namespace GLGame
 			char* scene_data_curr_type = new char[4];
 			char* scene_header_buff = new char[scene_header_text.size() + 1];
 			char* scene_data_curr_id = new char[512];
-			char* scene_data_curr_x = new char[12];
-			char* scene_data_curr_y = new char[12];
-			char* scene_data_curr_sx = new char[12];
-			char* scene_data_curr_sy = new char[12];
-			char* scene_data_curr_layer = new char[8];
-			char* scene_data_curr_idsz_buff = new char[8];
+			char* scene_data_curr_x = new char[16];
+			char* scene_data_curr_y = new char[16];
+			char* scene_data_curr_sx = new char[16];
+			char* scene_data_curr_sy = new char[16];
+			char* scene_data_curr_layer = new char[16];
+			char* scene_data_curr_idsz_buff = new char[9];
 
 			// Fill all the character buffers with NULL
 			memset(scene_header_buff, '\0', scene_header_text.size() + 1);
 			memset(scene_data_curr_id, '\0', 512);
-			memset(scene_data_curr_x, '\0', 12);
-			memset(scene_data_curr_y, '\0', 12);
-			memset(scene_data_curr_sx, '\0', 12);
-			memset(scene_data_curr_sy, '\0', 12);
-			memset(scene_data_curr_layer, '\0', 8);
-			memset(scene_data_curr_idsz_buff, '\0', 8);
-			memset(scene_data_curr_id, '\0', 512);
+			memset(scene_data_curr_x, '\0', 16);
+			memset(scene_data_curr_y, '\0', 16);
+			memset(scene_data_curr_sx, '\0', 16);
+			memset(scene_data_curr_sy, '\0', 16);
+			memset(scene_data_curr_layer, '\0', 16);
+			memset(scene_data_curr_idsz_buff, '\0', 9);
 
 			scene_data_file.open(scene_file, ios::in);
 
@@ -124,12 +141,14 @@ namespace GLGame
 							scene_data_file.read(scene_data_curr_layer, 8);
 							scene_data_file.read(scene_data_curr_x, 12);
 							scene_data_file.read(scene_data_curr_y, 12);
+
 							scene_data_file.read(scene_data_curr_idsz_buff, 8);
-							RemoveCharacterFromArray(scene_data_curr_idsz_buff, '%');
+							RemoveCharacterFromArray(scene_data_curr_idsz_buff, '%', 8);
 							scene_data_file.read(scene_data_curr_id, atoi(scene_data_curr_idsz_buff));
-							RemoveCharacterFromArray(scene_data_curr_layer, '%');
-							RemoveCharacterFromArray(scene_data_curr_x, '%');
-							RemoveCharacterFromArray(scene_data_curr_y, '%');
+
+							RemoveCharacterFromArray(scene_data_curr_layer, '%', 8);
+							RemoveCharacterFromArray(scene_data_curr_x, '%', 12);
+							RemoveCharacterFromArray(scene_data_curr_y, '%', 12);
 		
 							// converting the values to a struct
 							item.type = ItemTypeObject;
@@ -152,10 +171,10 @@ namespace GLGame
 							scene_data_file.read(scene_data_curr_idsz_buff, 8);
 							scene_data_file.read(scene_data_curr_id, atoi(scene_data_curr_idsz_buff));
 
-							RemoveCharacterFromArray(scene_data_curr_layer, '%');
-							RemoveCharacterFromArray(scene_data_curr_x, '%');
-							RemoveCharacterFromArray(scene_data_curr_y, '%');
-							RemoveCharacterFromArray(scene_data_curr_idsz_buff, '%');
+							RemoveCharacterFromArray(scene_data_curr_layer, '%', 8);
+							RemoveCharacterFromArray(scene_data_curr_x, '%', 12);
+							RemoveCharacterFromArray(scene_data_curr_y, '%', 12);
+							RemoveCharacterFromArray(scene_data_curr_idsz_buff, '%', 8);
 
 							// converting the values to a struct
 							item.type = ItemTypeObject;
@@ -178,8 +197,30 @@ namespace GLGame
 					s << "ERROR : The scene file " << scene_file << " is not a valid GLGAME scene file.";
 
 					Log::LogToFile(s.str());
+					Log::LogToConsole(s.str());
 				}
 			}
+
+			else
+			{
+				stringstream s;
+
+				s << "ERROR : The scene file path " << scene_file << " is invalid !";
+
+				Log::LogToFile(s.str());
+				Log::LogToConsole(s.str());
+			}
+
+
+			delete[] scene_data_curr_type;
+			delete[] scene_header_buff;
+			delete[] scene_data_curr_id;
+			delete[] scene_data_curr_x;
+			delete[] scene_data_curr_y;
+			delete[] scene_data_curr_sx;
+			delete[] scene_data_curr_sy;
+			delete[] scene_data_curr_layer;
+			delete[] scene_data_curr_idsz_buff;
 		}
 	}
 }

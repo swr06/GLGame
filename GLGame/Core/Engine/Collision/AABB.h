@@ -35,11 +35,11 @@ namespace GLGame
 		float y;
 	};
 
-	class AABBCollisionMask
+	class AABBCollisionMask_
 	{
 	public : 
 
-		AABBCollisionMask() : m_SizeOfThreshold(20), m_CurrentWriteElement(0), m_OldestElement(0), m_EntireBufferWrittenTo(false), m_XThreshold(0), m_YThreshold(0)
+		AABBCollisionMask_() : m_SizeOfThreshold(20), m_CurrentWriteElement(0), m_OldestElement(0), m_EntireBufferWrittenTo(false), m_XThreshold(0), m_YThreshold(0)
 		{
 			Point p = {-1.0f, -1.0f};
 
@@ -47,7 +47,7 @@ namespace GLGame
 			memset(m_Points, -1, m_SizeOfThreshold * sizeof(Point));
 		}
 
-		void CheckAABBCollision(AABBCollisionMask m2)
+		void CheckAABBCollision(AABBCollisionMask_ m2)
 		{
 
 		}

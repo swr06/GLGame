@@ -5,6 +5,7 @@
 
 #include "Core\OpenGL Classes\GLDebug\GLDebug.h"
 #include "Core\Engine\Scene\Scene.h"
+#include "Core\Engine\Sprite\Sprite.h"
 #include "Core\Engine\Scene\SceneData.h"
 #include "Core\Engine\Macros\Macros.h"
 
@@ -13,6 +14,7 @@ namespace GLGame
 	namespace GameInternal
 	{
 		Object* _GetObjectFromGlobalArray(const string& id);
+		Sprite* _GetSpriteFromGlobalArray(const string& id);
 	}
 
 	namespace SceneParser

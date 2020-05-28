@@ -52,7 +52,7 @@ namespace GLGame
 		Scene(); 
 
 		// To handle scene files
-		void FromSceneFile(string scene_path);
+		void LoadSceneFile(string scene_path);
 
 		// Scene set functions
 		void SetSceneCamera(Camera &camera); 
@@ -63,6 +63,7 @@ namespace GLGame
 
 		// Object Functions
 		void AddObjectAtPosition(Object &object, int layer, const glm::vec3& position);
+		void AddSpriteAtPosition(Sprite& sprite, int layer, const glm::vec3& position);
 		void AddLightAtPosition(Light& light);
 		void AddBlinkingLightAtPosition(BlinkingLight& blinking_light);
 		void UpdateObjectPosition(Object& object, const glm::vec3& position);

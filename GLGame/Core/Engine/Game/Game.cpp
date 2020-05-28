@@ -574,9 +574,44 @@ namespace GLGame
 		return data;
 	}
 
+	Sprite* Game::_GetSpriteFromArr(const string& id)
+	{
+		unordered_map<string, Sprite*>::iterator chk = m_GlobalSprites.find(id);
+
+		if (chk != m_GlobalSprites.end())
+		{
+			return m_GlobalSprites[id];
+		}
+
+		else
+		{
+			stringstream str;
+
+			str << "UNREGISTERED SPRITE REQUESTED AT LINE : " << __LINE__ << " AND FILE : " << __FILE__ << "  " << "  | " << "ID : " << id << "  ";
+			Log::LogToFile(str.str());
+
+			return nullptr;
+		}
+	}
+
 	Object* Game::_GetObjectFromArr(const string& id)
 	{
-		return m_GlobalObjects[id];
+		unordered_map<string, Object*>::iterator chk = m_GlobalObjects.find(id);
+
+		if (chk != m_GlobalObjects.end())
+		{
+			return m_GlobalObjects[id];
+		}
+
+		else
+		{
+			stringstream str;
+
+			str << "UNREGISTERED OBJECT REQUESTED AT LINE : " << __LINE__ << " AND FILE : " << __FILE__ << "  | " << "ID : " << id << "  ";
+			Log::LogToFile(str.str());
+
+			return nullptr;
+		}
 	}
 
 	// Internal Functions
@@ -604,6 +639,11 @@ namespace GLGame
 		Object* _GetObjectFromGlobalArray(const string& id)
 		{
 			return GameRef->_GetObjectFromArr(id);
+		}
+
+		Sprite* _GetSpriteFromGlobalArray(const string& id)
+		{
+			return GameRef->_GetSpriteFromArr(id);
 		}
 
 		void _GetObjectPosition(const string& id, uint32_t instance_id, int layer, glm::vec3& pos)

@@ -19,7 +19,6 @@ namespace GLGame
 
 		Object* m_Object; 
 		string m_ObjectID; 
-		AABBCollisionMask* m_CollisionMask;
 	};
 
 	class SpriteInstance
