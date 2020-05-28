@@ -1,6 +1,7 @@
 #include "SceneEditor.h"
 
 // The GLGame Scene editor has to be called at runtime. 
+// It is based on OpenGL
 
 namespace GLGame
 {
@@ -59,6 +60,7 @@ namespace GLGame
 		static char* SceneFilePath = nullptr;
 		static bool SceneFilePathSet = false;
 		static const size_t SceneFilePthSize = 512;
+		static bool UnsavedChanges = true;
 
 		// Mouse and window attributes
 		static double MousePosX = 0;
@@ -87,8 +89,8 @@ namespace GLGame
 		static bool ShouldShowSaveAsWindow = false;
 		static bool ShouldShowFileErrWindow = false;
 
+		// Input blocking
 		static bool ShouldBlockInput = false;
-		
 
 		// IMGUI context => Scene editor window
 		ImGuiContext* imcontext;
@@ -234,8 +236,8 @@ namespace GLGame
 						id_size = to_string(id.size());
 
 						ExtendString(layer, 8, "%");
-						ExtendString(x, 8, "@");
-						ExtendString(y, 8, "#");
+						ExtendString(x, 12, "@");
+						ExtendString(y, 12, "#");
 						ExtendString(id_size, 8, "^");
 						
 						scene_file.write(item_type_str.c_str(), item_type_str.size());
@@ -247,6 +249,8 @@ namespace GLGame
 						//scene_file.write(scene_garbage_str.c_str(), scene_garbage_str.size());
 					}
 				}
+
+				UnsavedChanges = false;
 			}
 
 			else
@@ -780,41 +784,58 @@ namespace GLGame
 				{
 					if (ShouldShowCloseModalWindow)
 					{
-						ImGui::SetNextWindowSize(ImVec2(600, 100), ImGuiCond_Always);
-						ImGui::OpenPopup("Delete?");
-
-						if (ImGui::BeginPopupModal("Delete?", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+						if (UnsavedChanges)
 						{
-							ImGui::Text("The Scene you just created will be lost forever! This action cannot be undone!\n");
-							ImGui::Separator();
-							ShouldBlockInput = true;
+							ImGui::SetNextWindowSize(ImVec2(600, 100), ImGuiCond_Always);
+							ImGui::OpenPopup("Delete?");
 
-							if (ImGui::Button("OK", ImVec2(120, 0)))
+							if (ImGui::BeginPopupModal("Delete?", NULL, ImGuiWindowFlags_AlwaysAutoResize))
 							{
-								ShouldBlockInput = false;
-								ImGui::CloseCurrentPopup();
+								ImGui::Text("The Scene you just created will be lost forever! This action cannot be undone!\n");
+								ImGui::Separator();
+								ShouldBlockInput = true;
 
-								if (SE_window_destroyed == false)
+								if (ImGui::Button("OK", ImVec2(120, 0)))
 								{
-									SE_window_destroyed = true;
-									glfwDestroyWindow(SceneEditorWindow);
-									Log::LogToConsole("The Scene Editor was destroyed!");
+									ShouldBlockInput = false;
+									ImGui::CloseCurrentPopup();
+
+									if (SE_window_destroyed == false)
+									{
+										SE_window_destroyed = true;
+										glfwDestroyWindow(SceneEditorWindow);
+										Log::LogToConsole("The Scene Editor was destroyed!");
+									}
+
+									return 0;
 								}
 
-								return 0;
+								ImGui::SetItemDefaultFocus();
+								ImGui::SameLine();
+
+								if (ImGui::Button("Cancel", ImVec2(120, 0)))
+								{
+									ShouldBlockInput = false;
+									ShouldShowCloseModalWindow = false;
+									ImGui::CloseCurrentPopup();
+								}
+
+								ImGui::EndPopup();
 							}
+						}
 
-							ImGui::SetItemDefaultFocus();
-							ImGui::SameLine();
+						else
+						{
+							ShouldBlockInput = false;
 
-							if (ImGui::Button("Cancel", ImVec2(120, 0)))
+							if (SE_window_destroyed == false)
 							{
-								ShouldBlockInput = false;
-								ShouldShowCloseModalWindow = false;
-								ImGui::CloseCurrentPopup();
+								SE_window_destroyed = true;
+								glfwDestroyWindow(SceneEditorWindow);
+								Log::LogToConsole("The Scene Editor was destroyed!");
 							}
 
-							ImGui::EndPopup();
+							return 0;
 						}
 					}
 				}
@@ -1047,6 +1068,9 @@ namespace GLGame
 
 			if (action == GLFW_PRESS && button == GLFW_MOUSE_BUTTON_LEFT)
 			{
+				// Set the unsaved changes flag
+				UnsavedChanges = true;
+
 				StartPanX = MousePosX;
 				StartPanY = MousePosY;
 
@@ -1140,6 +1164,9 @@ namespace GLGame
 
 			if (action == GLFW_PRESS && button == GLFW_MOUSE_BUTTON_RIGHT)
 			{
+				// Set the unsaved changes flag
+				UnsavedChanges = true;
+
 				AABB o1, o2;
 
 				o1.x = (float)MousePosX;

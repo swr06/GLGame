@@ -318,9 +318,9 @@ namespace GLGame
 
 		m_LightBatcher->EndLightBatch();
 
-		////////
-
 		// Revert the lighting blend function
+
+
 		// TODO : REVERT IT TO THE USER DEFINED BLEND FUNCTION
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
