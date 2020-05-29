@@ -30,6 +30,24 @@ Todo :
 - Scene::RemoveObject() & Scene::RemoveSprite()
 - Rendering objects with different shaders
 - "Solid" attribute for objects. Determines if collision check has to be done
+- Scene editor ✓
+	- Block input  ✓
+	- Event handling ✓
+	- Place objects ✓
+	- Remove objects with left click ✓
+	- Grid ✓
+	- Snap to grid ✓ 
+	- Scene writing ✓ 
+	- layering ✓
+	- Current object selected window ✓
+	- Improve UI ✓
+	- Save menu ✓
+	- Flag to check unsaved files  ✓
+- Scene writer ✓
+- Scene parser ✓
+- Check scene parser ✓
+- More namespaces ✓
+- Virtual event functions ✓
 
 - Think.
 	- Check the collisions for all objects whenever their position is updated.
