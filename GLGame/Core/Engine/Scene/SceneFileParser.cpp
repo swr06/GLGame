@@ -123,7 +123,7 @@ namespace GLGame
 			memset(scene_data_curr_layer, '\0', 16);
 			memset(scene_data_curr_idsz_buff, '\0', 9);
 
-			scene_data_file.open(scene_file, ios::in | ios::binary);
+			scene_data_file.open(scene_file, ios::in);
 
 			if (scene_data_file.is_open() && scene_data_file.good())
 			{
