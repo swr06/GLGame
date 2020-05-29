@@ -1,6 +1,6 @@
 # GLGame (A Tiny OpenGL based C++ Game Engine)
 
-![GLGame Logo](https://github.com/swr06/GLGame/blob/master/Branding/Logo.png)
+![GLGame Logo](https://github.com/swr06/GLGame/blob/master/Branding/Logo1.PNG)
 <p align=center>
 Created by Samuel Rasquinha using C++17 and OpenGL 3.3
 </p>
