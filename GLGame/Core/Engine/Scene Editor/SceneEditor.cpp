@@ -886,6 +886,11 @@ namespace GLGame
 		// function to snap an object to a particular grid
 		float SnapToGrid(int value, int size)
 		{
+			if (size == 0)
+			{
+				size = 1;
+			}
+
 			int temp = value % size;
 
 			if (temp < (size / 2))

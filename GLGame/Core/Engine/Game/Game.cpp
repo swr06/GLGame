@@ -251,13 +251,15 @@ namespace GLGame
 			{
 				if (e->second.size() > 0)
 				{
-					if (e->second[0].ItemType == sitem_type_object && e->second[0].ItemObjectInstance.m_Object != nullptr)
+					if (e->second[0].ItemType == sitem_type_object
+						&& e->second[0].ItemObjectInstance.m_Object != nullptr)
 					{
 						e->second[0].ItemObjectInstance.m_Object->IntUpdate(m_FpsCount);
 
 						if (e->second[0].ItemObjectInstance.m_Object->HasShader() == false)
 						{
-							if (e->second[0].ItemObjectInstance.m_Object->HasSprite() && e->second[0].ItemObjectInstance.m_Object->IsVisible())
+							if (e->second[0].ItemObjectInstance.m_Object->HasSprite() &&
+								e->second[0].ItemObjectInstance.m_Object->IsVisible())
 							{
 								for (int i = 0; i < e->second.size(); i++)
 								{
@@ -277,9 +279,13 @@ namespace GLGame
 						}
 					}
 
-					else if (e->second[0].ItemType == sitem_type_sprite && e->second[0].ItemSpriteInstance.m_Sprite != nullptr)
+					else if (e->second[0].ItemType == sitem_type_sprite 
+						&& e->second[0].ItemSpriteInstance.m_Sprite != nullptr)
 					{
-						// Render the layer's sprites
+						for (int i = 0; i < e->second.size(); i++)
+						{
+							m_SpriteBatcher->AddGenericTextureToBatch(e->second[i].ItemSpriteInstance.m_Sprite->GetCurrentTexture(), e->second[i].ItemPos);
+						}
 					}
 				}
 			}
@@ -306,7 +312,6 @@ namespace GLGame
 			}
 		}
 
-		// Draw lights 
 		for (int i = 0; i < current_scene_data.scene_blinking_lights->size(); i++)
 		{
 			if (current_scene_data.scene_blinking_lights->at(i) != nullptr)

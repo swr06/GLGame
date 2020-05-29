@@ -137,7 +137,6 @@ int main()
 
 	//bg = new Background("Core\\Resources\\grass_block.png");
 
-	scene.LoadSceneFile("SceneFile.sce");
 	scene.SetSceneCamera(cam);
 	scene.SetSceneAmbientLight(glm::vec4(0.5f, 0.5f, 0.5f, 1.0f));
 // 	scene.AddLightAtPosition(light_2);
@@ -160,6 +159,8 @@ int main()
 	obj.SetSprite(spr); // tex1
 	obj_2.SetSprite(spr_2); // tex2
 	obj_3.SetSprite(spr_3);
+
+	scene.LoadSceneFile("NewScene.sce");
 
 	game.SetCurrentScene(scene);
 	game.DisplayFpsOnWindowTitleBar(true);

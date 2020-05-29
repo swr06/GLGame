@@ -102,7 +102,7 @@ namespace GLGame
 			int scene_data_curr_idsz = 0;
 			const short default_schunk_size = 8; // default small chunk size
 
-			char* scene_data_curr_type = new char[4];
+			char* scene_data_curr_type = new char[8];
 			char* scene_header_buff = new char[scene_header_text.size() + 1];
 			char* scene_data_curr_id = new char[512];
 			char* scene_data_curr_x = new char[16];
@@ -115,6 +115,7 @@ namespace GLGame
 			// Fill all the character buffers with NULL
 			memset(scene_header_buff, '\0', scene_header_text.size() + 1);
 			memset(scene_data_curr_id, '\0', 512);
+			memset(scene_data_curr_type, '\0', 8);
 			memset(scene_data_curr_x, '\0', 16);
 			memset(scene_data_curr_y, '\0', 16);
 			memset(scene_data_curr_sx, '\0', 16);
@@ -135,7 +136,7 @@ namespace GLGame
 					{
 						scene_data_file.read(scene_data_curr_type, 3);
 
-						if (strcmp(scene_data_curr_type, object_chunk_type.c_str()))
+						if (!strcmp(scene_data_curr_type, object_chunk_type.c_str()))
 						{
 							// read format = object chunk
 							scene_data_file.read(scene_data_curr_layer, 8);
@@ -163,24 +164,22 @@ namespace GLGame
 
 						else if (!strcmp(scene_data_curr_type, sprite_chunk_type.c_str()))
 						{
-							// read format = object chunk
-
 							scene_data_file.read(scene_data_curr_layer, 8);
 							scene_data_file.read(scene_data_curr_x, 12);
 							scene_data_file.read(scene_data_curr_y, 12);
 							scene_data_file.read(scene_data_curr_idsz_buff, 8);
+							RemoveCharacterFromArray(scene_data_curr_idsz_buff, '%', 8);
 							scene_data_file.read(scene_data_curr_id, atoi(scene_data_curr_idsz_buff));
-
 							RemoveCharacterFromArray(scene_data_curr_layer, '%', 8);
 							RemoveCharacterFromArray(scene_data_curr_x, '%', 12);
 							RemoveCharacterFromArray(scene_data_curr_y, '%', 12);
 							RemoveCharacterFromArray(scene_data_curr_idsz_buff, '%', 8);
 
 							// converting the values to a struct
-							item.type = ItemTypeObject;
+							item.type = ItemTypeSprite;
 							item.id = string(scene_data_curr_id);
-							item.x = atof(scene_data_curr_x);
-							item.y = atof(scene_data_curr_y);
+							item.x = (float)atoi(scene_data_curr_x);
+							item.y = (float)atoi(scene_data_curr_y);
 							item.layer = atoi(scene_data_curr_layer);
 
 							// adding it to the vector
