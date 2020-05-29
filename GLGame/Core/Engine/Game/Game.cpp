@@ -18,9 +18,6 @@ namespace GLGame
 
 		GameRef = this; // Current Game Object
 
-		m_GameWindowWidth = w;
-		m_GameWindowHeight = h;
-
 		Log::_InitLog(glfwGetTime(), __FILE__, __LINE__);
 
 		glfwInit();
@@ -128,6 +125,8 @@ namespace GLGame
 				init_scene_editor = false;
 			}
 		}
+
+		OnInitialize(glfwGetTime());
 	}
 
 	void Game::StartSceneEditor()
@@ -152,7 +151,16 @@ namespace GLGame
 	}
 
 	void Game::Render(bool should_clear)
-	{
+	{ 
+		static bool first_game_render = false;
+
+		if (!first_game_render)
+		{
+			first_game_render = true;
+			OnGameStart(glfwGetTime());
+			SceneLoader();
+		}
+
 		AABB camera_cull;
 		glm::vec3 camera_pos;
 		glm::vec4 camera_projection_coords;
@@ -173,7 +181,7 @@ namespace GLGame
 			Event e;
 
 			e.EventType = Event_Key;
-			//GLGameSetDefaults(e, m_GameWindow);
+			GLGameSetDefaults(e, m_GameWindow);
 
 			for (int i = 0; i < GLGAME_INT_GLFW_KEY_COUNT; i++)
 			{

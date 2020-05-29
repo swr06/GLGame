@@ -57,23 +57,27 @@ namespace GLGame
 		};
 	}
 
+	struct CustomEvent
+	{
+		int m_Event;
+		long long m_Frame;
+	};
+
 	class Game
 	{
 	public:
 
 		Game(const Game&) = delete; // To prevent multiple initializations
-		Game(int width, int height, const string title = string("GLGame V01"), bool can_resize = true, bool use_imgui = false, ImGuiStyle imgui_style = ImGuiStyleDark) : m_CurrentScene(nullptr), m_DisplayFPS(true), m_GameWindow(nullptr), m_KeyHoldEventBuffer(nullptr)
+		Game() : m_CurrentScene(nullptr), m_DisplayFPS(true), m_GameWindow(nullptr), m_KeyHoldEventBuffer(nullptr)
 		{
-			Init(width, height, can_resize, title, use_imgui, imgui_style);
+			Init(m_GameWindowWidth, m_GameWindowHeight,m_CanResize ,m_WindowTitle, m_DisplayImGui, m_IMStyle);
 		}
 
 		~Game();
 
 		void Render(bool should_clear = true);
-		void Init(int w, int h, bool can_resize, string title, bool use_imgui, ImGuiStyle imgui_style);
 		void StartSceneEditor();
 
-		void ConvertCoordinates(glm::vec3 coordinates, glm::vec3 range);
 		void SetVSync(bool vsync, bool log = true);
 		void DisplayFpsOnWindowTitleBar(bool display);
 		void SetCurrentScene(Scene& scene);
@@ -88,13 +92,17 @@ namespace GLGame
 
 		// It is recommended to handle the key hold/repeat events in the OnEvent callback.
 		bool KeyIsBeingPressed(int Key);
-		void PollEvents();
 
-		// Virtual Functions
-		void OnEvent(Event e);
-		void OnImGuiRender(long long frame);
-		void OnFrameAdvance(long long frame);
-
+		// Virtual Functions for event handling
+		virtual void OnInitialize(double ts) {} 
+		virtual void OnGameStart(double ts) {}
+		virtual void OnCustomEvent(long long frame) {} // TODO
+		virtual void SceneLoader() {}
+		virtual void OnObjectMove(Object* object) {} // TODO
+		virtual void OnEvent(Event e) {}
+		virtual void OnImGuiRender(long long frame) {}
+		virtual void OnFrameAdvance(long long frame) {}
+		
 		Scene& GetCurrentScene();
 		Scene* GetCurrentScene() const { return m_CurrentScene; };
 		Camera* GetCurrentCamera();
@@ -106,25 +114,38 @@ namespace GLGame
 		bool ShouldDrawImGui() const { return m_DisplayImGui; }
 
 		// Internal functions.
+
+		// Internal function. Not meant to use.
 		void _RegisterObject(Object* object);
+
+		// Internal function. Not meant to use.
 		void _RegisterSprite(Sprite* sprite);
+
+		// Internal function. Not meant to use.
 		void _RegisterScene(Scene* scene);
+
+		// Internal function. Not meant to use.
 		void _QueueEvent(Event e);
+
+		// Internal function. Not meant to use.
 		GameInternal::_GlobalGameData _GetGlobalData();
 
+		// Internal function. Not meant to use.
+		// Gets a sprite from the global array based on an id
 		Sprite* _GetSpriteFromArr(const string& id);
+
+		// Internal function. Not meant to use.
+		// Gets an object from the global array based on an id
 		Object* _GetObjectFromArr(const string& id);
 
 
 	private:
-		uint32_t m_GameWindowWidth = 0;
-		uint32_t m_GameWindowHeight = 0;
-		bool m_DisplayFPS;
-		bool m_DisplayImGui = false;
+		void Init(int w, int h, bool can_resize, string title, bool use_imgui, ImGuiStyle imgui_style);
+		void PollEvents();
+		void ConvertCoordinates(glm::vec3 coordinates, glm::vec3 range);
+
 		bool m_ImGuiInitialized = false;
-		bool m_Vsync = false;
 		vector<Event> m_EventQueue;
-		ImGuiContext* m_IMContext;
 
 		unordered_map <uint32_t, Background*> m_GlobalBackgrounds;
 		unordered_map <uint32_t, Scene*> m_GlobalScenes; // Internal vector
@@ -133,16 +154,28 @@ namespace GLGame
 		vector<string> m_ObjectItemNames;
 		vector<string> m_SpriteItemNames;
 
-		Scene* m_CurrentScene;
-		GLFWwindow* m_GameWindow;
-
 		long long m_FpsCount = 0;
 		bool m_OpenGLInitialized = false;
 		Shader m_DefaultObjectShader;
 		Shader m_DefaultBackgroundShader;
 
 		bool* m_KeyHoldEventBuffer = nullptr;
-		SpriteBatcher *m_SpriteBatcher;
+		
+	protected : 
+		int m_GameWindowWidth = 800;
+		int m_GameWindowHeight = 600;
+		string m_WindowTitle = string("");
+
+		bool m_DisplayFPS = true;
+		bool m_DisplayImGui = false;
+		bool m_Vsync = false;
+		bool m_CanResize = true;
+
+		ImGuiStyle m_IMStyle;
+		ImGuiContext* m_IMContext;
+		Scene* m_CurrentScene;
+		GLFWwindow* m_GameWindow;
+		SpriteBatcher* m_SpriteBatcher;
 		LightBatcher* m_LightBatcher;
 	};
 }
