@@ -7,7 +7,7 @@ namespace GLGame
 	namespace SceneParser
 	{
 		static const string object_chunk_type = (string)"OBJ";
-		static const string sprite_chunk_type = (string)"SPR";
+		static const string sprite_chunk_type = (string)"SPR"; 
 		static const string atlas_chunk_type = (string)"ATL";
 
 		std::ifstream::pos_type GetFileSize(const string& filename)
@@ -123,7 +123,7 @@ namespace GLGame
 			memset(scene_data_curr_layer, '\0', 16);
 			memset(scene_data_curr_idsz_buff, '\0', 9);
 
-			scene_data_file.open(scene_file, ios::in);
+			scene_data_file.open(scene_file, ios::in | ios::binary);
 
 			if (scene_data_file.is_open() && scene_data_file.good())
 			{
@@ -145,7 +145,9 @@ namespace GLGame
 
 							scene_data_file.read(scene_data_curr_idsz_buff, 8);
 							RemoveCharacterFromArray(scene_data_curr_idsz_buff, '%', 8);
-							scene_data_file.read(scene_data_curr_id, atoi(scene_data_curr_idsz_buff));
+							int rd_size = atoi(scene_data_curr_idsz_buff);
+							scene_data_file.read(scene_data_curr_id, rd_size);
+							scene_data_curr_id[rd_size] = '\0';
 
 							RemoveCharacterFromArray(scene_data_curr_layer, '%', 8);
 							RemoveCharacterFromArray(scene_data_curr_x, '%', 12);
@@ -164,16 +166,21 @@ namespace GLGame
 
 						else if (!strcmp(scene_data_curr_type, sprite_chunk_type.c_str()))
 						{
+							// read format = sprite chunk
+							
 							scene_data_file.read(scene_data_curr_layer, 8);
 							scene_data_file.read(scene_data_curr_x, 12);
 							scene_data_file.read(scene_data_curr_y, 12);
+
 							scene_data_file.read(scene_data_curr_idsz_buff, 8);
 							RemoveCharacterFromArray(scene_data_curr_idsz_buff, '%', 8);
-							scene_data_file.read(scene_data_curr_id, atoi(scene_data_curr_idsz_buff));
+							int rd_size = atoi(scene_data_curr_idsz_buff);
+							scene_data_file.read(scene_data_curr_id, rd_size);
+							scene_data_curr_id[rd_size] = '\0';
+
 							RemoveCharacterFromArray(scene_data_curr_layer, '%', 8);
 							RemoveCharacterFromArray(scene_data_curr_x, '%', 12);
 							RemoveCharacterFromArray(scene_data_curr_y, '%', 12);
-							RemoveCharacterFromArray(scene_data_curr_idsz_buff, '%', 8);
 
 							// converting the values to a struct
 							item.type = ItemTypeSprite;

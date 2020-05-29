@@ -160,7 +160,7 @@ int main()
 	obj_2.SetSprite(spr_2); // tex2
 	obj_3.SetSprite(spr_3);
 
-	scene.LoadSceneFile("NewScene.sce");
+	scene.LoadSceneFile("TestScene.sce");
 
 	game.SetCurrentScene(scene);
 	game.DisplayFpsOnWindowTitleBar(true);
