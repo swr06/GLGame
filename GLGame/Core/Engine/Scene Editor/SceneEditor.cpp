@@ -739,6 +739,11 @@ namespace GLGame
 			}
 		}
 
+		void _SetSceneEditorCloseFlag(bool val)
+		{
+			SE_window_destroyed = true;
+		}
+
 		bool RenderSceneEditor()
 		{
 			if (SE_window_destroyed == false)

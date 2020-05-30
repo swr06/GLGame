@@ -13,6 +13,14 @@ namespace GLGame
 		assert(GameIsAlreadyInitialized == true); // Assert if a Game Object was already created
 		GameIsAlreadyInitialized = false;
 
+		// Initialize class variables
+		m_GameWindowWidth = w;
+		m_GameWindowHeight = h;
+		m_CanResize = can_resize;
+		m_WindowTitle = title;
+		m_DisplayImGui = use_imgui;
+		m_IMStyle = imgui_style;
+
 		const bool init_all_events = true;
 		int callbacks_initialized = 0;
 
@@ -120,7 +128,9 @@ namespace GLGame
 	
 		if (init_scene_editor)
 		{
-			if (SceneEditor::InitSceneEditor(&this->m_GlobalObjects, &this->m_GlobalSprites, &this->m_ObjectItemNames, &this->m_SpriteItemNames, m_GameWindow, m_IMContext) == nullptr)
+			m_SceneEditorWindow = SceneEditor::InitSceneEditor(&this->m_GlobalObjects, &this->m_GlobalSprites, &this->m_ObjectItemNames, &this->m_SpriteItemNames, m_GameWindow, m_IMContext);
+
+			if (m_SceneEditorWindow == nullptr)
 			{
 				init_scene_editor = false;
 			}
@@ -161,210 +171,224 @@ namespace GLGame
 			SceneLoader();
 		}
 
-		AABB camera_cull;
-		glm::vec3 camera_pos;
-		glm::vec4 camera_projection_coords;
-
-		if (should_clear)
+		if (!m_GameAlreadyDestroyed)
 		{
-			glClear(GL_COLOR_BUFFER_BIT);
-		}
-
-		glfwMakeContextCurrent(m_GameWindow);
-		
-		glfwPollEvents();
-		PollEvents();
-
-		// Handling Event_Key events (or key holds)
-	
-		{
-			Event e;
-
-			e.EventType = Event_Key;
-			GLGameSetDefaults(e, m_GameWindow);
-
-			for (int i = 0; i < GLGAME_INT_GLFW_KEY_COUNT; i++)
+			if (!glfwWindowShouldClose(m_GameWindow))
 			{
-				if (m_KeyHoldEventBuffer[i])
+				AABB camera_cull;
+				glm::vec3 camera_pos;
+				glm::vec4 camera_projection_coords;
+
+				if (should_clear)
 				{
-					e.KeyCode = i;
-					m_EventQueue.push_back(e);
-				}
-			}
-		}
-
-		// Execute the frame advance callback
-		OnFrameAdvance(m_FpsCount);
-
-		// ImGui
-		{
-			if (m_DisplayImGui)
-			{
-				ImGui::SetCurrentContext(m_IMContext);
-				ImGui_ImplOpenGL3_NewFrame();
-				ImGui_ImplGlfw_NewFrame();
-				ImGui::NewFrame();
-				OnImGuiRender(m_FpsCount);
-			}
-		}
-
-		// Setting up some variables
-		camera_pos = m_CurrentScene->GetSceneCamera()->GetPosition();
-		camera_projection_coords = m_CurrentScene->GetSceneCamera()->GetProjectionCoords();
-		camera_cull.x = camera_pos.x;
-		camera_cull.y = camera_pos.y;
-
-		camera_cull.w = camera_projection_coords.y - camera_pos.x;
-		camera_cull.h = camera_projection_coords.w - camera_pos.y;
-
-		// Rendering the background data items
-
-		_SceneData current_scene_data = m_CurrentScene->IntGetSceneData();
-
-		int window_width = 0, window_height = 0;
-
-		glfwGetFramebufferSize(m_GameWindow, &window_width, &window_height);
-
-		for (auto background_iterator = current_scene_data.scene_backgrounds->begin(); background_iterator != current_scene_data.scene_backgrounds->end(); background_iterator++)
-		{
-			if (background_iterator->second.background != nullptr)
-			{
-				if (background_iterator->second.background->MovesWithCamera())
-				{
-					NormallyRenderBackgrounds(&background_iterator->second,
-						m_DefaultBackgroundShader, window_width, window_height, glm::mat4(1.0f),
-						glm::mat4(1.0f), m_CurrentScene->GetSceneCamera()->GetViewProjectionMatrix());
+					glClear(GL_COLOR_BUFFER_BIT);
 				}
 
-				else
+				glfwMakeContextCurrent(m_GameWindow);
+
+				glfwPollEvents();
+				PollEvents();
+
+				// Handling Event_Key events (or key holds)
+
 				{
-					NormallyRenderBackgrounds(&background_iterator->second,
-						m_DefaultBackgroundShader, window_width, window_height, glm::mat4(1.0f),
-						glm::mat4(1.0f), m_CurrentScene->GetSceneCamera()->GetProjectionMatrix());
-				}
-			}
-		}
+					Event e;
 
-		//Rendering the scene items
+					e.EventType = Event_Key;
+					GLGameSetDefaults(e, m_GameWindow);
 
-		// Get the scene data
-
-		// Goes through each layer and batches a group of objects and then draws it 
-
-		m_SpriteBatcher->StartSpriteBatch(m_CurrentScene->GetSceneCamera(), m_CurrentScene->GetSceneAmbientLight());
-
-		for (auto layer_iterator = current_scene_data.scene_items->begin(); layer_iterator != current_scene_data.scene_items->end(); layer_iterator++)
-		{
-			for (auto e = layer_iterator->second.begin(); e != layer_iterator->second.end(); e++)
-			{
-				if (e->second.size() > 0)
-				{
-					if (e->second[0].ItemType == sitem_type_object
-						&& e->second[0].ItemObjectInstance.m_Object != nullptr)
+					for (int i = 0; i < GLGAME_INT_GLFW_KEY_COUNT; i++)
 					{
-						e->second[0].ItemObjectInstance.m_Object->IntUpdate(m_FpsCount);
-
-						if (e->second[0].ItemObjectInstance.m_Object->HasShader() == false)
+						if (m_KeyHoldEventBuffer[i])
 						{
-							if (e->second[0].ItemObjectInstance.m_Object->HasSprite() &&
-								e->second[0].ItemObjectInstance.m_Object->IsVisible())
-							{
-								for (int i = 0; i < e->second.size(); i++)
-								{
-									m_SpriteBatcher->AddGLGameItemToBatch(e->second[i]);
-								}
-							}
+							e.KeyCode = i;
+							m_EventQueue.push_back(e);
+						}
+					}
+				}
+
+				// Execute the frame advance callback
+				OnFrameAdvance(m_FpsCount);
+
+				// ImGui
+				{
+					if (m_DisplayImGui)
+					{
+						ImGui::SetCurrentContext(m_IMContext);
+						ImGui_ImplOpenGL3_NewFrame();
+						ImGui_ImplGlfw_NewFrame();
+						ImGui::NewFrame();
+						OnImGuiRender(m_FpsCount);
+					}
+				}
+
+				// Setting up some variables
+				camera_pos = m_CurrentScene->GetSceneCamera()->GetPosition();
+				camera_projection_coords = m_CurrentScene->GetSceneCamera()->GetProjectionCoords();
+				camera_cull.x = camera_pos.x;
+				camera_cull.y = camera_pos.y;
+
+				camera_cull.w = camera_projection_coords.y - camera_pos.x;
+				camera_cull.h = camera_projection_coords.w - camera_pos.y;
+
+				// Rendering the background data items
+
+				_SceneData current_scene_data = m_CurrentScene->IntGetSceneData();
+
+				int window_width = 0, window_height = 0;
+
+				glfwGetFramebufferSize(m_GameWindow, &window_width, &window_height);
+
+				for (auto background_iterator = current_scene_data.scene_backgrounds->begin(); background_iterator != current_scene_data.scene_backgrounds->end(); background_iterator++)
+				{
+					if (background_iterator->second.background != nullptr)
+					{
+						if (background_iterator->second.background->MovesWithCamera())
+						{
+							NormallyRenderBackgrounds(&background_iterator->second,
+								m_DefaultBackgroundShader, window_width, window_height, glm::mat4(1.0f),
+								glm::mat4(1.0f), m_CurrentScene->GetSceneCamera()->GetViewProjectionMatrix());
 						}
 
 						else
 						{
-							if (e->second[0].ItemObjectInstance.m_Object->HasSprite() && e->second[0].ItemObjectInstance.m_Object->IsVisible())
-							{
-								// TODO!
-
-								//BatchRenderObjectInstances(e->second, *(e->second[0].ItemObjectInstance.m_Object->GetShader()), e->second[0].ItemObjectInstance.m_Object->GetModelMatrix(), m_CurrentScene->GetSceneCamera()->GetTransformMatrix(), m_CurrentScene->GetSceneCamera()->GetViewProjectionMatrix(), m_CurrentScene->GetSceneCamera()->GetScale(), camera_cull);
-							}
-						}
-					}
-
-					else if (e->second[0].ItemType == sitem_type_sprite 
-						&& e->second[0].ItemSpriteInstance.m_Sprite != nullptr)
-					{
-						for (int i = 0; i < e->second.size(); i++)
-						{
-							m_SpriteBatcher->AddGenericTextureToBatch(e->second[i].ItemSpriteInstance.m_Sprite->GetCurrentTexture(), e->second[i].ItemPos);
+							NormallyRenderBackgrounds(&background_iterator->second,
+								m_DefaultBackgroundShader, window_width, window_height, glm::mat4(1.0f),
+								glm::mat4(1.0f), m_CurrentScene->GetSceneCamera()->GetProjectionMatrix());
 						}
 					}
 				}
+
+				//Rendering the scene items
+
+				// Get the scene data
+
+				// Goes through each layer and batches a group of objects and then draws it 
+
+				m_SpriteBatcher->StartSpriteBatch(m_CurrentScene->GetSceneCamera(), m_CurrentScene->GetSceneAmbientLight());
+
+				for (auto layer_iterator = current_scene_data.scene_items->begin(); layer_iterator != current_scene_data.scene_items->end(); layer_iterator++)
+				{
+					for (auto e = layer_iterator->second.begin(); e != layer_iterator->second.end(); e++)
+					{
+						if (e->second.size() > 0)
+						{
+							if (e->second[0].ItemType == sitem_type_object
+								&& e->second[0].ItemObjectInstance.m_Object != nullptr)
+							{
+								e->second[0].ItemObjectInstance.m_Object->IntUpdate(m_FpsCount);
+
+								if (e->second[0].ItemObjectInstance.m_Object->HasShader() == false)
+								{
+									if (e->second[0].ItemObjectInstance.m_Object->HasSprite() &&
+										e->second[0].ItemObjectInstance.m_Object->IsVisible())
+									{
+										for (int i = 0; i < e->second.size(); i++)
+										{
+											m_SpriteBatcher->AddGLGameItemToBatch(e->second[i]);
+										}
+									}
+								}
+
+								else
+								{
+									if (e->second[0].ItemObjectInstance.m_Object->HasSprite() && e->second[0].ItemObjectInstance.m_Object->IsVisible())
+									{
+										// TODO!
+
+										//BatchRenderObjectInstances(e->second, *(e->second[0].ItemObjectInstance.m_Object->GetShader()), e->second[0].ItemObjectInstance.m_Object->GetModelMatrix(), m_CurrentScene->GetSceneCamera()->GetTransformMatrix(), m_CurrentScene->GetSceneCamera()->GetViewProjectionMatrix(), m_CurrentScene->GetSceneCamera()->GetScale(), camera_cull);
+									}
+								}
+							}
+
+							else if (e->second[0].ItemType == sitem_type_sprite
+								&& e->second[0].ItemSpriteInstance.m_Sprite != nullptr)
+							{
+								for (int i = 0; i < e->second.size(); i++)
+								{
+									m_SpriteBatcher->AddGenericTextureToBatch(e->second[i].ItemSpriteInstance.m_Sprite->GetCurrentTexture(), e->second[i].ItemPos);
+								}
+							}
+						}
+					}
+				}
+
+				m_SpriteBatcher->EndSpriteBatch();
+
+				double mx, my;
+				int w = 0, h = 0;
+				glfwGetCursorPos(m_GameWindow, &mx, &my);
+				glfwGetFramebufferSize(m_GameWindow, &w, &h);
+
+				// Set the lighting blend function
+				glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+
+				m_LightBatcher->StartLightBatch(m_CurrentScene->GetSceneCamera()->GetViewProjectionMatrix());
+
+				// Draw lights 
+				for (int i = 0; i < current_scene_data.scene_lights->size(); i++)
+				{
+					if (current_scene_data.scene_lights->at(i) != nullptr)
+					{
+						m_LightBatcher->AddLightToBatch(*(current_scene_data.scene_lights->at(i)));
+					}
+				}
+
+				for (int i = 0; i < current_scene_data.scene_blinking_lights->size(); i++)
+				{
+					if (current_scene_data.scene_blinking_lights->at(i) != nullptr)
+					{
+						m_LightBatcher->AddLightToBatch(current_scene_data.scene_blinking_lights->at(i)->GetCurrentLightFrame());
+						current_scene_data.scene_blinking_lights->at(i)->UpdateLightBlink(m_FpsCount);
+					}
+				}
+
+				m_LightBatcher->EndLightBatch();
+
+				// Revert the lighting blend function
+
+
+				// TODO : REVERT IT TO THE USER DEFINED BLEND FUNCTION
+				glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+				// ImGui
+				{
+					if (m_DisplayImGui)
+					{
+						ImGui::Render();
+						ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+					}
+				}
+
+				if (m_DisplayFPS)
+				{
+					DisplayFrameRate(m_GameWindow);
+				}
+
+				m_FpsCount += 1;
+
+				glfwSwapBuffers(m_GameWindow);
+
+				if (init_scene_editor)
+				{
+					if (SceneEditor::RenderSceneEditor() == false)
+					{
+						// For some reason, The vsync suddenly goes off when the scene editor closes.
+						// This fixes the bug
+						SetVSync(m_Vsync, false);
+					}
+
+					glfwMakeContextCurrent(m_GameWindow);
+				}
 			}
-		}
 
-		m_SpriteBatcher->EndSpriteBatch();
-
-		double mx, my;
-		int w = 0, h = 0;
-		glfwGetCursorPos(m_GameWindow, &mx, &my);
-		glfwGetFramebufferSize(m_GameWindow, &w, &h);
-
-		// Set the lighting blend function
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE);
-
- 		m_LightBatcher->StartLightBatch(m_CurrentScene->GetSceneCamera()->GetViewProjectionMatrix());
-
-		// Draw lights 
-		for (int i = 0; i < current_scene_data.scene_lights->size(); i++)
-		{
-			if (current_scene_data.scene_lights->at(i) != nullptr)
+			else
 			{
-				m_LightBatcher->AddLightToBatch(*(current_scene_data.scene_lights->at(i)));
+				glfwDestroyWindow(m_GameWindow);
+				glfwDestroyWindow(m_SceneEditorWindow);
+				SceneEditor::_SetSceneEditorCloseFlag(true);
+				m_GameAlreadyDestroyed = true;
 			}
-		}
-
-		for (int i = 0; i < current_scene_data.scene_blinking_lights->size(); i++)
-		{
-			if (current_scene_data.scene_blinking_lights->at(i) != nullptr)
-			{
-				m_LightBatcher->AddLightToBatch(current_scene_data.scene_blinking_lights->at(i)->GetCurrentLightFrame());
-				current_scene_data.scene_blinking_lights->at(i)->UpdateLightBlink(m_FpsCount);
-			}
-		}
-
-		m_LightBatcher->EndLightBatch();
-
-		// Revert the lighting blend function
-
-
-		// TODO : REVERT IT TO THE USER DEFINED BLEND FUNCTION
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-		// ImGui
-		{
-			if (m_DisplayImGui)
-			{
-				ImGui::Render();
-				ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-			}
-		}
-
-		if (m_DisplayFPS)
-		{
-			DisplayFrameRate(m_GameWindow);
-		}
-
-		m_FpsCount += 1;
-
-		glfwSwapBuffers(m_GameWindow);
-
-		if (init_scene_editor)
-		{
-			if (SceneEditor::RenderSceneEditor() == false)
-			{
-				// For some reason, The vsync suddenly goes off when the scene editor closes.
-				// This fixes the bug
-				SetVSync(m_Vsync, false);
-			}
-
-			glfwMakeContextCurrent(m_GameWindow);
 		}
 
 		Log::_Log();

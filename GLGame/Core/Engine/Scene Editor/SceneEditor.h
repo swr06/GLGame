@@ -61,6 +61,7 @@ namespace GLGame
 		void _SetSEImGuiFlags();
 		void _DrawSEWidgets();
 		void _DrawSEMenuBar();
+		void _SetSceneEditorCloseFlag(bool val);
 		bool RenderSceneEditor();
 		bool SceneEditorAlive();
 		void RenderSceneEditorItems();

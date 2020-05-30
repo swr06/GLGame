@@ -11,12 +11,25 @@ void EventCallback(Event e);
 
 class game_ : public Game
 {
+public : 
+	game_() 
+	{
+		Init(1366, 768, true, "Test Game", false, ImGuiStyleDark);
+	}
+
+	void OnGameDestroy(double ts) override
+	{
+		cout << "Game Destroyed! TS : " << ts;
+		glfwDestroyWindow(m_GameWindow);
+	}
+
 	void OnEvent(Event e) override
 	{
 		EventCallback(e);
 	}
 	
-public : 
+private : 
+
 };
 
 game_ game;
@@ -148,7 +161,7 @@ int main()
 	game.SetBlend(true);
 	game.SetVSync(true);
 
-	while (!game.GameWindowShouldClose())
+	while (1)
 	{
 		game.Render(); 
 

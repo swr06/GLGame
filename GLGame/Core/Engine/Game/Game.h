@@ -68,11 +68,7 @@ namespace GLGame
 	public:
 
 		Game(const Game&) = delete; // To prevent multiple initializations
-		Game() : m_CurrentScene(nullptr), m_DisplayFPS(true), m_GameWindow(nullptr), m_KeyHoldEventBuffer(nullptr)
-		{
-			Init(m_GameWindowWidth, m_GameWindowHeight,m_CanResize ,m_WindowTitle, m_DisplayImGui, m_IMStyle);
-		}
-
+		Game() : m_CurrentScene(nullptr), m_DisplayFPS(true), m_GameWindow(nullptr), m_KeyHoldEventBuffer(nullptr) {}
 		~Game();
 
 		void Render(bool should_clear = true);
@@ -92,16 +88,6 @@ namespace GLGame
 
 		// It is recommended to handle the key hold/repeat events in the OnEvent callback.
 		bool KeyIsBeingPressed(int Key);
-
-		// Virtual Functions for event handling
-		virtual void OnInitialize(double ts) {} 
-		virtual void OnGameStart(double ts) {}
-		virtual void OnCustomEvent(long long frame) {} // TODO
-		virtual void SceneLoader() {}
-		virtual void OnObjectMove(Object* object) {} // TODO
-		virtual void OnEvent(Event e) {}
-		virtual void OnImGuiRender(long long frame) {}
-		virtual void OnFrameAdvance(long long frame) {}
 		
 		Scene& GetCurrentScene();
 		Scene* GetCurrentScene() const { return m_CurrentScene; };
@@ -138,14 +124,14 @@ namespace GLGame
 		// Gets an object from the global array based on an id
 		Object* _GetObjectFromArr(const string& id);
 
-
 	private:
-		void Init(int w, int h, bool can_resize, string title, bool use_imgui, ImGuiStyle imgui_style);
 		void PollEvents();
 		void ConvertCoordinates(glm::vec3 coordinates, glm::vec3 range);
 
 		bool m_ImGuiInitialized = false;
+		bool m_GameAlreadyDestroyed = false;
 		vector<Event> m_EventQueue;
+		GLFWwindow* m_SceneEditorWindow;
 
 		unordered_map <uint32_t, Background*> m_GlobalBackgrounds;
 		unordered_map <uint32_t, Scene*> m_GlobalScenes; // Internal vector
@@ -162,9 +148,12 @@ namespace GLGame
 		bool* m_KeyHoldEventBuffer = nullptr;
 		
 	protected : 
-		int m_GameWindowWidth = 800;
-		int m_GameWindowHeight = 600;
-		string m_WindowTitle = string("");
+		
+		void Init(int w, int h, bool can_resize, string title, bool use_imgui, ImGuiStyle imgui_style);
+
+		int m_GameWindowWidth;
+		int m_GameWindowHeight;
+		string m_WindowTitle;
 
 		bool m_DisplayFPS = true;
 		bool m_DisplayImGui = false;
@@ -177,5 +166,16 @@ namespace GLGame
 		GLFWwindow* m_GameWindow;
 		SpriteBatcher* m_SpriteBatcher;
 		LightBatcher* m_LightBatcher;
+
+		// Virtual Functions for event handling
+		virtual void OnInitialize(double ts) {}
+		virtual void OnGameStart(double ts) {}
+		virtual void OnCustomEvent(long long frame) {} // TODO
+		virtual void SceneLoader() {}
+		virtual void OnObjectMove(Object* object) {} // TODO
+		virtual void OnEvent(Event e) {}
+		virtual void OnImGuiRender(long long frame) {}
+		virtual void OnFrameAdvance(long long frame) {}
+		virtual void OnGameDestroy(double ts) {}
 	};
 }
