@@ -158,7 +158,7 @@ int main()
 	game.SetCurrentScene(scene);
 	game.DisplayFpsOnWindowTitleBar(true);
 	game.SetBlend(true);
-	game.SetVSync(true);
+	game.SetVSync(false);
 
 	while (1)
 	{

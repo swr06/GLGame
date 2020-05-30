@@ -175,10 +175,6 @@ namespace GLGame
 		{
 			if (!glfwWindowShouldClose(m_GameWindow))
 			{
-				AABB camera_cull;
-				glm::vec3 camera_pos;
-				glm::vec4 camera_projection_coords;
-
 				if (should_clear)
 				{
 					glClear(GL_COLOR_BUFFER_BIT);
@@ -221,15 +217,6 @@ namespace GLGame
 						OnImGuiRender(m_FpsCount);
 					}
 				}
-
-				// Setting up some variables
-				camera_pos = m_CurrentScene->GetSceneCamera()->GetPosition();
-				camera_projection_coords = m_CurrentScene->GetSceneCamera()->GetProjectionCoords();
-				camera_cull.x = camera_pos.x;
-				camera_cull.y = camera_pos.y;
-
-				camera_cull.w = camera_projection_coords.y - camera_pos.x;
-				camera_cull.h = camera_projection_coords.w - camera_pos.y;
 
 				// Rendering the background data items
 

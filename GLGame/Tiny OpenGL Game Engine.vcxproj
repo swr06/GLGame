@@ -272,6 +272,8 @@
     </None>
     <None Include="Core\Shaders\DefaultLightingFragShader.glsl" />
     <None Include="Core\Shaders\DefaultLightingVertexShader.glsl" />
+    <None Include="Core\Shaders\DefaultParticleFragmentShader.glsl" />
+    <None Include="Core\Shaders\DefaultParticleVertexShader.glsl" />
     <None Include="Core\Shaders\DefaultVertexShader.glsl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</DeploymentContent>

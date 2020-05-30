@@ -418,6 +418,12 @@
     <None Include="Core\Shaders\DefaultLightingVertexShader.glsl">
       <Filter>Source Files\Shaders</Filter>
     </None>
+    <None Include="Core\Shaders\DefaultParticleFragmentShader.glsl">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="Core\Shaders\DefaultParticleVertexShader.glsl">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Core\Todo.txt">
