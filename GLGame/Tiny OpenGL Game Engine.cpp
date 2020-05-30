@@ -20,7 +20,6 @@ public :
 	void OnGameDestroy(double ts) override
 	{
 		cout << "Game Destroyed! TS : " << ts;
-		glfwDestroyWindow(m_GameWindow);
 	}
 
 	void OnEvent(Event e) override

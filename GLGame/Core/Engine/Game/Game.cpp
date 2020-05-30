@@ -384,10 +384,14 @@ namespace GLGame
 
 			else
 			{
+				glfwMakeContextCurrent(m_GameWindow);
+				OnGameDestroy(glfwGetTime());
+
 				glfwDestroyWindow(m_GameWindow);
 				glfwDestroyWindow(m_SceneEditorWindow);
 				SceneEditor::_SetSceneEditorCloseFlag(true);
 				m_GameAlreadyDestroyed = true;
+				
 			}
 		}
 
