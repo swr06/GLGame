@@ -14,7 +14,7 @@ class game_ : public Game
 public : 
 	game_() 
 	{
-		Init(1366, 768, true, "Test Game", false, ImGuiStyleDark);
+		Init(800, 600, true, "Test Game", false, ImGuiStyleDark);
 	}
 
 	void OnGameDestroy(double ts) override

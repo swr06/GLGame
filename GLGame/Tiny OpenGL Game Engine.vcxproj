@@ -192,6 +192,7 @@
     <ClCompile Include="Core\OpenGL Classes\Fps\Fps.cpp" />
     <ClCompile Include="Core\OpenGL Classes\GLDebug\GLDebug.cpp" />
     <ClCompile Include="Core\OpenGL Classes\Index Buffer\IndexBuffer.cpp" />
+    <ClCompile Include="Core\OpenGL Classes\Random\Random.cpp" />
     <ClCompile Include="Core\OpenGL Classes\Renderer\Quad.cpp" />
     <ClCompile Include="Core\OpenGL Classes\Renderer\Renderer.cpp" />
     <ClCompile Include="Core\OpenGL Classes\Shader\Shader.cpp" />
@@ -240,6 +241,7 @@
     <ClInclude Include="Core\OpenGL Classes\Fps\Fps.h" />
     <ClInclude Include="Core\OpenGL Classes\GLDebug\GLDebug.h" />
     <ClInclude Include="Core\OpenGL Classes\Index Buffer\IndexBuffer.h" />
+    <ClInclude Include="Core\OpenGL Classes\Random\Random.h" />
     <ClInclude Include="Core\OpenGL Classes\Renderer\Quad.h" />
     <ClInclude Include="Core\OpenGL Classes\Renderer\Renderer.h" />
     <ClInclude Include="Core\OpenGL Classes\Shader\Shader.h" />

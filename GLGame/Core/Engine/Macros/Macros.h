@@ -15,6 +15,8 @@
 #define GLGAME_DEFAULT_BATCH_FRAGMENT		"Core\\Shaders\\DefaultBatchFragShader.glsl"
 #define GLGAME_DEFAULT_LIGHT_VERTEX			"Core\\Shaders\\DefaultLightingVertexShader.glsl"
 #define GLGAME_DEFAULT_LIGHT_FRAGMENT		"Core\\Shaders\\DefaultLightingFragShader.glsl"
+#define GLGAME_DEFAULT_PARTICLE_VERTEX		"Core\\Shaders\\DefaultParticleVertexShader.glsl"
+#define GLGAME_DEFAULT_PARTICLE_FRAGMENT	"Core\\Shaders\\DefaultParticleFragmentShader.glsl"
 
 #define GLGAME_RESIZABLE	true
 #define GLGAME_MAX_LAYERS	9

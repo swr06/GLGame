@@ -36,6 +36,7 @@
 #include "Core\Engine\Rendering\BatchRendering.h"
 #include "Core\Engine\Lighting\LightBatcher.h"
 #include "Core\Engine\Lighting\Lighting.h"
+#include "Core\Engine\Particles\Particles.h"
 
 namespace GLGame
 {

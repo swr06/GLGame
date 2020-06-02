@@ -218,6 +218,29 @@ namespace GLGame
 					}
 				}
 
+
+				//////////////////////
+				static ParticleProps particle;
+
+				particle.ColorBegin = { 254 / 255.0f, 212 / 255.0f, 123 / 255.0f, 1.0f };
+				particle.ColorEnd = { 254 / 255.0f, 109 / 255.0f, 41 / 255.0f, 1.0f };
+				particle.SizeBegin = 100, particle.SizeVariation = 10.3f, particle.SizeEnd = 200.0f;
+				particle.LifeTime = 50.0f;
+				particle.Velocity = { 1.0f, 1.0f };
+				particle.VelocityVariation = { 3.0f, 1.0f };
+				particle.Position = { 100.0f, 100.0f };
+
+				static ParticleSystem PS;
+
+				for (int i = 0; i < 25; i++)
+					PS.Emit(particle);
+
+				static Camera cam(0.0f, 800.0f, 0.0f, 600.0f);
+				//static Camera cam(-1.0f, 1.0f, -1.0f, 1.0f);
+
+				PS.OnRender(cam);
+				PS.OnUpdate(glfwGetTime());
+				
 				// Rendering the background data items
 
 				_SceneData current_scene_data = m_CurrentScene->IntGetSceneData();
@@ -331,9 +354,6 @@ namespace GLGame
 				}
 
 				m_LightBatcher->EndLightBatch();
-
-				// Revert the lighting blend function
-
 
 				// TODO : REVERT IT TO THE USER DEFINED BLEND FUNCTION
 				glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

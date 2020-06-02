@@ -119,6 +119,9 @@
     <Filter Include="Source Files\Engine\Logger">
       <UniqueIdentifier>{8fc9e13f-7f5b-4813-b954-b4836a366ed4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Helper Classes">
+      <UniqueIdentifier>{6889e720-563f-4809-ac76-1a9f646e0139}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Core\Engine\Rendering\BatchRendering.cpp">
@@ -240,6 +243,9 @@
     </ClCompile>
     <ClCompile Include="Core\Engine\Lighting\LightBatcher.cpp">
       <Filter>Source Files\Engine\Lighting</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\OpenGL Classes\Random\Random.cpp">
+      <Filter>Source Files\Helper Classes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -377,6 +383,9 @@
     </ClInclude>
     <ClInclude Include="Core\Engine\Lighting\LightBatcher.h">
       <Filter>Source Files\Engine\Lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\OpenGL Classes\Random\Random.h">
+      <Filter>Source Files\Helper Classes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

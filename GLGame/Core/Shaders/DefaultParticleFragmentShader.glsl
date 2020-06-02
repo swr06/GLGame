@@ -1,11 +1,10 @@
 #version 330 core
 
-in vec4 frag_color;
-in vec2 tex_coords;
+out vec4 o_Color;
 
-out vec4 color
+uniform vec4 u_Color;
 
-void main() 
+void main()
 {
-	color = frag_color;
+	o_Color = u_Color;
 }
