@@ -28,6 +28,7 @@ This engine is still highly in development.
 
 # Features to come
 
+I would like to implement the following features in the coming years :
 - Multithreading
 - Networking
 - Save game
