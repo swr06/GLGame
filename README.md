@@ -5,6 +5,8 @@
 Created by Samuel Rasquinha using C++17 and OpenGL 3.3 :game_die:
 </p>
 
+# Features
+
 A Tiny 2D OpenGL based C++ Game Engine that is fast, lightweight and comes with a level editor and the below features :
 - Abstract OpenGL (To write custom code) ✓
 - Camera Culling ✓
@@ -23,6 +25,15 @@ A Tiny 2D OpenGL based C++ Game Engine that is fast, lightweight and comes with 
 - Helper functions (such as windowing functions etc..)
 
 This engine is still highly in development.
+
+# Features to come
+
+I would like to implement the following features in the coming years :
+- Multithreading
+- Networking
+- Save game
+- More helper functions
+- Custom GUI Library
 
 # Compiling
 
@@ -48,6 +59,15 @@ GLGame has very humble dependencies.
 # About the Author
 
 My name is Samuel Rasquinha (samuelrasquinha@gmail.com) and I am a 14 year old programmer from India. 
+
+# Development Specs
+
+- Processor : AMD Ryzen 3 2200g
+- Graphics  : Integrated Vega 8 graphics
+- Ram       : 8.0 GB
+- MB        : AsRock A320M MB
+
+This engine managed to get 300+ FPS in the game with the scene editor running.
 
 # Contact Me : 
 
