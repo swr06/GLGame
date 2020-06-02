@@ -62,10 +62,10 @@ My name is Samuel Rasquinha (samuelrasquinha@gmail.com) and I am a 14 year old p
 
 # Development Specs
 
-Processor : AMD Ryzen 3 2200g
-Graphics  : Integrated Vega 8 graphics
-Ram       : 8.0 GB
-MB        : AsRock A320M MB
+- Processor : AMD Ryzen 3 2200g
+- Graphics  : Integrated Vega 8 graphics
+- Ram       : 8.0 GB
+- MB        : AsRock A320M MB
 
 This engine managed to get 300+ FPS in the game with the scene editor running.
 
