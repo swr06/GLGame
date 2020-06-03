@@ -9,7 +9,7 @@ Created by Samuel Rasquinha using C++17 and OpenGL 3.3 :game_die:
 
 GLGame was created to be as simple and straightforward as possible. Each part of the engine requires little to no understanding of OpenGL and other computer graphic concepts.
 
-It uses simple type names and has simple arguments such as ``Object``, ``Entity``, ``Sprite``.
+It uses simple type names and has simple arguments such as ``Object``, ``Entity`` or ``Sprite``.
 
 # Features
 
