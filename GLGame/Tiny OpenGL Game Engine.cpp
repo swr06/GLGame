@@ -47,7 +47,7 @@ public :
 		static ParticleSystem PS;
 		static ParticleSystem PS_1;
 
-		for (int i = 0; i < 10; i++)
+		for (int i = 0; i < 400; i++)
 		{
 			PS.Emit(particle);
 			PS_1.Emit(particle_2);

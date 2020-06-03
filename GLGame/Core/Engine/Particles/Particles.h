@@ -32,6 +32,7 @@
 #include "Core\OpenGL Classes\Texture\Texture.h"
 #include "Core\OpenGL Classes\Shader\Shader.h"
 #include "Core\Engine\Camera\Camera.h"
+#include "ParticleBatcher.h"
 
 namespace GLGame
 {

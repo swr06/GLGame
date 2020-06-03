@@ -51,8 +51,9 @@ namespace GLGame
 
 	void ParticleSystem::OnRender(Camera& camera)
 	{
-		m_ParticleShader.Use();
-		m_ParticleShader.SetMatrix4("u_ViewProj", camera.GetProjectionMatrix());
+		static ParticleBatcher batcher;
+
+		batcher.StartParticleBatch(camera.GetProjectionMatrix());
 
 		for (auto& particle : m_ParticlePool)
 		{
@@ -73,13 +74,17 @@ namespace GLGame
 			transform = transform * glm::rotate(glm::mat4(1.0f), particle.Rotation, { 0, 0, 1});
 			transform = transform * glm::scale(glm::mat4(1.0f), { size, size, 1.0f });
 
-			m_ParticleShader.SetMatrix4("u_Transform", transform);
-			m_ParticleShader.SetVector4f("u_Color", color);
+			batcher.AddParticleToBatch(transform, color);
 
-			m_QuadVA.Bind();
-			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*) 0);
-			m_QuadVA.Unbind();
+// 			m_ParticleShader.SetMatrix4("u_Transform", transform);
+// 			m_ParticleShader.SetVector4f("u_Color", color);
+// 
+// 			m_QuadVA.Bind();
+// 			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*) 0);
+// 			m_QuadVA.Unbind();
 		}
+
+		batcher.EndParticleBatch();
 	}
 
 	void ParticleSystem::Emit(const ParticleProps& particleProps)
@@ -91,8 +96,8 @@ namespace GLGame
 
 		// Velocity
 		particle.Velocity = particleProps.Velocity;
-		particle.Velocity.x += particleProps.VelocityVariation.x * (Random::Float() - 0.01f);
-		particle.Velocity.y += particleProps.VelocityVariation.y * (Random::Float() - 0.01f);
+		particle.Velocity.x += particleProps.VelocityVariation.x * (Random::Float() - 0.3f);
+		particle.Velocity.y += particleProps.VelocityVariation.y * (Random::Float() - 0.3f);
 
 		// Color
 		particle.ColorBegin = particleProps.ColorBegin;
@@ -100,7 +105,7 @@ namespace GLGame
 
 		particle.LifeTime = particleProps.LifeTime;
 		particle.LifeRemaining = particleProps.LifeTime;
-		particle.SizeBegin = particleProps.SizeBegin + particleProps.SizeVariation * (Random::Float() - 0.5f);
+		particle.SizeBegin = particleProps.SizeBegin + particleProps.SizeVariation * (Random::Float() - 0.3f);
 		particle.SizeEnd = particleProps.SizeEnd;
 
 		m_PoolIndex = --m_PoolIndex % m_ParticlePool.size();
