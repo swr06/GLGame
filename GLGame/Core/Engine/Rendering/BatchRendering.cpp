@@ -10,6 +10,7 @@ namespace GLGame
 	{
 		// Todo : Query the driver to get the maximum texture slots
 
+		m_LastElementVBuff = 0;
 		m_AmbientLight = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 		m_MaximumTextureSlots = 32;
 		memset(m_SlottedTextures, -1, 32 * sizeof(GLuint));
@@ -126,23 +127,26 @@ namespace GLGame
 			height = texture->GetHeight() + item.ItemPos.y;
 			is_sprite = false;
 
-			v2.x = width;
-			v2.y = height;
-			v2.z = item.ItemPos.z;
-			v2.w = 1.0f;
-
 			v4.x = item.ItemPos.x;
 			v4.y = item.ItemPos.y;
 			v4.z = item.ItemPos.z;
 			v4.w = 1.0f;
 
-			v2 = object->GetModelMatrix() * v2;
 			v4 = object->GetModelMatrix() * v4;
+
+			glm::vec4 cull_coordinates_wh;
+
+			cull_coordinates_wh.x = texture->GetWidth();
+			cull_coordinates_wh.y = texture->GetHeight();
+			cull_coordinates_wh.z = item.ItemPos.z;
+			cull_coordinates_wh.w = 1.0f;
+
+			cull_coordinates_wh = object->GetModelMatrix() * cull_coordinates_wh ;
 
 			item_cull.x = v4.x;
 			item_cull.y = v4.y;
-			item_cull.w = v2.x;
-			item_cull.h = v2.y;
+			item_cull.w = cull_coordinates_wh.x;
+			item_cull.h = cull_coordinates_wh.y;
 
 			if (object->Cull() == false || m_CameraCullGiven == false)
 			{
@@ -219,6 +223,11 @@ namespace GLGame
 				v1.y = item.ItemPos.y;
 				v1.z = item.ItemPos.z;
 				v1.w = 1.0f;
+
+				v2.x = width;
+				v2.y = height;
+				v2.z = item.ItemPos.z;
+				v2.w = 1.0f;
 				
 				v3.x = item.ItemPos.x;
 				v3.y = height;
@@ -226,6 +235,7 @@ namespace GLGame
 				v3.w = 1.0f;
 
 				v1 = object->GetModelMatrix() * v1;
+				v2 = object->GetModelMatrix() * v2;
 				v3 = object->GetModelMatrix() * v3;
 			}
 
@@ -473,6 +483,8 @@ namespace GLGame
 		m_VBO.BufferData((m_VerticesWritten * m_VertexSize) * sizeof(GLfloat), m_VertexBuffer, GL_STATIC_DRAW);
 		glDrawElements(GL_TRIANGLES, 6 * m_VerticesWritten, GL_UNSIGNED_INT, (void*)0);
 		m_VAO.Unbind();
+
+		cout << "DREW " << m_VerticesWritten << " QUADS SUCCESSFULLY\n";
 
 		m_ViewProjectionMatrix = glm::mat4(1.0f);
 		m_AmbientLight = glm::vec4(1.0f);

@@ -179,4 +179,6 @@ namespace GLGame
 		virtual void OnFrameAdvance(long long frame) {}
 		virtual void OnGameDestroy(double ts) {}
 	};
+
+	typedef Object Entity;
 }

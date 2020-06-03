@@ -22,9 +22,38 @@ public :
 		cout << "Game Destroyed! TS : " << ts;
 	}
 
+	void OnFrameAdvance(long long frame) override
+	{
+		/*static ParticleProps particle;
+
+		particle.ColorBegin = { 1 / 255.0f, 1 / 255.0f, 1 / 255.0f, 1.0f };
+		particle.ColorEnd = { 254 / 255.0f, 109 / 255.0f, 41 / 255.0f, 1.0f };
+		particle.SizeBegin = 10.0f, particle.SizeVariation = 0.5f, particle.SizeEnd = 50.0f;
+		particle.LifeTime = 1.0f;
+		particle.Velocity = { 1.0f, 1.0f };
+		particle.VelocityVariation = { 3.0f, 1.0f };
+		particle.Position = { 100.0f, 100.0f };
+
+		static ParticleSystem PS;
+
+		for (int i = 0; i < 10; i++)
+			PS.Emit(particle);
+
+		static Camera cam(0.0f, 800.0f, 0.0f, 600.0f);
+
+		PS.OnRender(cam);
+		PS.OnUpdate(glfwGetTime());*/
+
+	}
+
 	void OnEvent(Event e) override
 	{
 		EventCallback(e);
+	}
+
+	void OnGameStart(double ts) override
+	{
+		
 	}
 	
 private : 
