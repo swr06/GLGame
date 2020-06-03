@@ -20,14 +20,18 @@ A Tiny 2D OpenGL based C++ Game Engine that is fast, lightweight and comes with 
 - Light Batching ✓
 - Animations ✓
   - Custom animation speed ✓
- - Scene Editor (W.I.P)
+- Scene Editor ✓
+  - Parser ✓
+  - Slight encryption ✓
 - Transformations ✓
 - Logger ✓
 - Audio 
 - Post Processing (W.I.P)
 - Lighting ✓
-- Particles
-- Physics
+- Particles ✓
+  - Particle Batcher ✓
+  - Texturing (W.I.P)
+- Physics 
 - Helper functions (such as windowing functions etc..)
 
 This engine is still highly in development.
