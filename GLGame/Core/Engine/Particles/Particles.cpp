@@ -53,23 +53,27 @@ namespace GLGame
 
 		for (auto& particle : m_ParticlePool)
 		{
-			if (!particle.Active)
+			if (particle.Active == false)
+			{
 				continue;
-
+			}
+				
 			float life = particle.LifeRemaining / particle.LifeTime;
 			glm::vec4 color = glm::lerp(particle.ColorEnd, particle.ColorBegin, life);
 
 			float size = glm::lerp(particle.SizeEnd, particle.SizeBegin, life);
 
-			glm::mat4 transform = glm::translate(glm::mat4(1.0f), { particle.Position.x, particle.Position.y, 0.0f })
-				* glm::rotate(glm::mat4(1.0f), particle.Rotation, { 0.0f, 0.0f, 1.0f })
-				* glm::scale(glm::mat4(1.0f), { size, size, 1.0f });
+			// Transform the particle
+
+			glm::mat4 transform =   glm::translate(glm::mat4(1.0f), { particle.Position.x, particle.Position.y, 0.0f });
+			transform = transform * glm::rotate(glm::mat4(1.0f), particle.Rotation, { 0, 0, 1});
+			transform = transform * glm::scale(glm::mat4(1.0f), { size, size, 1.0f });
 
 
 			m_ParticleShader.SetMatrix4("u_Transform", transform);
 			m_ParticleShader.SetVector4f("u_Color", color);
 
-			DebugGLFunction(m_QuadVA.Bind());
+			m_QuadVA.Bind();
 			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*) 0);
 			m_QuadVA.Unbind();
 		}

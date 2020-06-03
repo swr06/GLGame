@@ -489,15 +489,16 @@ namespace GLGame
 		m_CurrSlottedTexElement = 0;
 	}
 
-
-
-
+	// All of the below batch rendering functions are deprecated.
+	// Use the SpriteBatcher() class for rendering anything
+	// These functions were originally only used for testing
 	// Deprecated
 	bool temp_log_draw_calls = true;
 
 	// Batch Renderer 
 		//Renders max 10000 quads in one draw call. 
 		//Set the max quad render size to the "max_size" variable"
+
 	void BatchRenderObjectInstances(vector <SceneDataItem>& objects, Shader shader, const glm::mat4& model_matrix, const glm::mat4& view_matrix, const glm::mat4& view_projection_matrix, const glm::vec3& camera_scale, AABB camera_view_cull) // camera view is for culling
 	{
 		const unsigned int max_size = 10000;
