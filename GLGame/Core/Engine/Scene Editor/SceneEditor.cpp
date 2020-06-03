@@ -1,12 +1,27 @@
 #include "SceneEditor.h"
 
 // The GLGame Scene editor has to be called at runtime. 
-// It is based on OpenGL
 
 namespace GLGame
 {
 	namespace SceneEditor
 	{
+		enum SceneEditorItemTypes
+		{
+			SE_ObjectType,
+			SE_SpriteType,
+		};
+
+		struct SceneEditorRenderItem
+		{
+			Object* obj = nullptr;
+			Sprite* spr = nullptr;
+			float x;
+			float y;
+			int layer;
+			SceneEditorItemTypes item_type;
+		};
+
 		static enum CurrentItemTypeSelection
 		{
 			ObjectSelection = 0,
@@ -101,6 +116,25 @@ namespace GLGame
 		// Other needed structures
 		int CurrentOperationSelected = 0; // Has to be an int for imgui. Used as an enum class "Operations" 
 
+		///////////////////////
+		GLFWwindow* _Init(GLFWwindow* share_window, ImGuiContext* context);
+		void ExtendString(string& str, int ex_amt, const string& ex_c);
+		void FlushSceneFile();
+		void _ShowModalWindows();
+		void _RenderSceneEditorItems();
+		void _DrawSEWidgets();
+		void _DrawSEPlaceItemWidgets();
+		void _DrawSEMenuBar();
+		void _SetSceneEditorCloseFlag(bool val);
+		void SEWindowResizeCallback(GLFWwindow* window, int width, int height);
+		float SnapToGrid(int value, int size);
+		void SEKeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
+		void SECursorPosCallback(GLFWwindow* window, double xpos, double ypos);
+		void SEMouseCallback(GLFWwindow* window, int button, int action, int mods);
+		void SEScrollCallback(GLFWwindow* window, double xoffset, double yoffset);
+		void SEWindowCloseCallback(GLFWwindow* window);
+		///////////////////////
+
 		GLFWwindow* InitSceneEditor(unordered_map<string, Object*>* global_objects, unordered_map<string, Sprite*>* global_sprites, vector<string>* objid_list, vector<string>* sprid_list, GLFWwindow* window, ImGuiContext* context)
 		{
 			SceneEditorGlobalObjects = global_objects;
@@ -188,7 +222,7 @@ namespace GLGame
 		void FlushSceneFile()
 		{
 			static string scene_file_header = string(GLGAME_SCENE_FILE_HEADER);
-			static string scene_garbage_str = (string)"#*@#(&$(";
+			char* scene_garbage_str = new char[12];
 			fstream scene_file;
 
 			// item write strings
@@ -198,6 +232,7 @@ namespace GLGame
 			string id;
 			string id_size;
 
+			memset(scene_garbage_str, '\0', 12);
 			scene_file.open(string(SceneFilePath), ios::out | ios::binary);
 
 			if (scene_file.good() && scene_file.is_open())
@@ -235,10 +270,10 @@ namespace GLGame
 
 						id_size = to_string(id.size());
 
-						ExtendString(layer, 8, "%");
-						ExtendString(x, 12, "%");
-						ExtendString(y, 12, "%");
-						ExtendString(id_size, 8, "%");
+						ExtendString(layer, 8, "!");
+						ExtendString(x, 12, "@");
+						ExtendString(y, 12, "#");
+						ExtendString(id_size, 8, "$");
 
 						scene_file.write(item_type_str.c_str(), item_type_str.size());
 						scene_file.write(layer.c_str(), 8);
@@ -246,7 +281,16 @@ namespace GLGame
 						scene_file.write(y.c_str(), 12);
 						scene_file.write(id_size.c_str(), 8);
 						scene_file.write(id.c_str(), id.size());
-						//scene_file.write(scene_garbage_str.c_str(), scene_garbage_str.size());
+
+						// Generate a garbage string of 8 characters and write it to the file stream
+						// To further limit readability of the outputted scene file
+						for (int i = 0; i < 8; i++)
+						{
+							scene_garbage_str[i] = (char)rand() % 200;
+						}
+
+						scene_garbage_str[9] = '\0';
+						scene_file.write(scene_garbage_str, 8);
 					}
 				}
 
@@ -259,11 +303,6 @@ namespace GLGame
 			}
 
 			scene_file.close();
-		}
-
-		void _SetSEImGuiFlags()
-		{
-
 		}
 
 		void _ShowModalWindows()
@@ -427,7 +466,7 @@ namespace GLGame
 			}
 		}
 
-		void RenderSceneEditorItems()
+		void _RenderSceneEditorItems()
 		{
 			stbi_set_flip_vertically_on_load(true);
 
@@ -767,7 +806,7 @@ namespace GLGame
 				}
 
 				// Render the test item
-				RenderSceneEditorItems();
+				_RenderSceneEditorItems();
 
 				bool display_title_place_item = true;
 				bool display_title_selected_item = true;
@@ -856,8 +895,6 @@ namespace GLGame
 
 			else
 			{
-
-
 				return false;
 			}
 
@@ -867,11 +904,6 @@ namespace GLGame
 		bool SceneEditorAlive()
 		{
 			return SE_window_destroyed;
-		}
-
-		void CheckSelectedObject()
-		{
-
 		}
 
 		void SEWindowResizeCallback(GLFWwindow* window, int width, int height)

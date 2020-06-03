@@ -110,7 +110,9 @@ namespace GLGame
 			char* scene_data_curr_sx = new char[16];
 			char* scene_data_curr_sy = new char[16];
 			char* scene_data_curr_layer = new char[16];
-			char* scene_data_curr_idsz_buff = new char[9];
+			char* scene_data_curr_idsz_buff = new char[16];
+			char* scene_dada_curr_garbage_buff = new char[16];
+			
 
 			// Fill all the character buffers with NULL
 			memset(scene_header_buff, '\0', scene_header_text.size() + 1);
@@ -121,7 +123,8 @@ namespace GLGame
 			memset(scene_data_curr_sx, '\0', 16);
 			memset(scene_data_curr_sy, '\0', 16);
 			memset(scene_data_curr_layer, '\0', 16);
-			memset(scene_data_curr_idsz_buff, '\0', 9);
+			memset(scene_data_curr_idsz_buff, '\0', 16);
+			memset(scene_dada_curr_garbage_buff, '\0', 16);
 
 			scene_data_file.open(scene_file, ios::in);
 
@@ -144,14 +147,14 @@ namespace GLGame
 							scene_data_file.read(scene_data_curr_y, 12);
 
 							scene_data_file.read(scene_data_curr_idsz_buff, 8);
-							RemoveCharacterFromArray(scene_data_curr_idsz_buff, '%', 8);
+							RemoveCharacterFromArray(scene_data_curr_idsz_buff, '$', 8);
 							int rd_size = atoi(scene_data_curr_idsz_buff);
 							scene_data_file.read(scene_data_curr_id, rd_size);
 							scene_data_curr_id[rd_size] = '\0';
 
-							RemoveCharacterFromArray(scene_data_curr_layer, '%', 8);
-							RemoveCharacterFromArray(scene_data_curr_x, '%', 12);
-							RemoveCharacterFromArray(scene_data_curr_y, '%', 12);
+							RemoveCharacterFromArray(scene_data_curr_layer, '!', 8);
+							RemoveCharacterFromArray(scene_data_curr_x, '@', 12);
+							RemoveCharacterFromArray(scene_data_curr_y, '#', 12);
 		
 							// converting the values to a struct
 							item.type = ItemTypeObject;
@@ -159,6 +162,9 @@ namespace GLGame
 							item.x = (float)atoi(scene_data_curr_x);
 							item.y = (float)atoi(scene_data_curr_y);
 							item.layer = atoi(scene_data_curr_layer);
+
+							// reading the garbage string
+							scene_data_file.read(scene_dada_curr_garbage_buff, 8);
 
 							// adding it to the vector
 							scene_parsed_items.push_back(item);
@@ -173,14 +179,14 @@ namespace GLGame
 							scene_data_file.read(scene_data_curr_y, 12);
 
 							scene_data_file.read(scene_data_curr_idsz_buff, 8);
-							RemoveCharacterFromArray(scene_data_curr_idsz_buff, '%', 8);
+							RemoveCharacterFromArray(scene_data_curr_idsz_buff, '$', 8);
 							int rd_size = atoi(scene_data_curr_idsz_buff);
 							scene_data_file.read(scene_data_curr_id, rd_size);
 							scene_data_curr_id[rd_size] = '\0';
 
-							RemoveCharacterFromArray(scene_data_curr_layer, '%', 8);
-							RemoveCharacterFromArray(scene_data_curr_x, '%', 12);
-							RemoveCharacterFromArray(scene_data_curr_y, '%', 12);
+							RemoveCharacterFromArray(scene_data_curr_layer, '!', 8);
+							RemoveCharacterFromArray(scene_data_curr_x, '@', 12);
+							RemoveCharacterFromArray(scene_data_curr_y, '#', 12);
 
 							// converting the values to a struct
 							item.type = ItemTypeSprite;
@@ -188,6 +194,9 @@ namespace GLGame
 							item.x = (float)atoi(scene_data_curr_x);
 							item.y = (float)atoi(scene_data_curr_y);
 							item.layer = atoi(scene_data_curr_layer);
+
+							// reading the garbage string
+							scene_data_file.read(scene_dada_curr_garbage_buff, 8);
 
 							// adding it to the vector
 							scene_parsed_items.push_back(item);
@@ -227,6 +236,7 @@ namespace GLGame
 			delete[] scene_data_curr_sy;
 			delete[] scene_data_curr_layer;
 			delete[] scene_data_curr_idsz_buff;
+			delete[] scene_dada_curr_garbage_buff;
 		}
 	}
 }

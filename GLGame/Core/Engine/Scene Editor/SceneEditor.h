@@ -40,39 +40,10 @@ namespace GLGame
 	{
 		using namespace std;
 
-		enum SceneEditorItemTypes
-		{
-			SE_ObjectType,
-			SE_SpriteType,
-		};
-
-		struct SceneEditorRenderItem
-		{
-			Object* obj = nullptr; 
-			Sprite* spr = nullptr;
-			float x;
-			float y;
-			int layer;
-			SceneEditorItemTypes item_type;
-		};
-
-		GLFWwindow* _Init(GLFWwindow* share_window, ImGuiContext* context);
 		GLFWwindow* InitSceneEditor(unordered_map<string, Object*>* global_objects, unordered_map<string, Sprite*>* global_sprites, vector<string>* objid_list, vector<string>* sprid_list, GLFWwindow* window, ImGuiContext* context);
-		void _SetSEImGuiFlags();
-		void _DrawSEWidgets();
-		void _DrawSEMenuBar();
+
 		void _SetSceneEditorCloseFlag(bool val);
 		bool RenderSceneEditor();
 		bool SceneEditorAlive();
-		void RenderSceneEditorItems();
-		void _ShowModalWindows();
-
-		// GLFW Callbacks
-		void SEWindowResizeCallback(GLFWwindow* window, int width, int height);
-		void SEKeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
-		void SEMouseCallback(GLFWwindow* window, int button, int action, int mods);
-		void SEScrollCallback(GLFWwindow* window, double xoffset, double yoffset);
-		void SEWindowCloseCallback(GLFWwindow* window);
-		void SECursorPosCallback(GLFWwindow* window, double xpos, double ypos);
 	}
 }
