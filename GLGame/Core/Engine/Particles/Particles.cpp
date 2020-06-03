@@ -29,6 +29,8 @@ namespace GLGame
 
 	void ParticleSystem::OnUpdate(double ts)
 	{
+		static float vTime = 0.1f;
+
 		for (auto& particle : m_ParticlePool)
 		{
 			if (!particle.Active)
@@ -40,10 +42,11 @@ namespace GLGame
 				continue;
 			}
 
-			particle.LifeRemaining -= ts;
+			particle.LifeRemaining -= 0.1 * ts;
 			particle.Position += particle.Velocity * (float)ts;
-			particle.Rotation += 0.01f * ts;
+			particle.Rotation += 0.1f * ts;
 		}
+
 	}
 
 	void ParticleSystem::OnRender(Camera& camera)
@@ -60,6 +63,7 @@ namespace GLGame
 				
 			float life = particle.LifeRemaining / particle.LifeTime;
 			glm::vec4 color = glm::lerp(particle.ColorEnd, particle.ColorBegin, life);
+			color.a = color.a * (0.4 * life);
 
 			float size = glm::lerp(particle.SizeEnd, particle.SizeBegin, life);
 
@@ -68,7 +72,6 @@ namespace GLGame
 			glm::mat4 transform =   glm::translate(glm::mat4(1.0f), { particle.Position.x, particle.Position.y, 0.0f });
 			transform = transform * glm::rotate(glm::mat4(1.0f), particle.Rotation, { 0, 0, 1});
 			transform = transform * glm::scale(glm::mat4(1.0f), { size, size, 1.0f });
-
 
 			m_ParticleShader.SetMatrix4("u_Transform", transform);
 			m_ParticleShader.SetVector4f("u_Color", color);
@@ -88,8 +91,8 @@ namespace GLGame
 
 		// Velocity
 		particle.Velocity = particleProps.Velocity;
-		particle.Velocity.x += particleProps.VelocityVariation.x * (Random::Float() - 0.5f);
-		particle.Velocity.y += particleProps.VelocityVariation.y * (Random::Float() - 0.5f);
+		particle.Velocity.x += particleProps.VelocityVariation.x * (Random::Float() - 0.01f);
+		particle.Velocity.y += particleProps.VelocityVariation.y * (Random::Float() - 0.01f);
 
 		// Color
 		particle.ColorBegin = particleProps.ColorBegin;

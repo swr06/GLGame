@@ -24,26 +24,43 @@ public :
 
 	void OnFrameAdvance(long long frame) override
 	{
-		/*static ParticleProps particle;
+		static double time = glfwGetTime();
+		static ParticleProps particle;
+		static ParticleProps particle_2;
 
 		particle.ColorBegin = { 1 / 255.0f, 1 / 255.0f, 1 / 255.0f, 1.0f };
-		particle.ColorEnd = { 254 / 255.0f, 109 / 255.0f, 41 / 255.0f, 1.0f };
-		particle.SizeBegin = 10.0f, particle.SizeVariation = 0.5f, particle.SizeEnd = 50.0f;
-		particle.LifeTime = 1.0f;
-		particle.Velocity = { 1.0f, 1.0f };
-		particle.VelocityVariation = { 3.0f, 1.0f };
+		particle.ColorEnd = { 255 / 255.0f, 255 / 255.0f, 255 / 255.0f, 1.0f };
+		particle.SizeBegin = 50.0f, particle.SizeVariation = 1.0f, particle.SizeEnd = 100.0f;
+		particle.LifeTime = 20.0f;
+		particle.Velocity = { 5.0f, 5.0f };
+		particle.VelocityVariation = { 5.0f, 5.0f };
 		particle.Position = { 100.0f, 100.0f };
 
+		particle_2.ColorBegin = { 255.0 / 255.0f, 1 / 255.0f, 1 / 255.0f, 1.0f };
+		particle_2.ColorEnd = { 1 / 255.0f, 1 / 255.0f, 255 / 255.0f, 1.0f };
+		particle_2.SizeBegin = 50.0f, particle_2.SizeVariation = 1.0f, particle_2.SizeEnd = 100.0f;
+		particle_2.LifeTime = 20.0f;
+		particle_2.Velocity = { 5.0f, 5.0f };
+		particle_2.VelocityVariation = { 5.0f, 5.0f };
+		particle_2.Position = { 300.0f, 300.0f };
+
 		static ParticleSystem PS;
+		static ParticleSystem PS_1;
 
 		for (int i = 0; i < 10; i++)
+		{
 			PS.Emit(particle);
+			PS_1.Emit(particle_2);
+		}
 
 		static Camera cam(0.0f, 800.0f, 0.0f, 600.0f);
 
 		PS.OnRender(cam);
-		PS.OnUpdate(glfwGetTime());*/
+		PS_1.OnRender(cam);
 
+		PS.OnUpdate(time);
+		PS_1.OnUpdate(time);
+		time = glfwGetTime();
 	}
 
 	void OnEvent(Event e) override
@@ -187,9 +204,9 @@ int main()
 	game.SetCurrentScene(scene);
 	game.DisplayFpsOnWindowTitleBar(true);
 	game.SetBlend(true);
-	game.SetVSync(true);
+	game.SetVSync(false);
 
-	while (1)
+	while (!game.GameWindowShouldClose())
 	{
 		game.Render(); 
 

@@ -247,6 +247,9 @@
     <ClCompile Include="Core\OpenGL Classes\Random\Random.cpp">
       <Filter>Source Files\Helper Classes</Filter>
     </ClCompile>
+    <ClCompile Include="Core\Engine\Particles\ParticleBatcher.cpp">
+      <Filter>Source Files\Engine\Particles</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\Engine\Rendering\BatchRendering.h">
@@ -386,6 +389,9 @@
     </ClInclude>
     <ClInclude Include="Core\OpenGL Classes\Random\Random.h">
       <Filter>Source Files\Helper Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Engine\Particles\ParticleBatcher.h">
+      <Filter>Source Files\Engine\Particles</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

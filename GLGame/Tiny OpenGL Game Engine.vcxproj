@@ -179,6 +179,7 @@
     <ClCompile Include="Core\Engine\Lighting\Lighting.cpp" />
     <ClCompile Include="Core\Engine\Logger\Log.cpp" />
     <ClCompile Include="Core\Engine\Object\Object.cpp" />
+    <ClCompile Include="Core\Engine\Particles\ParticleBatcher.cpp" />
     <ClCompile Include="Core\Engine\Particles\Particles.cpp" />
     <ClCompile Include="Core\Engine\Post Processing\Post Processing.cpp" />
     <ClCompile Include="Core\Engine\Rendering\BatchRendering.cpp" />
@@ -226,6 +227,7 @@
     <ClInclude Include="Core\Engine\Logger\Log.h" />
     <ClInclude Include="Core\Engine\Macros\Macros.h" />
     <ClInclude Include="Core\Engine\Object\Object.h" />
+    <ClInclude Include="Core\Engine\Particles\ParticleBatcher.h" />
     <ClInclude Include="Core\Engine\Particles\Particles.h" />
     <ClInclude Include="Core\Engine\Post Processing\Post Processing.h" />
     <ClInclude Include="Core\Engine\Rendering\BatchRendering.h" />

@@ -6,7 +6,7 @@ namespace GLGame
 	static Game* GameRef = nullptr;
 	static GameInternal::_GlobalGameData GameData;
 
-	void Game::Init(int w, int h, bool can_resize, string title, bool use_imgui, ImGuiStyle imgui_style)
+	void Game::Init(int w, int h, bool can_resize, string title, bool start_SE, bool use_imgui, ImGuiStyle imgui_style)
 	{
 		static bool GameIsAlreadyInitialized = true;
 
@@ -14,6 +14,7 @@ namespace GLGame
 		GameIsAlreadyInitialized = false;
 
 		// Initialize class variables
+		init_scene_editor = start_SE;
 		m_GameWindowWidth = w;
 		m_GameWindowHeight = h;
 		m_CanResize = can_resize;

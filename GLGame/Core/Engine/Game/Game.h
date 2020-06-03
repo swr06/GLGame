@@ -150,7 +150,7 @@ namespace GLGame
 		
 	protected : 
 		
-		void Init(int w, int h, bool can_resize, string title, bool use_imgui, ImGuiStyle imgui_style);
+		void Init(int w, int h, bool can_resize = true, string title = "Test Game", bool start_SE = false, bool use_imgui = false, ImGuiStyle imgui_style = ImGuiStyleDark);
 
 		int m_GameWindowWidth;
 		int m_GameWindowHeight;
