@@ -5,6 +5,10 @@
 Created by Samuel Rasquinha using C++17 and OpenGL 3.3 :game_die:
 </p>
 
+# What is GLGame ? 
+
+GLGame is a Tiny OpenGL Game Engine that is simple, lightweight and easy to use.
+
 # Objective 
 
 GLGame was created to be as simple and straightforward as possible. Each part of the engine requires little to no understanding of OpenGL and other computer graphic concepts.
@@ -84,6 +88,10 @@ This engine managed to get 300+ FPS in the game with the scene editor running.
 - Discord : @swr06 #1899 
 - Gmail   : ``samuelrasquinha@gmail.com``
 - Instagram : Samuel Rasquinha
+
+# License
+
+This project is licensed under the highly permissive MIT License. Read the LICENSE file for more info.
 
 # Supporting this project
 
