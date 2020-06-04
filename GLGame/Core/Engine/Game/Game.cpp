@@ -5,6 +5,9 @@ namespace GLGame
 	static bool init_scene_editor = true;
 	static Game* GameRef = nullptr;
 	static GameInternal::_GlobalGameData GameData;
+	static vector<Object*> RegisterObjectQueue;
+	static vector<Sprite*> RegisterSpriteQueue;
+	static vector<Scene*> RegisterSceneQueue;
 
 	void Game::Init(int w, int h, bool can_resize, string title, bool start_SE, bool use_imgui, ImGuiStyle imgui_style)
 	{
@@ -126,7 +129,32 @@ namespace GLGame
 
 		m_DefaultObjectShader.CreateShaderProgram(GLGAME_DEFAULT_OBJECT_VERTEX, GLGAME_DEFAULT_OBJECT_FRAGMENT);
 		m_DefaultBackgroundShader.CreateShaderProgram(GLGAME_DEFAULT_BGSHADER_VERTEX, GLGAME_DEFAULT_BGSHADER_FRAGMENT);
-	
+
+		// Register all the items from the register queues
+		for (int i = 0; i < RegisterObjectQueue.size(); i++)
+		{
+			if (RegisterObjectQueue[i] != nullptr)
+			{
+				this->_RegisterObject(RegisterObjectQueue[i]);
+			}
+		}
+
+		for (int i = 0; i < RegisterSpriteQueue.size(); i++)
+		{
+			if (RegisterSpriteQueue[i] != nullptr)
+			{
+				this->_RegisterSprite(RegisterSpriteQueue[i]);
+			}
+		}
+
+		for (int i = 0; i < RegisterSceneQueue.size(); i++)
+		{
+			if (RegisterSceneQueue[i] != nullptr)
+			{
+				this->_RegisterScene(RegisterSceneQueue[i]);
+			}
+		}
+
 		if (init_scene_editor)
 		{
 			m_SceneEditorWindow = SceneEditor::InitSceneEditor(&this->m_GlobalObjects, &this->m_GlobalSprites, &this->m_ObjectItemNames, &this->m_SpriteItemNames, m_GameWindow, m_IMContext);
@@ -740,17 +768,41 @@ namespace GLGame
 
 		void _IntRegisterObject(Object* object)
 		{
-			GameRef->_RegisterObject(object);
+			if (GameRef != nullptr)
+			{
+				GameRef->_RegisterObject(object);
+			}
+
+			else
+			{
+				RegisterObjectQueue.push_back(object);
+			}
 		}
 
 		void _IntRegisterSprite(Sprite* sprite)
 		{
-			GameRef->_RegisterSprite(sprite);
+			if (GameRef != nullptr)
+			{
+				GameRef->_RegisterSprite(sprite);
+			}
+
+			else
+			{
+				RegisterSpriteQueue.push_back(sprite);
+			}
 		}
 
 		void _IntRegisterScene(Scene* scene)
 		{
-			GameRef->_RegisterScene(scene);
+			if (GameRef != nullptr)
+			{
+				GameRef->_RegisterScene(scene);
+			}
+
+			else
+			{
+				RegisterSceneQueue.push_back(scene);
+			}
 		}
 
 		void _IntAddEventToQueue(Event e)

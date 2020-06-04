@@ -25,6 +25,7 @@ namespace GLGame
 
 		int m_CurrentElement;
 		int m_VerticesWritten;
+		bool m_Initialized = false;
 		const int m_MaxParticles;
 
 		array<GLfloat, 8> m_UVCoords = { -1.0f, 2.0f, -1.0f, -1.0f, 2.0f, -1.0f, 2.0f, 2.0f };
@@ -34,7 +35,7 @@ namespace GLGame
 		GLuint* m_IndexBuffer;
 
 		// OpenGL Abstracted objects
-		VertexBuffer m_VBO;
+		VertexBuffer* m_VBO;
 		VertexArray m_VAO;
 		IndexBuffer m_IBO;
 		Shader m_Shader;

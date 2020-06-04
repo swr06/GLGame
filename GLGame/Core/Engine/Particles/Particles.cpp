@@ -2,7 +2,7 @@
 
 namespace GLGame
 {
-	ParticleSystem::ParticleSystem() : m_QuadVB(GL_ARRAY_BUFFER)
+	ParticleSystem::ParticleSystem() : m_ParticleShaderColor(1), m_ParticleShaderTransform(1), m_ParticleShaderViewProj(1)
 	{
 		m_ParticlePool.resize(1000);
 
@@ -13,18 +13,10 @@ namespace GLGame
 				 -0.5f,  0.5f, 0.0f
 		};
 
-		uint32_t elements[] = 
+		uint32_t elements[] =
 		{
 			0, 1, 2, 2, 3, 0
 		};
-
-		m_QuadVA.Bind();
-		m_QuadVB.BufferData(sizeof(default_vertices), default_vertices, GL_STATIC_DRAW);
-		m_QuadVB.VertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), 0);
-		m_QuadIB.BufferData(sizeof(elements), elements, GL_STATIC_DRAW);
-		m_QuadVA.Unbind();
-
-		m_ParticleShader.CreateShaderProgram(GLGAME_DEFAULT_PARTICLE_VERTEX, GLGAME_DEFAULT_PARTICLE_FRAGMENT);;
 	}
 
 	void ParticleSystem::OnUpdate(double ts)
@@ -61,7 +53,7 @@ namespace GLGame
 			{
 				continue;
 			}
-				
+
 			float life = particle.LifeRemaining / particle.LifeTime;
 			glm::vec4 color = glm::lerp(particle.ColorEnd, particle.ColorBegin, life);
 			color.a = color.a * (0.4 * life);
@@ -70,24 +62,17 @@ namespace GLGame
 
 			// Transform the particle
 
-			glm::mat4 transform =   glm::translate(glm::mat4(1.0f), { particle.Position.x, particle.Position.y, 0.0f });
-			transform = transform * glm::rotate(glm::mat4(1.0f), particle.Rotation, { 0, 0, 1});
+			glm::mat4 transform = glm::translate(glm::mat4(1.0f), { particle.Position.x, particle.Position.y, 0.0f });
+			transform = transform * glm::rotate(glm::mat4(1.0f), particle.Rotation, { 0, 0, 1 });
 			transform = transform * glm::scale(glm::mat4(1.0f), { size, size, 1.0f });
 
 			batcher.AddParticleToBatch(transform, color);
 
-// 			m_ParticleShader.SetMatrix4("u_Transform", transform);
-// 			m_ParticleShader.SetVector4f("u_Color", color);
-// 
-// 			m_QuadVA.Bind();
-// 			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*) 0);
-// 			m_QuadVA.Unbind();
+			batcher.EndParticleBatch();
 		}
-
-		batcher.EndParticleBatch();
 	}
 
-	void ParticleSystem::Emit(const ParticleProps& particleProps)
+	void ParticleSystem::Emit(const ParticleProps & particleProps)
 	{
 		Particle& particle = m_ParticlePool[m_PoolIndex];
 		particle.Active = true;
@@ -110,5 +95,4 @@ namespace GLGame
 
 		m_PoolIndex = --m_PoolIndex % m_ParticlePool.size();
 	}
-
 }

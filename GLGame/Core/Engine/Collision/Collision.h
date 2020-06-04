@@ -4,8 +4,6 @@
 
 namespace GLGame
 {
-	
-
 	struct AABBCollisionDir
 	{
 		float UP_POS;

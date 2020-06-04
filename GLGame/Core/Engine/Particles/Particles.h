@@ -73,11 +73,6 @@ namespace GLGame
 
 		std::vector<Particle> m_ParticlePool;
 		uint32_t m_PoolIndex = 999;
-
-		VertexArray m_QuadVA;
-		VertexBuffer m_QuadVB;
-		IndexBuffer m_QuadIB;
-		Shader m_ParticleShader;
 		GLint m_ParticleShaderViewProj, m_ParticleShaderTransform, m_ParticleShaderColor;
 	};
 }

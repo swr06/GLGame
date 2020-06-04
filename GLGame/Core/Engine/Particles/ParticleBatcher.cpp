@@ -2,7 +2,7 @@
 
 namespace GLGame
 {
-	ParticleBatcher::ParticleBatcher() : m_VBO(GL_ARRAY_BUFFER), m_MaxParticles(10000), m_VertexBuffer(nullptr), m_IndexBuffer(nullptr)
+	ParticleBatcher::ParticleBatcher() : m_MaxParticles(10000), m_VertexBuffer(nullptr), m_IndexBuffer(nullptr)
 	{
 		m_VertexBuffer = new GLfloat[28 * m_MaxParticles];
 		m_IndexBuffer = new GLuint[6 * m_MaxParticles];
@@ -23,17 +23,6 @@ namespace GLGame
 
 			index_offset = index_offset + 4;
 		}
-
-		m_Shader.CreateShaderProgram(GLGAME_DEFAULT_PARTICLE_VERTEX, GLGAME_DEFAULT_PARTICLE_FRAGMENT);
-		m_VAO.Bind();
-
-		m_IBO.BufferData(6 * m_MaxParticles * sizeof(GLuint), m_IndexBuffer, GL_STATIC_DRAW);
-
-		// Position attribute
-		m_VBO.VertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 7 * sizeof(GLfloat), (GLvoid*)0);
-
-		// Color attribute
-		m_VBO.VertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 7 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
 	}
 
 	ParticleBatcher::~ParticleBatcher()
@@ -114,15 +103,29 @@ namespace GLGame
 
 	void ParticleBatcher::DrawFullBatch()
 	{
+		if (!m_Initialized)
+		{
+			m_VBO = new VertexBuffer(GL_ARRAY_BUFFER),
+			m_Shader.CreateShaderProgram(GLGAME_DEFAULT_PARTICLE_VERTEX, GLGAME_DEFAULT_PARTICLE_FRAGMENT);
+			m_VAO.Bind();
+
+			m_IBO.BufferData(6 * m_MaxParticles * sizeof(GLuint), m_IndexBuffer, GL_STATIC_DRAW);
+
+			// Position attribute
+			m_VBO->VertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 7 * sizeof(GLfloat), (GLvoid*)0);
+
+			// Color attribute
+			m_VBO->VertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 7 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+			m_Initialized = true;
+		}
+
 		m_Shader.Use();
 
 		m_Shader.SetMatrix4("u_ViewProjectionMatrix", m_VPMatrix, 0);
 		m_VAO.Bind();
-		m_VBO.BufferData((m_VerticesWritten * 28) * sizeof(GLfloat), m_VertexBuffer, GL_STATIC_DRAW);
+		m_VBO->BufferData((m_VerticesWritten * 28) * sizeof(GLfloat), m_VertexBuffer, GL_STATIC_DRAW);
 		glDrawElements(GL_TRIANGLES, m_VerticesWritten * 6, GL_UNSIGNED_INT, (void*)0);
 		m_VAO.Unbind();
-
-		std::cout << "QUADS DRAWN : " << m_VerticesWritten << "\n";
 
 		m_CurrentElement = 0;
 		m_VerticesWritten = 0;

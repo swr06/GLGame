@@ -12,21 +12,9 @@ void EventCallback(Event e);
 class game_ : public Game
 {
 public : 
-	game_() 
+	game_() : obj("BLAH_BLAH"), obj_2("BLAH_BLAHH")
 	{
 		Init(800, 600, true, "Test Game", false, ImGuiStyleDark);
-	}
-
-	void OnGameDestroy(double ts) override
-	{
-		cout << "Game Destroyed! TS : " << ts;
-	}
-
-	void OnFrameAdvance(long long frame) override
-	{
-		static double time = glfwGetTime();
-		static ParticleProps particle;
-		static ParticleProps particle_2;
 
 		particle.ColorBegin = { 1 / 255.0f, 1 / 255.0f, 1 / 255.0f, 1.0f };
 		particle.ColorEnd = { 255 / 255.0f, 255 / 255.0f, 255 / 255.0f, 1.0f };
@@ -43,11 +31,16 @@ public :
 		particle_2.Velocity = { 5.0f, 5.0f };
 		particle_2.VelocityVariation = { 5.0f, 5.0f };
 		particle_2.Position = { 300.0f, 300.0f };
+	}
 
-		static ParticleSystem PS;
-		static ParticleSystem PS_1;
+	void OnGameDestroy(double ts) override
+	{
+		cout << "Game Destroyed! TS : " << ts;
+	}
 
-		for (int i = 0; i < 400; i++)
+	void OnFrameAdvance(long long frame) override
+	{
+		for (int i = 0; i < 5; i++)
 		{
 			PS.Emit(particle);
 			PS_1.Emit(particle_2);
@@ -58,9 +51,8 @@ public :
 		PS.OnRender(cam);
 		PS_1.OnRender(cam);
 
-		PS.OnUpdate(time);
-		PS_1.OnUpdate(time);
-		time = glfwGetTime();
+		PS.OnUpdate(glfwGetTime());
+		PS_1.OnUpdate(glfwGetTime());
 	}
 
 	void OnEvent(Event e) override
@@ -74,7 +66,14 @@ public :
 	}
 	
 private : 
-
+	
+	ParticleProps particle;
+	ParticleProps particle_2;
+	ParticleSystem PS;
+	ParticleSystem PS_1;
+	Object obj;
+	Object obj_2;
+	
 };
 
 game_ game;
