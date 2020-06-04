@@ -94,12 +94,14 @@ namespace GLGame
 		m_CameraCullGiven = false;
 	}
 
-	void SpriteBatcher::EndSpriteBatch()
+	unsigned int SpriteBatcher::EndSpriteBatch()
 	{
-		DrawFullBatch();
+		unsigned int ret_val = DrawFullBatch();
 
 		// Reset the projection matrix
 		m_ViewProjectionMatrix = glm::mat4(1.0f);
+
+		return ret_val;
 	}
 
 	void SpriteBatcher::AddGLGameItemToBatch(SceneDataItem item, const glm::vec4& color)
@@ -465,8 +467,10 @@ namespace GLGame
 		m_VerticesWritten++;
 	}
 
-	void SpriteBatcher::DrawFullBatch()
+	unsigned int SpriteBatcher::DrawFullBatch()
 	{
+		unsigned int ret_val;
+
 		m_Shader.Use();
 
 		for (int i = 0; i < m_MaximumTextureSlots; i++)
@@ -484,6 +488,7 @@ namespace GLGame
 		glDrawElements(GL_TRIANGLES, 6 * m_VerticesWritten, GL_UNSIGNED_INT, (void*)0);
 		m_VAO.Unbind();
 
+		ret_val = m_VerticesWritten;
 		m_ViewProjectionMatrix = glm::mat4(1.0f);
 		m_AmbientLight = glm::vec4(1.0f);
 		m_VerticesWritten = 0;
@@ -497,6 +502,8 @@ namespace GLGame
 		}
 
 		m_CurrSlottedTexElement = 0;
+
+		return ret_val;
 	}
 
 	// All of the below batch rendering functions are deprecated.

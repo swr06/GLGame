@@ -116,6 +116,9 @@ namespace GLGame
 		// Other needed structures
 		int CurrentOperationSelected = 0; // Has to be an int for imgui. Used as an enum class "Operations" 
 
+		// Debug variables
+		
+
 		///////////////////////
 		GLFWwindow* _Init(GLFWwindow* share_window, ImGuiContext* context);
 		void ExtendString(string& str, int ex_amt, const string& ex_c);
@@ -133,6 +136,7 @@ namespace GLGame
 		void SEMouseCallback(GLFWwindow* window, int button, int action, int mods);
 		void SEScrollCallback(GLFWwindow* window, double xoffset, double yoffset);
 		void SEWindowCloseCallback(GLFWwindow* window);
+		void _DrawDebugWindow();
 		///////////////////////
 
 		GLFWwindow* InitSceneEditor(unordered_map<string, Object*>* global_objects, unordered_map<string, Sprite*>* global_sprites, vector<string>* objid_list, vector<string>* sprid_list, GLFWwindow* window, ImGuiContext* context)
@@ -529,6 +533,11 @@ namespace GLGame
 			}
 
 			// Drawing the ghost mouse image ends..
+		}
+
+		void _DrawDebugWindow()
+		{
+
 		}
 
 		void _DrawSEWidgets()

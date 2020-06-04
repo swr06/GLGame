@@ -168,6 +168,8 @@ namespace GLGame
 		SpriteBatcher* m_SpriteBatcher;
 		LightBatcher* m_LightBatcher;
 
+		GameDebugInfo m_DebugInfo;
+
 		// Virtual Functions for event handling
 		virtual void OnInitialize(double ts) {}
 		virtual void OnGameStart(double ts) {}

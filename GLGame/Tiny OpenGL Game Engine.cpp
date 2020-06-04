@@ -14,7 +14,7 @@ class game_ : public Game
 public : 
 	game_() : obj("BLAH_BLAH"), obj_2("BLAH_BLAHH")
 	{
-		Init(800, 600, true, "Test Game", false, ImGuiStyleDark);
+		Init(800, 600, true, "Test Game", true, ImGuiStyleDark);
 
 		particle.ColorBegin = { 1 / 255.0f, 1 / 255.0f, 1 / 255.0f, 1.0f };
 		particle.ColorEnd = { 255 / 255.0f, 255 / 255.0f, 255 / 255.0f, 1.0f };
@@ -40,19 +40,19 @@ public :
 
 	void OnFrameAdvance(long long frame) override
 	{
-		for (int i = 0; i < 5; i++)
-		{
-			PS.Emit(particle);
-			PS_1.Emit(particle_2);
-		}
+		//for (int i = 0; i < 5; i++)
+		//{
+		//	PS.Emit(particle);
+		//	PS_1.Emit(particle_2);
+		//}
 
-		static Camera cam(0.0f, 800.0f, 0.0f, 600.0f);
+		//static Camera cam(0.0f, 800.0f, 0.0f, 600.0f);
 
-		PS.OnRender(cam);
-		PS_1.OnRender(cam);
+		//PS.OnRender(cam);
+		//PS_1.OnRender(cam);
 
-		PS.OnUpdate(glfwGetTime());
-		PS_1.OnUpdate(glfwGetTime());
+		//PS.OnUpdate(glfwGetTime());
+		//PS_1.OnUpdate(glfwGetTime());
 	}
 
 	void OnEvent(Event e) override

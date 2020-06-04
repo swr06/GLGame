@@ -7,6 +7,8 @@ out vec4 color;
 uniform sampler2D u_Textures[32];
 
 // Some GPUs cannot take an in int as a reference to an array and hence throws an error
+// Namely : AMD non integrated GPUs and intel gpus
+// Also fixes graphical glitches in game
 
 void main()
 {
@@ -206,7 +208,7 @@ void main()
 
 		default : 
 		{
-			color = vec4(1.0f, 1.0f, 1.0f, 1.0f);
+			color = MultiplyColor;
 			break;
 		}
 	}

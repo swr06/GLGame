@@ -36,10 +36,22 @@
 
 namespace GLGame
 {
+	struct GameDebugInfo
+	{
+		long VerticesCount = 0;
+		long IndicesCount = 0;
+		unsigned int QuadCount = 0;
+		long long CurrentFrame = 0;
+		double CurrentTS = 0;
+		long ObjectsDrawn = 0;
+		long ParticlesDrawn = 0;
+		long LightsDrawn = 0;
+	};
+
 	namespace SceneEditor
 	{
 		using namespace std;
-
+		
 		GLFWwindow* InitSceneEditor(unordered_map<string, Object*>* global_objects, unordered_map<string, Sprite*>* global_sprites, vector<string>* objid_list, vector<string>* sprid_list, GLFWwindow* window, ImGuiContext* context);
 
 		void _SetSceneEditorCloseFlag(bool val);
