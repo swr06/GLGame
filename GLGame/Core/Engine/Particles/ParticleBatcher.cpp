@@ -96,13 +96,15 @@ namespace GLGame
 		m_VerticesWritten = 0;
 	}
 
-	void ParticleBatcher::EndParticleBatch()
+	unsigned int ParticleBatcher::EndParticleBatch()
 	{
-		DrawFullBatch();
+		return DrawFullBatch();
 	}
 
-	void ParticleBatcher::DrawFullBatch()
+	unsigned int ParticleBatcher::DrawFullBatch()
 	{
+		unsigned int ret_val = 0;
+
 		if (!m_Initialized)
 		{
 			m_VBO = new VertexBuffer(GL_ARRAY_BUFFER),
@@ -127,7 +129,10 @@ namespace GLGame
 		glDrawElements(GL_TRIANGLES, m_VerticesWritten * 6, GL_UNSIGNED_INT, (void*)0);
 		m_VAO.Unbind();
 
+		ret_val = m_VerticesWritten;
 		m_CurrentElement = 0;
 		m_VerticesWritten = 0;
+
+		return ret_val;
 	}
 }

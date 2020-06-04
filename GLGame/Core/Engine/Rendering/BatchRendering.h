@@ -46,6 +46,8 @@ namespace GLGame
 		void StartSpriteBatch(Camera* scene_camera, const glm::vec4& ambient_light);
 		void StartSpriteBatch(const glm::mat4& view_projection_matrix);
 		void StartSpriteBatch();
+
+		// Returns the amount of vertices that were written
 		unsigned int EndSpriteBatch();
 		void AddGenericTextureToBatch(Texture* texture, const glm::vec3 &pos, const glm::vec4& color = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 		void AddGenericObjectToBatch(GenericObject object);

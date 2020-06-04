@@ -43,16 +43,18 @@ namespace GLGame
 		unsigned int QuadCount = 0;
 		long long CurrentFrame = 0;
 		double CurrentTS = 0;
-		long ObjectsDrawn = 0;
-		long ParticlesDrawn = 0;
-		long LightsDrawn = 0;
+		unsigned int ObjectsDrawn = 0;
+		unsigned int SpritesDrawn = 0;
+		unsigned int ParticlesDrawn = 0;
+		unsigned int LightsDrawn = 0;
+		double RenderTime;
 	};
 
 	namespace SceneEditor
 	{
 		using namespace std;
 		
-		GLFWwindow* InitSceneEditor(unordered_map<string, Object*>* global_objects, unordered_map<string, Sprite*>* global_sprites, vector<string>* objid_list, vector<string>* sprid_list, GLFWwindow* window, ImGuiContext* context);
+		GLFWwindow* InitSceneEditor(GameDebugInfo* debug_info, unordered_map<string, Object*>* global_objects, unordered_map<string, Sprite*>* global_sprites, vector<string>* objid_list, vector<string>* sprid_list, GLFWwindow* window, ImGuiContext* context);
 
 		void _SetSceneEditorCloseFlag(bool val);
 		bool RenderSceneEditor();

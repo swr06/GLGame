@@ -469,7 +469,7 @@ namespace GLGame
 
 	unsigned int SpriteBatcher::DrawFullBatch()
 	{
-		unsigned int ret_val;
+		unsigned int ret_val = 0;
 
 		m_Shader.Use();
 

@@ -157,7 +157,7 @@ namespace GLGame
 
 		if (init_scene_editor)
 		{
-			m_SceneEditorWindow = SceneEditor::InitSceneEditor(&this->m_GlobalObjects, &this->m_GlobalSprites, &this->m_ObjectItemNames, &this->m_SpriteItemNames, m_GameWindow, m_IMContext);
+			m_SceneEditorWindow = SceneEditor::InitSceneEditor(&this->m_DebugInfo ,&this->m_GlobalObjects, &this->m_GlobalSprites, &this->m_ObjectItemNames, &this->m_SpriteItemNames, m_GameWindow, m_IMContext);
 
 			if (m_SceneEditorWindow == nullptr)
 			{
@@ -192,6 +192,9 @@ namespace GLGame
 	void Game::Render(bool should_clear)
 	{ 
 		static bool first_game_render = false;
+
+		unsigned int objects_drawn = 0;
+		unsigned int sprites_drawn = 0;
 
 		if (!first_game_render)
 		{
@@ -301,6 +304,7 @@ namespace GLGame
 									{
 										for (int i = 0; i < e->second.size(); i++)
 										{
+											objects_drawn++;
 											m_SpriteBatcher->AddGLGameItemToBatch(e->second[i]);
 										}
 									}
@@ -322,6 +326,7 @@ namespace GLGame
 							{
 								for (int i = 0; i < e->second.size(); i++)
 								{
+									sprites_drawn++;
 									m_SpriteBatcher->AddGenericTextureToBatch(e->second[i].ItemSpriteInstance.m_Sprite->GetCurrentTexture(), e->second[i].ItemPos);
 								}
 							}
@@ -329,7 +334,7 @@ namespace GLGame
 					}
 				}
 
-				m_SpriteBatcher->EndSpriteBatch();
+				m_DebugInfo.QuadCount = m_SpriteBatcher->EndSpriteBatch();
 
 				double mx, my;
 				int w = 0, h = 0;
@@ -359,7 +364,9 @@ namespace GLGame
 					}
 				}
 
-				m_LightBatcher->EndLightBatch();
+
+				m_DebugInfo.LightsDrawn = m_LightBatcher->EndLightBatch();
+				m_DebugInfo.QuadCount += m_DebugInfo.LightsDrawn;
 
 				// TODO : REVERT IT TO THE USER DEFINED BLEND FUNCTION
 				glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -378,6 +385,14 @@ namespace GLGame
 					DisplayFrameRate(m_GameWindow);
 				}
 
+				m_DebugInfo.ObjectsDrawn = objects_drawn;
+				m_DebugInfo.SpritesDrawn = sprites_drawn;
+				m_DebugInfo.VerticesCount = m_DebugInfo.QuadCount * 4;
+				m_DebugInfo.IndicesCount = m_DebugInfo.QuadCount * 6;
+				m_DebugInfo.CurrentFrame = m_FpsCount;
+				m_DebugInfo.RenderTime = glfwGetTime() - m_DebugInfo.CurrentTS;
+				m_DebugInfo.CurrentTS = glfwGetTime();
+				
 				m_FpsCount += 1;
 
 				glfwSwapBuffers(m_GameWindow);

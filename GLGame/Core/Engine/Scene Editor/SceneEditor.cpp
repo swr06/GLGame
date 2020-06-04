@@ -34,7 +34,7 @@ namespace GLGame
 			PlaceItems = 0,
 			ChangeBackground,
 			SeeProperties,
-			Debug,
+			DebugGame,
 			ViewScene,
 		};
 
@@ -116,8 +116,8 @@ namespace GLGame
 		// Other needed structures
 		int CurrentOperationSelected = 0; // Has to be an int for imgui. Used as an enum class "Operations" 
 
-		// Debug variables
-		
+		// Debug Window
+		GameDebugInfo* DebugInfo;
 
 		///////////////////////
 		GLFWwindow* _Init(GLFWwindow* share_window, ImGuiContext* context);
@@ -139,8 +139,9 @@ namespace GLGame
 		void _DrawDebugWindow();
 		///////////////////////
 
-		GLFWwindow* InitSceneEditor(unordered_map<string, Object*>* global_objects, unordered_map<string, Sprite*>* global_sprites, vector<string>* objid_list, vector<string>* sprid_list, GLFWwindow* window, ImGuiContext* context)
+		GLFWwindow* InitSceneEditor(GameDebugInfo* debug_info, unordered_map<string, Object*>* global_objects, unordered_map<string, Sprite*>* global_sprites, vector<string>* objid_list, vector<string>* sprid_list, GLFWwindow* window, ImGuiContext* context)
 		{
+			DebugInfo = debug_info;
 			SceneEditorGlobalObjects = global_objects;
 			SceneEditorGlobalSprites = global_sprites;
 			ObjectIDList = objid_list;
@@ -537,7 +538,23 @@ namespace GLGame
 
 		void _DrawDebugWindow()
 		{
+			if (CurrentOperationSelected == DebugGame)
+			{
+				if (ImGui::Begin("Debug.."))
+				{
+					ImGui::Text("Current Frame : %ld", DebugInfo->CurrentFrame);
+					ImGui::Text("Current Time Step : %lf", DebugInfo->CurrentTS);
+					ImGui::Text("Render Time : %lf\n", DebugInfo->RenderTime);
+					ImGui::Text("Vertex Count : %d", DebugInfo->VerticesCount);
+					ImGui::Text("Indices Count : %d", DebugInfo->IndicesCount);
+					ImGui::Text("Quad Count : %d", DebugInfo->QuadCount);
+					ImGui::Text("Objects Drawn : %d", DebugInfo->ObjectsDrawn);
+					ImGui::Text("Sprites Drawn : %d", DebugInfo->SpritesDrawn);
+					ImGui::Text("Lights Drawn : %d", DebugInfo->LightsDrawn);
 
+					ImGui::End();
+				}
+			}
 		}
 
 		void _DrawSEWidgets()
@@ -546,29 +563,31 @@ namespace GLGame
 			ImGui::SetNextWindowPos(ImVec2(SceneEditorWidth * 0.75, 20), ImGuiCond_FirstUseEver);
 			ImGui::SetNextWindowSize(ImVec2(400, 400), ImGuiCond_FirstUseEver);
 
-			ImGui::Begin("Operation select.");
-			ImGui::Text("What would you like to do ?");
-			ImGui::RadioButton("Place GLGame::Items", &CurrentOperationSelected, PlaceItems);
-			ImGui::RadioButton("Change/Add Backgrounds", &CurrentOperationSelected, ChangeBackground);
-			ImGui::RadioButton("See properties of a GLGame::Object or GLGame::Sprite", &CurrentOperationSelected, SeeProperties);
-			ImGui::RadioButton("Debug", &CurrentOperationSelected, Debug);
-			ImGui::RadioButton("View or Look at the scene.", &CurrentOperationSelected, ViewScene);
-			ImGui::Text("\n\nEditor settings : \n");
-			ImGui::InputInt("Grid Size X (in pixels)", &GridX);
-			ImGui::InputInt("Grid Size Y (in pixels)", &GridY);
-
-			if (GridX < 0)
+			if (ImGui::Begin("Operation select."))
 			{
-				GridX = 0;
-			}
+				ImGui::Text("What would you like to do ?");
+				ImGui::RadioButton("Place GLGame::Items", &CurrentOperationSelected, PlaceItems);
+				ImGui::RadioButton("Change/Add Backgrounds", &CurrentOperationSelected, ChangeBackground);
+				ImGui::RadioButton("See properties of a GLGame::Object or GLGame::Sprite", &CurrentOperationSelected, SeeProperties);
+				ImGui::RadioButton("Debug", &CurrentOperationSelected, DebugGame);
+				ImGui::RadioButton("View or Look at the scene.", &CurrentOperationSelected, ViewScene);
+				ImGui::Text("\n\nEditor settings : \n");
+				ImGui::InputInt("Grid Size X (in pixels)", &GridX);
+				ImGui::InputInt("Grid Size Y (in pixels)", &GridY);
 
-			if (GridY < 0)
-			{
-				GridY = 0;
-			}
+				if (GridX < 0)
+				{
+					GridX = 0;
+				}
 
-			ImGui::Text("\n");
-			ImGui::End();
+				if (GridY < 0)
+				{
+					GridY = 0;
+				}
+
+				ImGui::Text("\n");
+				ImGui::End();
+			}
 		}
 
 		void _DrawSEPlaceItemWidgets()
@@ -832,6 +851,9 @@ namespace GLGame
 				_ShowModalWindows();
 				_DrawSEWidgets();
 				_DrawSEPlaceItemWidgets();
+					
+				// Draws the debug window if that operation is actually selected
+				_DrawDebugWindow();
 
 				// Scope : show modal window when you click on the close button
 				{

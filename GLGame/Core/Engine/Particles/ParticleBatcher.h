@@ -17,11 +17,14 @@ namespace GLGame
 		~ParticleBatcher();
 		void AddParticleToBatch(const glm::mat4& transform, const glm::vec4& color);
 		void StartParticleBatch(const glm::mat4& vp_matrix);
-		void EndParticleBatch();
+
+		// Returns the amount of quads that have been drawn
+		unsigned int EndParticleBatch();
 
 	private:
 
-		void DrawFullBatch();
+		// Returns the amount of quads that have been drawn
+		unsigned int DrawFullBatch();
 
 		int m_CurrentElement;
 		int m_VerticesWritten;

@@ -26,14 +26,16 @@ namespace GLGame
 		~LightBatcher();
 		void AddLightToBatch(Light light);
 		void StartLightBatch(const glm::mat4& vp_matrix);
-		void EndLightBatch();
+
+		// Returns the amount of lights that have been drawn
+		unsigned int EndLightBatch();
 
 	private : 
 
-		void DrawFullBatch();
+		unsigned int DrawFullBatch();
 
 		int m_CurrentElement;
-		int m_VerticesWritten;
+		unsigned int m_VerticesWritten = 0;
 		const int m_MaxLights;
 
 		array<GLfloat, 8> m_UVCoords = { -1.0f, 2.0f, -1.0f, -1.0f, 2.0f, -1.0f, 2.0f, 2.0f };

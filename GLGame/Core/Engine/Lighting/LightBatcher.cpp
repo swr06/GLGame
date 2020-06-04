@@ -202,13 +202,15 @@ namespace GLGame
 		m_VerticesWritten = 0;
 	}
 
-	void LightBatcher::EndLightBatch()
+	unsigned int LightBatcher::EndLightBatch()
 	{
-		DrawFullBatch();
+		return DrawFullBatch();
 	}
 
-	void LightBatcher::DrawFullBatch()
+	unsigned int LightBatcher::DrawFullBatch()
 	{
+		unsigned int ret_val = 0;
+
 		m_Shader.Use();
 
 		m_Shader.SetMatrix4("u_ViewProjectionMatrix", m_VPMatrix, 0);
@@ -217,7 +219,10 @@ namespace GLGame
 		glDrawElements(GL_TRIANGLES, m_VerticesWritten * 6, GL_UNSIGNED_INT, (void*)0);
 		m_VAO.Unbind();
 
+		ret_val = m_VerticesWritten;
 		m_CurrentElement = 0;
 		m_VerticesWritten = 0;
+
+		return ret_val;
 	}
 }
