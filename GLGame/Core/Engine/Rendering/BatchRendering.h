@@ -43,7 +43,7 @@ namespace GLGame
 
 		SpriteBatcher();
 		~SpriteBatcher();
-		void StartSpriteBatch(Camera* scene_camera, const glm::vec4& ambient_light);
+		void StartSpriteBatch(Camera* scene_camera, const glm::vec4& ambient_light, Shader* custom_shader = nullptr);
 		void StartSpriteBatch(const glm::mat4& view_projection_matrix);
 		void StartSpriteBatch();
 
@@ -79,45 +79,46 @@ namespace GLGame
 		VertexBuffer m_VBO;
 		VertexArray m_VAO;
 		IndexBuffer m_IBO;
-		Shader m_Shader;
+		Shader m_DefaultShader;
+		Shader* m_BatchShader = nullptr;
 
 		glm::vec3 m_CameraPos;
 	};
 
 	// Quad Batch Renderer
 
-	class QuadBatcher
-	{
-	public:
+	//class QuadBatcher
+	//{
+	//public:
 
-		QuadBatcher();
-		~QuadBatcher();
-		void StartQuadBatch(glm::mat4& view_projection);
-		void AddQuadToBatch(const glm::vec4& position, const glm::vec4 color, const glm::mat4 model_matrix = glm::mat4(1.0f));
-		void EndQuadBatch();
+	//	QuadBatcher();
+	//	~QuadBatcher();
+	//	void StartQuadBatch(glm::mat4& view_projection);
+	//	void AddQuadToBatch(const glm::vec4& position, const glm::vec4 color, const glm::mat4 model_matrix = glm::mat4(1.0f));
+	//	void EndQuadBatch();
 
-	private:
+	//private:
 
-		void DrawFullBatch();
+	//	void DrawFullBatch();
 
-		glm::mat4 m_ViewProjectionMatrix;
+	//	glm::mat4 m_ViewProjectionMatrix;
 
-		const int m_MaximumQuads;
-		int m_LastElementTex;
-		int m_LastElementVBuff;
-		unsigned int m_VerticesWritten;
-		
-		GLfloat* m_VertexBuffer;
-		GLuint* m_IndexBuffer;
+	//	const int m_MaximumQuads;
+	//	int m_LastElementTex;
+	//	int m_LastElementVBuff;
+	//	unsigned int m_VerticesWritten;
+	//	
+	//	GLfloat* m_VertexBuffer;
+	//	GLuint* m_IndexBuffer;
 
-		// OpenGL Specific objects
-		VertexBuffer m_VBO;
-		VertexArray m_VAO;
-		IndexBuffer m_IBO;
-		Shader m_Shader;
+	//	// OpenGL Specific objects
+	//	VertexBuffer m_VBO;
+	//	VertexArray m_VAO;
+	//	IndexBuffer m_IBO;
+	//	Shader m_Shader;
 
-		Camera* m_Camera;
-	};
+	//	Camera* m_Camera;
+	//};
 
 	// This is new type of batch rendering that I wanted to experiment with
 	// Do not use these functions. Use SpriteBatch instead

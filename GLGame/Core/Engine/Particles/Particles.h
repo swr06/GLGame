@@ -4,7 +4,8 @@
 	This particle system is highly inspired by Yan Chernikov's particle system.
 	I improvised it by adding :
 		- Batch Rendering
-		- Texturing
+			- Particle batching 
+		- Abstracted opengl class
 		- Other optimizations
 
 	- Samuel Rasquinha

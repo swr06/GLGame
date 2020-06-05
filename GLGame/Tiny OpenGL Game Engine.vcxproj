@@ -263,6 +263,8 @@
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</DeploymentContent>
     </None>
     <None Include="Core\OpenGL Classes\Renderer\Readme.file" />
+    <None Include="Core\Shaders\CustomFragmentShader.glsl" />
+    <None Include="Core\Shaders\CustomVertexShader.glsl" />
     <None Include="Core\Shaders\DefaultBatchVertexShader.glsl">
       <FileType>Document</FileType>
     </None>

@@ -122,6 +122,7 @@ namespace GLGame
 
 		// Create the sprite batcher
 		m_SpriteBatcher = new SpriteBatcher;
+		m_CustomShaderBatcher = new SpriteBatcher;
 		m_LightBatcher = new LightBatcher;
 
 		// Set the key hold buffer
@@ -286,17 +287,23 @@ namespace GLGame
 
 				m_SpriteBatcher->StartSpriteBatch(m_CurrentScene->GetSceneCamera(), m_CurrentScene->GetSceneAmbientLight());
 
+				// Iterate through each layer
 				for (auto layer_iterator = current_scene_data.scene_items->begin(); layer_iterator != current_scene_data.scene_items->end(); layer_iterator++)
 				{
+					//  Iterate through every group/vector of the same objects
 					for (auto e = layer_iterator->second.begin(); e != layer_iterator->second.end(); e++)
 					{
+						// Check if the vector is not empty
 						if (e->second.size() > 0)
 						{
 							if (e->second[0].ItemType == sitem_type_object
 								&& e->second[0].ItemObjectInstance.m_Object != nullptr)
 							{
+								// Update the object based on the frame 
+								// Usually used for animations
 								e->second[0].ItemObjectInstance.m_Object->IntUpdate(m_FpsCount);
 
+								// Check if the object does not have a custom shader
 								if (e->second[0].ItemObjectInstance.m_Object->HasShader() == false)
 								{
 									if (e->second[0].ItemObjectInstance.m_Object->HasSprite() &&
@@ -310,17 +317,26 @@ namespace GLGame
 									}
 								}
 
-								else
+								// If the object has a custom shader, use the custom sprite batcher
+								else if (e->second[0].ItemObjectInstance.m_Object->HasShader() == true)
 								{
-									if (e->second[0].ItemObjectInstance.m_Object->HasSprite() && e->second[0].ItemObjectInstance.m_Object->IsVisible())
+									if (e->second[0].ItemObjectInstance.m_Object->HasSprite() 
+										&& e->second[0].ItemObjectInstance.m_Object->IsVisible())
 									{
-										// TODO!
+										m_CustomShaderBatcher->StartSpriteBatch(m_CurrentScene->GetSceneCamera(), m_CurrentScene->GetSceneAmbientLight(), e->second[0].ItemObjectInstance.m_Object->GetShader());
 
-										//BatchRenderObjectInstances(e->second, *(e->second[0].ItemObjectInstance.m_Object->GetShader()), e->second[0].ItemObjectInstance.m_Object->GetModelMatrix(), m_CurrentScene->GetSceneCamera()->GetTransformMatrix(), m_CurrentScene->GetSceneCamera()->GetViewProjectionMatrix(), m_CurrentScene->GetSceneCamera()->GetScale(), camera_cull);
+										for (int i = 0; i < e->second.size(); i++)
+										{
+											objects_drawn++;
+											m_CustomShaderBatcher->AddGLGameItemToBatch(e->second[i]);
+										}
+
+										m_CustomShaderBatcher->EndSpriteBatch();
 									}
 								}
 							}
 
+							// If it is a sprite, add it as a generic texture to the batch
 							else if (e->second[0].ItemType == sitem_type_sprite
 								&& e->second[0].ItemSpriteInstance.m_Sprite != nullptr)
 							{
@@ -334,27 +350,25 @@ namespace GLGame
 					}
 				}
 
+				// Update the quad count
 				m_DebugInfo.QuadCount = m_SpriteBatcher->EndSpriteBatch();
-
-				double mx, my;
-				int w = 0, h = 0;
-				glfwGetCursorPos(m_GameWindow, &mx, &my);
-				glfwGetFramebufferSize(m_GameWindow, &w, &h);
 
 				// Set the lighting blend function
 				glBlendFunc(GL_SRC_ALPHA, GL_ONE);
 
 				m_LightBatcher->StartLightBatch(m_CurrentScene->GetSceneCamera()->GetViewProjectionMatrix());
 
-				// Draw lights 
+				// Draw lights using LightBatcher
 				for (int i = 0; i < current_scene_data.scene_lights->size(); i++)
 				{
+					// Check if the light* is not null
 					if (current_scene_data.scene_lights->at(i) != nullptr)
 					{
 						m_LightBatcher->AddLightToBatch(*(current_scene_data.scene_lights->at(i)));
 					}
 				}
 
+				// Batch the animated lights
 				for (int i = 0; i < current_scene_data.scene_blinking_lights->size(); i++)
 				{
 					if (current_scene_data.scene_blinking_lights->at(i) != nullptr)
@@ -364,14 +378,14 @@ namespace GLGame
 					}
 				}
 
-
+				// Update the debug info
 				m_DebugInfo.LightsDrawn = m_LightBatcher->EndLightBatch();
 				m_DebugInfo.QuadCount += m_DebugInfo.LightsDrawn;
 
 				// TODO : REVERT IT TO THE USER DEFINED BLEND FUNCTION
 				glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-				// ImGui
+				// ImGui 
 				{
 					if (m_DisplayImGui)
 					{
@@ -380,10 +394,14 @@ namespace GLGame
 					}
 				}
 
+				// Display the FPS if needed
+
 				if (m_DisplayFPS)
 				{
 					DisplayFrameRate(m_GameWindow);
 				}
+
+				// Update the debug info
 
 				m_DebugInfo.ObjectsDrawn = objects_drawn;
 				m_DebugInfo.SpritesDrawn = sprites_drawn;

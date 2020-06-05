@@ -122,6 +122,12 @@
     <Filter Include="Source Files\Abstract OpenGL\Texturing">
       <UniqueIdentifier>{459d316b-6531-4817-9f34-dc59c3e33541}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Shaders\GLGame Shaders">
+      <UniqueIdentifier>{2f5e1159-9c46-4376-bea5-c7cb5729dfc4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Shaders\Custom Shaders">
+      <UniqueIdentifier>{7d279eeb-d343-4182-9fec-7388892001b4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Core\Engine\Rendering\BatchRendering.cpp">
@@ -412,32 +418,38 @@
     <None Include="ReadMe.file">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="Core\Shaders\DefaultVertexShader.glsl">
-      <Filter>Source Files\Shaders</Filter>
-    </None>
-    <None Include="Core\Shaders\DefaultFragmentShader.glsl">
-      <Filter>Source Files\Shaders</Filter>
-    </None>
-    <None Include="Core\Shaders\DefaultBatchFragShader.glsl">
-      <Filter>Source Files\Shaders</Filter>
-    </None>
-    <None Include="Core\Shaders\DefaultBatchVertexShader.glsl">
-      <Filter>Source Files\Shaders</Filter>
-    </None>
     <None Include="Core\Dependencies\imgui\imgui_main.cpp">
       <Filter>Source Files\Dependencies\imgui</Filter>
     </None>
+    <None Include="Core\Shaders\DefaultVertexShader.glsl">
+      <Filter>Source Files\Shaders\GLGame Shaders</Filter>
+    </None>
+    <None Include="Core\Shaders\DefaultBatchFragShader.glsl">
+      <Filter>Source Files\Shaders\GLGame Shaders</Filter>
+    </None>
+    <None Include="Core\Shaders\DefaultBatchVertexShader.glsl">
+      <Filter>Source Files\Shaders\GLGame Shaders</Filter>
+    </None>
+    <None Include="Core\Shaders\DefaultFragmentShader.glsl">
+      <Filter>Source Files\Shaders\GLGame Shaders</Filter>
+    </None>
     <None Include="Core\Shaders\DefaultLightingFragShader.glsl">
-      <Filter>Source Files\Shaders</Filter>
+      <Filter>Source Files\Shaders\GLGame Shaders</Filter>
     </None>
     <None Include="Core\Shaders\DefaultLightingVertexShader.glsl">
-      <Filter>Source Files\Shaders</Filter>
+      <Filter>Source Files\Shaders\GLGame Shaders</Filter>
     </None>
     <None Include="Core\Shaders\DefaultParticleFragmentShader.glsl">
-      <Filter>Source Files\Shaders</Filter>
+      <Filter>Source Files\Shaders\GLGame Shaders</Filter>
     </None>
     <None Include="Core\Shaders\DefaultParticleVertexShader.glsl">
-      <Filter>Source Files\Shaders</Filter>
+      <Filter>Source Files\Shaders\GLGame Shaders</Filter>
+    </None>
+    <None Include="Core\Shaders\CustomFragmentShader.glsl">
+      <Filter>Source Files\Shaders\Custom Shaders</Filter>
+    </None>
+    <None Include="Core\Shaders\CustomVertexShader.glsl">
+      <Filter>Source Files\Shaders\Custom Shaders</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

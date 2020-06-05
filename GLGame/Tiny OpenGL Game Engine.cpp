@@ -157,6 +157,9 @@ int main()
 	BlinkingLight pLight(light_t, 1, 30, 1.0f);
 	Texture tex1, tex2, tile_sheet;
 	Scene scene; 
+	Shader custom_shader;
+
+	custom_shader.CreateShaderProgram("Core\\Shaders\\CustomVertexShader.glsl", "Core\\Shaders\\CustomFragmentShader.glsl");
 
 	Animation ani({ 
 		(string)"Core\\Resources\\Animations\\Yoda\\Frame (1).gif", 
@@ -192,6 +195,7 @@ int main()
 	Sprite spr_3("spr_3", ani, 10);
 	                               
 	obj.SetSprite(spr); // tex1
+
 	obj_2.SetSprite(spr_2); // tex2
 	obj_3.SetSprite(spr_3);
 

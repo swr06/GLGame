@@ -166,6 +166,7 @@ namespace GLGame
 		Scene* m_CurrentScene;
 		GLFWwindow* m_GameWindow;
 		SpriteBatcher* m_SpriteBatcher;
+		SpriteBatcher* m_CustomShaderBatcher;
 		LightBatcher* m_LightBatcher;
 
 		GameDebugInfo m_DebugInfo;

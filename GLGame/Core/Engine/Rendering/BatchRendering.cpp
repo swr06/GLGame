@@ -47,7 +47,7 @@ namespace GLGame
 		delete[] m_IndexBuffer;
 	}
 
-	void SpriteBatcher::StartSpriteBatch(Camera* scene_camera, const glm::vec4& ambient_light)
+	void SpriteBatcher::StartSpriteBatch(Camera* scene_camera, const glm::vec4& ambient_light, Shader* custom_shader)
 	{
 		glm::vec4 camera_projection = scene_camera->GetProjectionCoords();
 		glm::vec3 camera_position = scene_camera->GetPosition();
@@ -61,6 +61,16 @@ namespace GLGame
 		m_CameraCull.h = camera_projection.w;
 
 		m_CameraCullGiven = true;
+
+		if (custom_shader != nullptr)
+		{
+			m_BatchShader = custom_shader;
+		}
+
+		else
+		{
+			m_BatchShader = &m_DefaultShader;
+		}
 	}
 
 	void SpriteBatcher::StartSpriteBatch()
@@ -82,7 +92,7 @@ namespace GLGame
 			size_t index_size = m_MaximumTextureSlots * 6 * m_MaximumQuads;
 
 			// Setting up OpenGL Objects
-			m_Shader.CreateShaderProgram(GLGAME_DEFAULT_BATCH_VERTEX, GLGAME_DEFAULT_BATCH_FRAGMENT);
+			m_DefaultShader.CreateShaderProgram(GLGAME_DEFAULT_BATCH_VERTEX, GLGAME_DEFAULT_BATCH_FRAGMENT);
 
 			m_VAO.Bind();
 			m_IBO.Bind();
@@ -478,7 +488,12 @@ namespace GLGame
 	{
 		unsigned int ret_val = 0;
 
-		m_Shader.Use();
+		if (m_BatchShader == nullptr)
+		{
+			m_BatchShader = &m_DefaultShader;
+		}
+
+		m_BatchShader->Use();
 
 		for (int i = 0; i < m_MaximumTextureSlots; i++)
 		{
@@ -486,9 +501,9 @@ namespace GLGame
 			glBindTexture(GL_TEXTURE_2D, (GLuint) m_SlottedTextures[i]);
 		}
 
-		m_Shader.SetVector4f("u_AmbientColor", m_AmbientLight, 0);
-		m_Shader.SetMatrix4("u_ViewProjectionMatrix", m_ViewProjectionMatrix, 0);
-		m_Shader.SetIntegerArray("u_Textures", m_SamplerArray, 32, 0);
+		m_BatchShader->SetVector4f("u_AmbientColor", m_AmbientLight, 0);
+		m_BatchShader->SetMatrix4("u_ViewProjectionMatrix", m_ViewProjectionMatrix, 0);
+		m_BatchShader->SetIntegerArray("u_Textures", m_SamplerArray, 32, 0);
 		
 		m_VAO.Bind();
 		m_VBO.BufferData((m_VerticesWritten * m_VertexSize) * sizeof(GLfloat), m_VertexBuffer, GL_STATIC_DRAW);
