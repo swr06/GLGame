@@ -439,6 +439,7 @@ namespace GLGame
 						ShouldShowSaveAsWindow = false;
 						SceneFilePathSet = true;
 
+						FlushSceneFile();
 						ImGui::CloseCurrentPopup();
 					}
 

@@ -8,15 +8,14 @@ namespace GLGame
 
 	SpriteBatcher::SpriteBatcher() : m_VBO(GL_ARRAY_BUFFER), m_ViewProjectionMatrix(glm::mat4(1.0f)), m_VerticesWritten(0), m_MaximumQuads(1000), m_VertexSize(40)
 	{
-		// Todo : Query the driver to get the maximum texture slots
-
+		m_ObjectsInitialized = false;
 		m_LastElementVBuff = 0;
 		m_AmbientLight = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
-		m_MaximumTextureSlots = 32;
+		glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &m_MaximumTextureSlots);;
 		memset(m_SlottedTextures, -1, 32 * sizeof(GLuint));
+
 		m_VertexBuffer = new GLfloat[m_MaximumTextureSlots * m_VertexSize * m_MaximumQuads];
 		m_IndexBuffer = new GLuint[m_MaximumTextureSlots * 6 * m_MaximumQuads];
-		m_Shader.CreateShaderProgram(GLGAME_DEFAULT_BATCH_VERTEX, GLGAME_DEFAULT_BATCH_FRAGMENT);
 		m_LastElementTex = 0;
 
 		int index_offset = 0;
@@ -40,24 +39,6 @@ namespace GLGame
 
 			index_offset = index_offset + 4;
 		}
-
-		// Setting up OpenGL Objects
-
-		m_VAO.Bind();
-		m_IBO.Bind();
-		m_IBO.BufferData(index_size * sizeof(GLuint), m_IndexBuffer, GL_STATIC_DRAW);
-
-		// Attributes (4)
-		// 0 : Position
-		// 1 : Texture Coordinates
-		// 2 : Color
-		// 3 : Texture Element
-
-		m_VBO.VertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 10 * sizeof(GLfloat), (GLvoid*)0);
-		m_VBO.VertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 10 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
-		m_VBO.VertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, 10 * sizeof(GLfloat), (GLvoid*)(5 * sizeof(GLfloat)));
-		m_VBO.VertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, 10 * sizeof(GLfloat), (GLvoid*)(9 * sizeof(GLfloat)));
-		m_VAO.Unbind();
 	}
 
 	SpriteBatcher::~SpriteBatcher()
@@ -96,6 +77,32 @@ namespace GLGame
 
 	unsigned int SpriteBatcher::EndSpriteBatch()
 	{
+		if (!m_ObjectsInitialized)
+		{
+			size_t index_size = m_MaximumTextureSlots * 6 * m_MaximumQuads;
+
+			// Setting up OpenGL Objects
+			m_Shader.CreateShaderProgram(GLGAME_DEFAULT_BATCH_VERTEX, GLGAME_DEFAULT_BATCH_FRAGMENT);
+
+			m_VAO.Bind();
+			m_IBO.Bind();
+			m_IBO.BufferData(index_size * sizeof(GLuint), m_IndexBuffer, GL_STATIC_DRAW);
+
+			// Attributes (4)
+			// 0 : Position
+			// 1 : Texture Coordinates
+			// 2 : Color
+			// 3 : Texture Element
+
+			m_VBO.VertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 10 * sizeof(GLfloat), (GLvoid*)0);
+			m_VBO.VertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 10 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+			m_VBO.VertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, 10 * sizeof(GLfloat), (GLvoid*)(5 * sizeof(GLfloat)));
+			m_VBO.VertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, 10 * sizeof(GLfloat), (GLvoid*)(9 * sizeof(GLfloat)));
+			m_VAO.Unbind();
+
+			m_ObjectsInitialized = true;;
+		}
+
 		unsigned int ret_val = DrawFullBatch();
 
 		// Reset the projection matrix

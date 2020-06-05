@@ -73,6 +73,7 @@ namespace GLGame
 		int m_SlottedTextures[32];
 		int m_CurrSlottedTexElement = 0;
 		bool m_CameraCullGiven = false;
+		bool m_ObjectsInitialized = false;
 
 		// OpenGL Specific objects
 		VertexBuffer m_VBO;

@@ -5,6 +5,7 @@ namespace GLGame
 	// This function is INCREDIBLY slow. It was originally only used to test my lighting concept. Please use LightBatcher
 	void DrawLight(Light light)
 	{
+
 		GLfloat* vertex_buffer = new GLfloat[36];
 		GLuint index_buffer[] = { 0,1,3,1,2,3 };
 
@@ -93,6 +94,7 @@ namespace GLGame
 
 	LightBatcher::LightBatcher() : m_VBO(GL_ARRAY_BUFFER), m_MaxLights(512), m_VertexBuffer(nullptr), m_IndexBuffer(nullptr)
 	{
+		m_ObjectsInitialized = false;
 		m_VertexBuffer = new GLfloat[35 * m_MaxLights];
 		m_IndexBuffer = new GLuint[6 * m_MaxLights];
 		m_VerticesWritten = 0;
@@ -112,20 +114,6 @@ namespace GLGame
 
 			index_offset = index_offset + 4;
 		}
-
-		m_Shader.CreateShaderProgram(GLGAME_DEFAULT_LIGHT_VERTEX, GLGAME_DEFAULT_LIGHT_FRAGMENT);
-		m_VAO.Bind();
-
-		m_IBO.BufferData(6 * m_MaxLights * sizeof(GLuint), m_IndexBuffer, GL_STATIC_DRAW);
-		// Position attribute
-		m_VBO.VertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), (GLvoid*)0);
-
-		// Color attribute
-		m_VBO.VertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
-
-		// UV Coordinates
-		m_VBO.VertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), (GLvoid*)(7 * sizeof(GLfloat)));
-		m_VAO.Unbind();
 	}
 
 	LightBatcher::~LightBatcher()
@@ -204,6 +192,25 @@ namespace GLGame
 
 	unsigned int LightBatcher::EndLightBatch()
 	{
+		if (!m_ObjectsInitialized)
+		{
+			m_Shader.CreateShaderProgram(GLGAME_DEFAULT_LIGHT_VERTEX, GLGAME_DEFAULT_LIGHT_FRAGMENT);
+			m_VAO.Bind();
+
+			m_IBO.BufferData(6 * m_MaxLights * sizeof(GLuint), m_IndexBuffer, GL_STATIC_DRAW);
+			// Position attribute
+			m_VBO.VertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), (GLvoid*)0);
+
+			// Color attribute
+			m_VBO.VertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+
+			// UV Coordinates
+			m_VBO.VertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), (GLvoid*)(7 * sizeof(GLfloat)));
+			m_VAO.Unbind();
+
+			m_ObjectsInitialized = true;
+		}
+
 		return DrawFullBatch();
 	}
 

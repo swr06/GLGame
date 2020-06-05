@@ -37,6 +37,7 @@ namespace GLGame
 		int m_CurrentElement;
 		unsigned int m_VerticesWritten = 0;
 		const int m_MaxLights;
+		bool m_ObjectsInitialized = false;
 
 		array<GLfloat, 8> m_UVCoords = { -1.0f, 2.0f, -1.0f, -1.0f, 2.0f, -1.0f, 2.0f, 2.0f };
 

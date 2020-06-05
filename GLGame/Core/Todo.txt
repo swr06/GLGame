@@ -29,7 +29,6 @@ Todo :
 - Fix Culling bugs ✓
 - Scene::RemoveObject() & Scene::RemoveSprite()
 - Rendering objects with different shaders
-- "Solid" attribute for objects. Determines if collision check has to be done
 - Scene editor ✓
 	- Block input  ✓
 	- Event handling ✓
