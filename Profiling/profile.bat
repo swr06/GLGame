@@ -1,5 +1,8 @@
 @echo off
-del Core
+del "Core"
+del "Tiny OpenGL Game Engine.exe"
+del "log.txt"
+del "imgui.ini"
 md Core
 mkdir Core/Resources
 mkdir Core/Shaders

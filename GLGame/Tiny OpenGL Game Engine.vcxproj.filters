@@ -86,9 +86,6 @@
     <Filter Include="Source Files\Abstract OpenGL\Vertex Array">
       <UniqueIdentifier>{cd3f5446-6360-4755-9f23-9f1f8fe54a87}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Abstract OpenGL\Texturing">
-      <UniqueIdentifier>{459d316b-6531-4817-9f34-dc59c3e33541}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Abstract OpenGL\Shader">
       <UniqueIdentifier>{e4b19eb1-dd33-4504-ab6f-28a99a4dc762}</UniqueIdentifier>
     </Filter>
@@ -121,6 +118,9 @@
     </Filter>
     <Filter Include="Source Files\Helper Classes">
       <UniqueIdentifier>{6889e720-563f-4809-ac76-1a9f646e0139}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Abstract OpenGL\Texturing">
+      <UniqueIdentifier>{459d316b-6531-4817-9f34-dc59c3e33541}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

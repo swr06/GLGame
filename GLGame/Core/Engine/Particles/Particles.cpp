@@ -67,9 +67,9 @@ namespace GLGame
 			transform = transform * glm::scale(glm::mat4(1.0f), { size, size, 1.0f });
 
 			batcher.AddParticleToBatch(transform, color);
-
-			batcher.EndParticleBatch();
 		}
+
+		batcher.EndParticleBatch();
 	}
 
 	void ParticleSystem::Emit(const ParticleProps & particleProps)

@@ -2,6 +2,12 @@
 
 namespace GLGame
 {
+	static string GetFileName(string path)
+	{
+		std::filesystem::path pth = std::filesystem::path(path.c_str()).filename();
+		return pth.string();
+	}
+
 	Shader::~Shader()
 	{
 		glUseProgram(0);
@@ -57,8 +63,10 @@ namespace GLGame
 
 			if (!success)
 			{
+				string vert_file_name = GetFileName(vertex_pth);
+
 				glGetShaderInfoLog(vertex_shader, 512, NULL, infoLog);
-				std::cout << "\nCOMPILATION ERROR IN VERTEX SHADER :\n\t " << infoLog << "\n";
+				std::cout << "\nCOMPILATION ERROR IN VERTEX SHADER (" << vert_file_name << ")" << ": \n\t " << infoLog << "\n";
 
 				Log::_LogShaderError(glfwGetTime(), vertex_pth.c_str(), infoLog, 0, __FILE__, __LINE__);
 			}
@@ -68,8 +76,10 @@ namespace GLGame
 
 			if (!success)
 			{
+				string frag_file_name = GetFileName(fragment_pth);
+
 				glGetShaderInfoLog(fragment_shader, 512, NULL, infoLog);
-				std::cout << "\nCOMPILATION ERROR IN FRAGMENT SHADER :\n\t " << infoLog << "\n";
+				std::cout << "\nCOMPILATION ERROR IN FRAGMENT SHADER (" << frag_file_name << ")" << ": \n\t " << infoLog << "\n";
 
 				Log::_LogShaderError(glfwGetTime(), fragment_pth.c_str(), infoLog, 1, __FILE__, __LINE__);
 			}

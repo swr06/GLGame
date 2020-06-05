@@ -40,19 +40,19 @@ public :
 
 	void OnFrameAdvance(long long frame) override
 	{
-		//for (int i = 0; i < 5; i++)
-		//{
-		//	PS.Emit(particle);
-		//	PS_1.Emit(particle_2);
-		//}
+		for (int i = 0; i < 5; i++)
+		{
+			PS.Emit(particle);
+			PS_1.Emit(particle_2);
+		}
 
-		//static Camera cam(0.0f, 800.0f, 0.0f, 600.0f);
+		static Camera cam(0.0f, 800.0f, 0.0f, 600.0f);
 
-		//PS.OnRender(cam);
-		//PS_1.OnRender(cam);
+		PS.OnRender(cam);
+		PS_1.OnRender(cam);
 
-		//PS.OnUpdate(glfwGetTime());
-		//PS_1.OnUpdate(glfwGetTime());
+		PS.OnUpdate(glfwGetTime());
+		PS_1.OnUpdate(glfwGetTime());
 	}
 
 	void OnEvent(Event e) override
@@ -73,7 +73,6 @@ private :
 	ParticleSystem PS_1;
 	Object obj;
 	Object obj_2;
-	
 };
 
 game_ game;

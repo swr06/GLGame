@@ -33,6 +33,11 @@ namespace GLGame
 
 	void ParticleBatcher::AddParticleToBatch(const glm::mat4& transform, const glm::vec4& color)
 	{
+		if (m_VerticesWritten == m_MaxParticles)
+		{
+			DrawFullBatch();
+		}
+
 		glm::vec4 v1 = { -0.5f, -0.5f, 0.0f, 1.0f, };
 		glm::vec4 v2 = {  0.5f, -0.5f, 0.0f, 1.0f  };
 		glm::vec4 v3 = {  0.5f,  0.5f, 0.0f, 1.0f  };
@@ -43,12 +48,7 @@ namespace GLGame
 		v2 = transform * v2;
 		v3 = transform * v3;
 		v4 = transform * v4;
-
-		if (m_VerticesWritten == m_MaxParticles)
-		{
-			DrawFullBatch();
-		}
-
+		
 		m_VertexBuffer[m_CurrentElement + 0] = v1.x;
 		m_VertexBuffer[m_CurrentElement + 1] = v1.y;
 		m_VertexBuffer[m_CurrentElement + 2] = v1.z;
