@@ -56,21 +56,21 @@ Todo :
 - Add a deregister function when the objects/sprites/scenes are deleted
 - In the background shader, the model matrix is not multiplied
 
-- Particles (Basic particles with batch rendering) 
-	- Simple colored quads
+- Particles (Basic particles with batch rendering)  ✓
+	- Simple colored quads ✓
 - UI Elements
-- Lighting
+- Lighting ✓
 - Audio
 
 - Use BOX 2D? (To enable polygon collision)
-- Profiling
+- Profiling ✓
 
 Additional Features
-- Random Number Generator (Singleton)
+- Random Number Generator (Singleton) ✓
 - Virtual keys 
 - GetBlue, GetRed, GetGreen, GetHUE, GetOpacity.
 	- Takes in an RGB(int r,g,b)
-- GameSetBlendMode() 
+- GameSetBlendMode() ✓
 - Drawing Primitives 
 	- Rectangles, circles, triangles and squares
 - Window Functions 
