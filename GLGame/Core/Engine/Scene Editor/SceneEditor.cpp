@@ -38,6 +38,13 @@ namespace GLGame
 			ViewScene,
 		};
 
+		static enum GridSizes
+		{
+			GridSmall,
+			GridMedium,
+			GridLarge
+		};
+
 		// Variables to initialize the window
 		static bool SceneEditorInitialized = false;
 		static GLFWwindow* SceneEditorWindow;
@@ -112,6 +119,7 @@ namespace GLGame
 		Camera* SceneEditorCamera;
 
 		// For the grid
+		static int GridSize = GridSmall;
 		static int GridX = 64;
 		static int GridY = 64;
 		static bool ViewGrid = true;
@@ -318,6 +326,8 @@ namespace GLGame
 		{
 			static SpriteBatcher grid_batcher;
 			static Texture grid_texture("Core\\Resources\\Scene Editor\\grid_tile.png");
+			static Texture grid_texture_2("Core\\Resources\\Scene Editor\\grid_tile_2.png");
+			static Texture grid_texture_4("Core\\Resources\\Scene Editor\\grid_tile_4.png");
 			
 			if (ViewGrid)
 			{
@@ -326,7 +336,33 @@ namespace GLGame
 
 				glfwGetFramebufferSize(SceneEditorWindow, &SceneEditorWidth, &SceneEditorHeight);
 				grid_batcher.StartSpriteBatch(SceneEditorCamera->GetProjectionMatrix());
-				obj.texture = &grid_texture;
+
+				switch (GridSize)
+				{
+					case GridSmall:
+					{
+						obj.texture = &grid_texture;
+						break;
+					}
+
+					case GridMedium:
+					{
+						obj.texture = &grid_texture_2;
+						break;
+					}
+
+					case GridLarge:
+					{
+						obj.texture = &grid_texture_4;
+						break;
+					}
+
+					default : 
+					{
+						obj.texture = &grid_texture;
+						break;
+					}
+				}
 
 				int rows = (SceneEditorWidth / GridX) + 1;
 				int cols = (SceneEditorHeight / GridY) + 1;
@@ -623,13 +659,18 @@ namespace GLGame
 				ImGui::RadioButton("See properties of a GLGame::Object or GLGame::Sprite", &CurrentOperationSelected, SeeProperties);
 				ImGui::RadioButton("Debug", &CurrentOperationSelected, DebugGame);
 				ImGui::RadioButton("View or Look at the scene.", &CurrentOperationSelected, ViewScene);
-				ImGui::Text("\n\nEditor settings : \n");
+				ImGui::Text("\n\nEditor settings : \n\n"); 
+				ImGui::Separator();
 				ImGui::Checkbox("View Grid", &ViewGrid);
 
 				if (ViewGrid)
 				{
 					ImGui::InputInt("Grid Size X (in pixels)", &GridX);
-					ImGui::InputInt("Grid Size Y (in pixels)", &GridY);
+					ImGui::InputInt("Grid Size Y (in pixels)", &GridY); 
+					ImGui::Text("Grid Size : "); ImGui::SameLine();
+					ImGui::RadioButton("Small ", &GridSize, GridSmall); ImGui::SameLine();
+					ImGui::RadioButton("Medium ", &GridSize, GridMedium); ImGui::SameLine();
+					ImGui::RadioButton("Large ", &GridSize, GridLarge);
 				}
 				
 				if (GridX < 0)
