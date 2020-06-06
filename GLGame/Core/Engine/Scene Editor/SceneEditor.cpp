@@ -82,8 +82,6 @@ namespace GLGame
 		static double MousePosY = 0;
 		static int WindowSizeX = 0;
 		static int WindowSizeY = 0;
-		static int GridX = 64;
-		static int GridY = 64;
 		static double MouseScrollOffsetX = 0;
 		static double MouseScrollOffsetY = 0;
 
@@ -110,8 +108,13 @@ namespace GLGame
 		// IMGUI context => Scene editor window
 		ImGuiContext* imcontext;
 
-		// Scene editor matrices
+		// Scene editor camera
 		Camera* SceneEditorCamera;
+
+		// For the grid
+		static int GridX = 64;
+		static int GridY = 64;
+		static bool ViewGrid = true;
 
 		// Other needed structures
 		int CurrentOperationSelected = 0; // Has to be an int for imgui. Used as an enum class "Operations" 
@@ -311,23 +314,51 @@ namespace GLGame
 			scene_file.close();
 		}
 
-		void DrawGrid()
+		void _DrawGrid()
 		{
-			const int line_pixel_size = 5;
-
-			GLfloat vertex_buffer[4]
+			static SpriteBatcher grid_batcher;
+			static Texture grid_texture("Core\\Resources\\Scene Editor\\grid_tile.png");
+			
+			if (ViewGrid)
 			{
-				-0.2f, 0.5f, 0.2f, 0.5f
-			};
+				GenericObject obj;
+				float x = 0, y = 0, w = GridX, h = GridX;
 
-			VertexBuffer VBO(GL_ARRAY_BUFFER);
+				glfwGetFramebufferSize(SceneEditorWindow, &SceneEditorWidth, &SceneEditorHeight);
+				grid_batcher.StartSpriteBatch(SceneEditorCamera->GetProjectionMatrix());
+				obj.texture = &grid_texture;
 
-			VBO.BufferData(4 * sizeof(GLfloat), vertex_buffer, GL_STATIC_DRAW);
-			VBO.VertexAttribPointer(0, 2, GL_FLOAT, 0, 2 * sizeof(GLfloat), (GLvoid*)0);
+				int rows = (SceneEditorWidth / GridX) + 1;
+				int cols = (SceneEditorHeight / GridY) + 1;
 
-			VBO.Bind();
-			glDrawArrays(GL_LINES, 0, 2);
-			VBO.Unbind();
+				for (int i = 0; i < rows; i++)
+				{
+					for (int j = 0; j < cols; j++)
+					{
+						x = i * GridX;
+						y = j * GridY;
+						w = x + GridX;
+						h = y + GridY;
+
+						obj.coords[0] = w;
+						obj.coords[1] = y;
+						obj.coords[2] = 1.0f;
+						obj.coords[3] = w;
+						obj.coords[4] = h;
+						obj.coords[5] = 1.0f;
+						obj.coords[6] = x;
+						obj.coords[7] = h;
+						obj.coords[8] = 1.0f;
+						obj.coords[9] = x;
+						obj.coords[10] = y;
+						obj.coords[11] = 1.0f;
+
+						grid_batcher.AddGenericObjectToBatch(obj);
+					}
+				}
+
+				grid_batcher.EndSpriteBatch();
+			}
 		}
 
 		void _ShowModalWindows()
@@ -593,9 +624,14 @@ namespace GLGame
 				ImGui::RadioButton("Debug", &CurrentOperationSelected, DebugGame);
 				ImGui::RadioButton("View or Look at the scene.", &CurrentOperationSelected, ViewScene);
 				ImGui::Text("\n\nEditor settings : \n");
-				ImGui::InputInt("Grid Size X (in pixels)", &GridX);
-				ImGui::InputInt("Grid Size Y (in pixels)", &GridY);
+				ImGui::Checkbox("View Grid", &ViewGrid);
 
+				if (ViewGrid)
+				{
+					ImGui::InputInt("Grid Size X (in pixels)", &GridX);
+					ImGui::InputInt("Grid Size Y (in pixels)", &GridY);
+				}
+				
 				if (GridX < 0)
 				{
 					GridX = 0;
@@ -854,7 +890,7 @@ namespace GLGame
 					ShouldBlockInput = false;
 				}
 
-				// Render the test item
+				_DrawGrid();
 				_RenderSceneEditorItems();
 
 				bool display_title_place_item = true;

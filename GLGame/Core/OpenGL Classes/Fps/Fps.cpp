@@ -36,7 +36,7 @@ namespace GLGame
 		return FPS_count;
 	}
 
-	void DisplayFrameRate(GLFWwindow* pWindow)
+	void DisplayFrameRate(GLFWwindow* pWindow, const std::string& title)
 	{
 		static double lastTime = 0;
 		static float nbFrames = 0;
@@ -49,7 +49,7 @@ namespace GLGame
 			double fps = double(nbFrames) / delta;
 
 			std::stringstream ss;
-			ss << "Opengl" << " " << "3.3" << " [" << fps << " FPS]";
+			ss << title << " [" << fps << " FPS]";
 
 			glfwSetWindowTitle(pWindow, ss.str().c_str());
 

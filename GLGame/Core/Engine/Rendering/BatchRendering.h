@@ -30,9 +30,9 @@ namespace GLGame
 	struct GenericObject
 	{
 		GLfloat coords[12];
-		GLfloat tex_coords[8];
-		glm::vec4 color;
-		Texture* texture;
+		GLfloat tex_coords[8] = { 1.0f, 1.0f,  1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f };
+		glm::vec4 color = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+		Texture* texture = nullptr;
 	};
 
 	// Reliable batch renderer. Can render upto 10000 quads

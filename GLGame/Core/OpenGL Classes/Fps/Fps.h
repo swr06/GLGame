@@ -10,6 +10,6 @@ namespace GLGame
 {
 	void CalculateFrameRate(GLFWwindow* pWindow);
 	long long int GetFPSCount();
-	void DisplayFrameRate(GLFWwindow* pWindow);
+	void DisplayFrameRate(GLFWwindow* pWindow, const std::string& title);
 	void CalculateFrameRateDeprecated();
 }

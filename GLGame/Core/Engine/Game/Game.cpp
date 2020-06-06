@@ -405,7 +405,7 @@ namespace GLGame
 
 				if (m_DisplayFPS)
 				{
-					DisplayFrameRate(m_GameWindow);
+					DisplayFrameRate(m_GameWindow, m_WindowTitle);
 				}
 
 				// Update the debug info

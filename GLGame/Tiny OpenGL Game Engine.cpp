@@ -8,8 +8,6 @@ const int game_width = 800;
 const int game_height = 600;
 
 void EventCallback(Event e);
-void DrawGrid();
-
 
 class game_ : public Game
 {
@@ -42,21 +40,20 @@ public :
 
 	void OnFrameAdvance(long long frame) override
 	{
-		DrawGrid();
 
-		for (int i = 0; i < 5; i++)
-		{
-			PS.Emit(particle);
-			PS_1.Emit(particle_2);
-		}
+		//for (int i = 0; i < 5; i++)
+		//{
+		//	PS.Emit(particle);
+		//	PS_1.Emit(particle_2);
+		//}
 
-		static Camera cam(0.0f, 800.0f, 0.0f, 600.0f);
+		//static Camera cam(0.0f, 800.0f, 0.0f, 600.0f);
 
-		PS.OnRender(cam);
-		PS_1.OnRender(cam);
+		//PS.OnRender(cam);
+		//PS_1.OnRender(cam);
 
-		PS.OnUpdate(glfwGetTime());
-		PS_1.OnUpdate(glfwGetTime());
+		//PS.OnUpdate(glfwGetTime());
+		//PS_1.OnUpdate(glfwGetTime());
 	}
 
 	void OnEvent(Event e) override
@@ -152,28 +149,28 @@ void EventCallback(Event e)
 	}
 }
 
-void DrawGrid()
-{
-	const int line_pixel_size = 5;
-	static Shader shader("Core\\Shaders\\Scene Editor\\LineVertexShader.glsl", "Core\\Shaders\\Scene Editor\\LineFragmentShader.glsl");
-
-	shader.Use();
-
-	GLfloat vertex_buffer[4]
-	{
-		0.0f,  0.0f, 0.0f, 1.0f
-	};
-
-	VertexBuffer VBO(GL_ARRAY_BUFFER);
-
-
-	VBO.BufferData(4 * sizeof(GLfloat), vertex_buffer, GL_STATIC_DRAW);
-	VBO.VertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, (GLvoid*)0);
-
-	VBO.Bind();
-	glDrawArrays(GL_LINES, 0, 2);
-	VBO.Unbind();
-}
+//void DrawGrid()
+//{
+//	const int line_pixel_size = 5;
+//	static Shader shader("Core\\Shaders\\Scene Editor\\LineVertexShader.glsl", "Core\\Shaders\\Scene Editor\\LineFragmentShader.glsl");
+//
+//	shader.Use();
+//
+//	GLfloat vertex_buffer[4]
+//	{
+//		0.0f,  0.0f, 0.0f, 1.0f
+//	};
+//
+//	VertexBuffer VBO(GL_ARRAY_BUFFER);
+//
+//
+//	VBO.BufferData(4 * sizeof(GLfloat), vertex_buffer, GL_STATIC_DRAW);
+//	VBO.VertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, (GLvoid*)0);
+//
+//	VBO.Bind();
+//	glDrawArrays(GL_LINES, 0, 2);
+//	VBO.Unbind();
+//}
 
 int main()
 {

@@ -116,9 +116,6 @@
     <Filter Include="Source Files\Engine\Logger">
       <UniqueIdentifier>{8fc9e13f-7f5b-4813-b954-b4836a366ed4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Helper Classes">
-      <UniqueIdentifier>{6889e720-563f-4809-ac76-1a9f646e0139}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Abstract OpenGL\Texturing">
       <UniqueIdentifier>{459d316b-6531-4817-9f34-dc59c3e33541}</UniqueIdentifier>
     </Filter>
@@ -130,6 +127,9 @@
     </Filter>
     <Filter Include="Source Files\Shaders\Scene Editor">
       <UniqueIdentifier>{2c25d63c-b8cb-4498-9a29-4e59997a77f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Helpers">
+      <UniqueIdentifier>{6889e720-563f-4809-ac76-1a9f646e0139}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -254,10 +254,13 @@
       <Filter>Source Files\Engine\Lighting</Filter>
     </ClCompile>
     <ClCompile Include="Core\OpenGL Classes\Random\Random.cpp">
-      <Filter>Source Files\Helper Classes</Filter>
+      <Filter>Source Files\Helpers</Filter>
     </ClCompile>
     <ClCompile Include="Core\Engine\Particles\ParticleBatcher.cpp">
       <Filter>Source Files\Engine\Particles</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Engine\Helpers\Helper.cpp">
+      <Filter>Source Files\Helpers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -397,10 +400,13 @@
       <Filter>Source Files\Engine\Lighting</Filter>
     </ClInclude>
     <ClInclude Include="Core\OpenGL Classes\Random\Random.h">
-      <Filter>Source Files\Helper Classes</Filter>
+      <Filter>Source Files\Helpers</Filter>
     </ClInclude>
     <ClInclude Include="Core\Engine\Particles\ParticleBatcher.h">
       <Filter>Source Files\Engine\Particles</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Engine\Helpers\Helper.h">
+      <Filter>Source Files\Helpers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -462,9 +468,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Core\Todo.txt">
-      <Filter>Source Files\Todo</Filter>
-    </Text>
     <Text Include="Core\Backup\Backup_3.txt">
       <Filter>Source Files\Backup</Filter>
     </Text>
@@ -481,6 +484,9 @@
       <Filter>Source Files\Engine\Scene</Filter>
     </Text>
     <Text Include="TestCases.txt">
+      <Filter>Source Files\Todo</Filter>
+    </Text>
+    <Text Include="Core\Todo.txt">
       <Filter>Source Files\Todo</Filter>
     </Text>
   </ItemGroup>

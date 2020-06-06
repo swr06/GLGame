@@ -68,8 +68,7 @@ Todo :
 Additional Features
 - Random Number Generator (Singleton) ✓
 - Virtual keys 
-- GetBlue, GetRed, GetGreen, GetHUE, GetOpacity.
-	- Takes in an RGB(int r,g,b)
+-
 - GameSetBlendMode() ✓
 - Drawing Primitives 
 	- Rectangles, circles, triangles and squares. 

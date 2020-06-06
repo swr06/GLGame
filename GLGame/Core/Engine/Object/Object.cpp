@@ -27,7 +27,14 @@ namespace GLGame
 		auto end = chrono::steady_clock::now();
 		double elapsed_time = std::chrono::duration_cast<std::chrono::duration<double>>(end - start).count();
 	
-		Log::_LogObjectCreation(glfwGetTime(), elapsed_time, m_DisplayName, visible, should_cull, true, __FILE__, __LINE__);
+		// a small glitch that occurs
+
+		if (elapsed_time < 0)
+		{
+			elapsed_time = 0;
+		}
+
+		Log::_LogObjectCreation(glfwGetTime(),elapsed_time, m_DisplayName, visible, should_cull, true, __FILE__, __LINE__);
 	}
 
 	Object::Object(const string& id, Sprite& sprite, bool should_cull, bool visible, Shader* shader, bool record_collision_event, const glm::vec4& bounding_box) : m_Rotation(-45.0f)
@@ -62,7 +69,16 @@ namespace GLGame
 
 		GameInternal::_IntRegisterObject(this);
 		auto end = chrono::steady_clock::now();
+
 		double elapsed_time = std::chrono::duration_cast<std::chrono::duration<double>>(end - start).count();
+
+		// a small glitch that occurs
+
+		if (elapsed_time < 0)
+		{
+			elapsed_time = 0;
+		}
+
 		Log::_LogObjectCreation(glfwGetTime(), elapsed_time, m_DisplayName, visible, should_cull, true, __FILE__, __LINE__);
 	}
 
