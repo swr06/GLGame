@@ -148,6 +148,28 @@ void EventCallback(Event e)
 	}
 }
 
+void DrawGrid()
+{
+	const int line_pixel_size = 5;
+	Shader shader();
+
+	glUseProgram(0);
+
+	GLfloat vertex_buffer[4]
+	{
+		-0.2f, 0.5f, 0.2f, 0.5f
+	};
+
+	VertexBuffer VBO(GL_ARRAY_BUFFER);
+
+	VBO.BufferData(4 * sizeof(GLfloat), vertex_buffer, GL_STATIC_DRAW);
+	VBO.VertexAttribPointer(0, 2, GL_FLOAT, 0, 2 * sizeof(GLfloat), (GLvoid*)0);
+
+	VBO.Bind();
+	glDrawArrays(GL_LINES, 0, 2);
+	VBO.Unbind();
+}
+
 int main()
 {
 	Light light_2(glm::vec3(400.0f, 400.0f, 0.0f), glm::vec4(0.0f, 1.0f, 0.0f, 2.0f), 400.0f);
@@ -157,9 +179,6 @@ int main()
 	BlinkingLight pLight(light_t, 1, 30, 1.0f);
 	Texture tex1, tex2, tile_sheet;
 	Scene scene; 
-	Shader custom_shader;
-
-	custom_shader.CreateShaderProgram("Core\\Shaders\\CustomVertexShader.glsl", "Core\\Shaders\\CustomFragmentShader.glsl");
 
 	Animation ani({ 
 		(string)"Core\\Resources\\Animations\\Yoda\\Frame (1).gif", 

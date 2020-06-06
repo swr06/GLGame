@@ -72,7 +72,7 @@ Additional Features
 	- Takes in an RGB(int r,g,b)
 - GameSetBlendMode() ✓
 - Drawing Primitives 
-	- Rectangles, circles, triangles and squares
+	- Rectangles, circles, triangles and squares. 
 - Window Functions 
 	- GetWindowHandle() 
 	- GetWindowCenter() 
@@ -83,15 +83,9 @@ Additional Features
 	- GetWindowHeight() 
 	- GetWindowWidth() 
 	- GetMouseXY(glm::vec2&)
-
 	- SetWindowPosition() 
 	- SetWindowSize()
 	- SetWindowCursor() 
-
-- Particles
-	- CreateParticle() 
-	- DestroyParticle() 
-	// etc
 
 - Networking
 	- Create Socket
@@ -106,16 +100,16 @@ Additional Features
 	- physics_draw_debug
 	- physics_pause_enable
 
-if (IsThereCollision(object_1, object_2);
-if (IsThereCollision(id_1, id_2);
+if (IsThereCollision(object_1, object_2); ✓
+if (IsThereCollision(id_1, id_2);   ✓
 
-- Add "SimpleRenderComponent"
+- Add "SimpleRenderComponent" (To SpriteBatcher) ✓
 
 Bugs : 
 
 - Fix the BatchRenderInstances function and try to shift it to a batcher instead of that.
 	- Thing to fix : Culling issue. Refer The SpriteBatcher class
-- Culling bug when the camera is mmoved to the left but the object is not getting culled
+- Culling bug when the camera is moved to the left but the object is not getting culled
 	- Expected sol : projection.x + pos.x
 					 projection.y + pos.y
 - Collision masks need to be updated with transformations

@@ -136,6 +136,7 @@ namespace GLGame
 		void SEMouseCallback(GLFWwindow* window, int button, int action, int mods);
 		void SEScrollCallback(GLFWwindow* window, double xoffset, double yoffset);
 		void SEWindowCloseCallback(GLFWwindow* window);
+		void _DrawGrid();
 		void _DrawDebugWindow();
 		///////////////////////
 
@@ -308,6 +309,27 @@ namespace GLGame
 			}
 
 			scene_file.close();
+		}
+
+		void DrawGrid()
+		{
+			const int line_pixel_size = 5;
+
+			glUseProgram(0);
+
+			GLfloat vertex_buffer[4]
+			{
+				-0.2f, 0.5f, 0.2f, 0.5f
+			};
+
+			VertexBuffer VBO(GL_ARRAY_BUFFER);
+
+			VBO.BufferData(4 * sizeof(GLfloat), vertex_buffer, GL_STATIC_DRAW);
+			VBO.VertexAttribPointer(0, 2, GL_FLOAT, 0, 2 * sizeof(GLfloat), (GLvoid*)0);
+
+			VBO.Bind();
+			glDrawArrays(GL_LINES, 0, 2);
+			VBO.Unbind();
 		}
 
 		void _ShowModalWindows()

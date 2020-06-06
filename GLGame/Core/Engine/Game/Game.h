@@ -100,6 +100,12 @@ namespace GLGame
 
 		bool ShouldDrawImGui() const { return m_DisplayImGui; }
 
+		// Helper Functions : 
+
+
+
+
+
 		// Internal functions.
 
 		// Internal function. Not meant to use.

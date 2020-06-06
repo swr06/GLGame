@@ -128,6 +128,9 @@
     <Filter Include="Source Files\Shaders\Custom Shaders">
       <UniqueIdentifier>{7d279eeb-d343-4182-9fec-7388892001b4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Shaders\Scene Editor">
+      <UniqueIdentifier>{2c25d63c-b8cb-4498-9a29-4e59997a77f5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Core\Engine\Rendering\BatchRendering.cpp">
@@ -421,34 +424,40 @@
     <None Include="Core\Dependencies\imgui\imgui_main.cpp">
       <Filter>Source Files\Dependencies\imgui</Filter>
     </None>
-    <None Include="Core\Shaders\DefaultVertexShader.glsl">
+    <None Include="Core\Shaders\Engine\DefaultBatchFragShader.glsl">
       <Filter>Source Files\Shaders\GLGame Shaders</Filter>
     </None>
-    <None Include="Core\Shaders\DefaultBatchFragShader.glsl">
+    <None Include="Core\Shaders\Engine\DefaultBatchVertexShader.glsl">
       <Filter>Source Files\Shaders\GLGame Shaders</Filter>
     </None>
-    <None Include="Core\Shaders\DefaultBatchVertexShader.glsl">
+    <None Include="Core\Shaders\Engine\DefaultFragmentShader.glsl">
       <Filter>Source Files\Shaders\GLGame Shaders</Filter>
     </None>
-    <None Include="Core\Shaders\DefaultFragmentShader.glsl">
+    <None Include="Core\Shaders\Engine\DefaultLightingFragShader.glsl">
       <Filter>Source Files\Shaders\GLGame Shaders</Filter>
     </None>
-    <None Include="Core\Shaders\DefaultLightingFragShader.glsl">
+    <None Include="Core\Shaders\Engine\DefaultLightingVertexShader.glsl">
       <Filter>Source Files\Shaders\GLGame Shaders</Filter>
     </None>
-    <None Include="Core\Shaders\DefaultLightingVertexShader.glsl">
+    <None Include="Core\Shaders\Engine\DefaultParticleFragmentShader.glsl">
       <Filter>Source Files\Shaders\GLGame Shaders</Filter>
     </None>
-    <None Include="Core\Shaders\DefaultParticleFragmentShader.glsl">
+    <None Include="Core\Shaders\Engine\DefaultParticleVertexShader.glsl">
       <Filter>Source Files\Shaders\GLGame Shaders</Filter>
     </None>
-    <None Include="Core\Shaders\DefaultParticleVertexShader.glsl">
+    <None Include="Core\Shaders\Engine\DefaultVertexShader.glsl">
       <Filter>Source Files\Shaders\GLGame Shaders</Filter>
     </None>
-    <None Include="Core\Shaders\CustomFragmentShader.glsl">
+    <None Include="Core\Shaders\SceneEditor\LineFragmentShader.glsl">
+      <Filter>Source Files\Shaders\Scene Editor</Filter>
+    </None>
+    <None Include="Core\Shaders\SceneEditor\LineVertexShader.glsl">
+      <Filter>Source Files\Shaders\Scene Editor</Filter>
+    </None>
+    <None Include="Core\Shaders\Custom\CustomFragmentShader.glsl">
       <Filter>Source Files\Shaders\Custom Shaders</Filter>
     </None>
-    <None Include="Core\Shaders\CustomVertexShader.glsl">
+    <None Include="Core\Shaders\Custom\CustomVertexShader.glsl">
       <Filter>Source Files\Shaders\Custom Shaders</Filter>
     </None>
   </ItemGroup>
