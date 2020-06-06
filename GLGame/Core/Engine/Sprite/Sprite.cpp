@@ -21,7 +21,7 @@ namespace GLGame
 		auto end = chrono::steady_clock::now();
 		double elapsed_time = std::chrono::duration_cast<std::chrono::duration<double>>(end - start).count();
 
-		Log::_LogSpriteCreation(glfwGetTime(), elapsed_time, m_ID, tex.GetTexturePath(), __FILE__, __LINE__);
+		Log::_LogSpriteCreation(glfwGetTime(), elapsed_time, m_DisplayID, tex.GetTexturePath(), __FILE__, __LINE__);
 	}
 
 	Sprite::Sprite(const string& id, Texture* tex) : m_Animation(nullptr), m_Texture(nullptr), m_AnimatedSprite(0), m_Frequency(1), m_CurrentTexture(nullptr)
@@ -43,12 +43,12 @@ namespace GLGame
 
 		if (tex != nullptr)
 		{
-			Log::_LogSpriteCreation(glfwGetTime(), elapsed_time, m_ID, tex->GetTexturePath(), __FILE__, __LINE__);
+			Log::_LogSpriteCreation(glfwGetTime(), elapsed_time, m_DisplayID, tex->GetTexturePath(), __FILE__, __LINE__);
 		}
 
 		else
 		{
-			Log::_LogSpriteCreation(glfwGetTime(), elapsed_time, m_ID, "TEX_ERR", __FILE__, __LINE__);
+			Log::_LogSpriteCreation(glfwGetTime(), elapsed_time, m_DisplayID, "TEX_ERR", __FILE__, __LINE__);
 		}
 	}
 
@@ -72,7 +72,7 @@ namespace GLGame
 		double elapsed_time = std::chrono::duration_cast<std::chrono::duration<double>>(end - start).count();
 
 		// Todo : Log this correctly
-		Log::_LogSpriteCreation(glfwGetTime(), elapsed_time, m_ID, "Animation paths", __FILE__, __LINE__);
+		Log::_LogSpriteCreation(glfwGetTime(), elapsed_time, m_DisplayID, "Animation paths", __FILE__, __LINE__);
 	}
 
 	void Sprite::UpdateSprite(long long fps)

@@ -448,17 +448,17 @@
     <None Include="Core\Shaders\Engine\DefaultVertexShader.glsl">
       <Filter>Source Files\Shaders\GLGame Shaders</Filter>
     </None>
-    <None Include="Core\Shaders\SceneEditor\LineFragmentShader.glsl">
-      <Filter>Source Files\Shaders\Scene Editor</Filter>
-    </None>
-    <None Include="Core\Shaders\SceneEditor\LineVertexShader.glsl">
-      <Filter>Source Files\Shaders\Scene Editor</Filter>
-    </None>
     <None Include="Core\Shaders\Custom\CustomFragmentShader.glsl">
       <Filter>Source Files\Shaders\Custom Shaders</Filter>
     </None>
     <None Include="Core\Shaders\Custom\CustomVertexShader.glsl">
       <Filter>Source Files\Shaders\Custom Shaders</Filter>
+    </None>
+    <None Include="Core\Shaders\Scene Editor\LineFragmentShader.glsl">
+      <Filter>Source Files\Shaders\Scene Editor</Filter>
+    </None>
+    <None Include="Core\Shaders\Scene Editor\LineVertexShader.glsl">
+      <Filter>Source Files\Shaders\Scene Editor</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

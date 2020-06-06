@@ -35,7 +35,7 @@ namespace GLGame
 		glfwInit();
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, GLGAME_OPENGL_VERSION_MAJOR);
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, GLGAME_OPENGL_VERSION_MINOR);
-		//glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 		glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
 
 		m_GameWindow = glfwCreateWindow(w, h, "Tiny OpenGL Game Engine V0.0.1", nullptr, nullptr);
@@ -114,6 +114,13 @@ namespace GLGame
 
 			callbacks_initialized += 5;
 		}
+
+		// Log the info
+		char* renderer = (char*)glGetString(GL_RENDERER);
+		char* vendor = (char*)glGetString(GL_VENDOR);
+		char* version = (char*)glGetString(GL_VERSION);
+
+		Log::_LogInfo(vendor, version, renderer);
 
 		Log::_LogEventInit(glfwGetTime(), callbacks_initialized, __FILE__, __LINE__);
 		glClearColor(0.3f, 0.3f, 0.3f, 1.0f);

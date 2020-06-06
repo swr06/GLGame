@@ -39,11 +39,19 @@ namespace GLGame
 		void _InitLog(double ts, const char* file, int line_number)
 		{
 			stringstream s;
+			stringstream info;
 
 			s << "\nTIME : [" << ts << "]\tTYPE : INIT_LOG   ";
 
-			log_queue.push_back(log_header_text);
-			log_queue.push_back(s.str());	
+			log_queue.insert(log_queue.begin(), log_header_text);
+		}
+
+		void _LogInfo(char* vendor, char* version, char* renderer)
+		{
+			stringstream info;
+
+			info << "VENDOR : " << vendor << "\n" << "GL VERSION : " << version << "\n" << "RENDERER : " << renderer << "\n............................................\n";
+			log_queue.insert(log_queue.begin() + 1, info.str());
 		}
 
 		void _LogOpenGLInit(double ts, int version_minor, int version_major, const char* file, int line_number)

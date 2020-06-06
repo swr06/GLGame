@@ -8,6 +8,8 @@ const int game_width = 800;
 const int game_height = 600;
 
 void EventCallback(Event e);
+void DrawGrid();
+
 
 class game_ : public Game
 {
@@ -40,6 +42,8 @@ public :
 
 	void OnFrameAdvance(long long frame) override
 	{
+		DrawGrid();
+
 		for (int i = 0; i < 5; i++)
 		{
 			PS.Emit(particle);
@@ -151,19 +155,20 @@ void EventCallback(Event e)
 void DrawGrid()
 {
 	const int line_pixel_size = 5;
-	Shader shader();
+	static Shader shader("Core\\Shaders\\Scene Editor\\LineVertexShader.glsl", "Core\\Shaders\\Scene Editor\\LineFragmentShader.glsl");
 
-	glUseProgram(0);
+	shader.Use();
 
 	GLfloat vertex_buffer[4]
 	{
-		-0.2f, 0.5f, 0.2f, 0.5f
+		0.0f,  0.0f, 0.0f, 1.0f
 	};
 
 	VertexBuffer VBO(GL_ARRAY_BUFFER);
 
+
 	VBO.BufferData(4 * sizeof(GLfloat), vertex_buffer, GL_STATIC_DRAW);
-	VBO.VertexAttribPointer(0, 2, GL_FLOAT, 0, 2 * sizeof(GLfloat), (GLvoid*)0);
+	VBO.VertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, (GLvoid*)0);
 
 	VBO.Bind();
 	glDrawArrays(GL_LINES, 0, 2);
@@ -228,7 +233,7 @@ int main()
 	while (!game.GameWindowShouldClose())
 	{
 		game.Render(); 
-
+		
 		if (game.IsThereCollision(obj, obj_2))
 		{
 			cout << "\nCOLLISION!\n";

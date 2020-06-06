@@ -18,6 +18,7 @@ namespace GLGame
 		static string ExtendString(string str, int ex_amt, string ex_c);
 		string GetFileName(string path);
 		void _InitLog(double ts, const char* file, int line_number);
+		void _LogInfo(char* vendor, char* version, char* renderer);
 		void _LogOpenGLInit(double ts, int version_minor, int version_major, const char* file, int line_number);
 		void _LogWindowCreation(double ts, int width, int height, const char* file, int line_number);
 		void _LogVSyncInit(double ts, bool vsync, const char* file, int line_number);

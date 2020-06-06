@@ -315,8 +315,6 @@ namespace GLGame
 		{
 			const int line_pixel_size = 5;
 
-			glUseProgram(0);
-
 			GLfloat vertex_buffer[4]
 			{
 				-0.2f, 0.5f, 0.2f, 0.5f
