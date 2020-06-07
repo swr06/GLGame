@@ -96,7 +96,6 @@ void EventCallback(Event e)
 	if (e.EventType == Event_WindowResize || e.EventType == Event_FrameBufferResize)
 	{
 		cam.SetProjection(0, e.WindowFrameBufferX, 0, e.WindowFrameBufferY);
-		glViewport(0, 0, e.WindowFrameBufferX, e.WindowFrameBufferY);
 	}
 
 	if (increment_pos)

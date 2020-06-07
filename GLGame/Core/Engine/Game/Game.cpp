@@ -431,7 +431,11 @@ namespace GLGame
 						SetVSync(m_Vsync, false);
 					}
 
+					int fx = 0, fy = 0;
+
 					glfwMakeContextCurrent(m_GameWindow);
+					glfwGetFramebufferSize(m_GameWindow, &fx, &fy);
+					glViewport(0, 0, fx, fy);
 				}
 			}
 
