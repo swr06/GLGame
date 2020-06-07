@@ -38,13 +38,6 @@ namespace GLGame
 			ViewScene,
 		};
 
-		static enum GridSizes
-		{
-			GridSmall,
-			GridMedium,
-			GridLarge
-		};
-
 		// Variables to initialize the window
 		static bool SceneEditorInitialized = false;
 		static GLFWwindow* SceneEditorWindow;
@@ -119,7 +112,6 @@ namespace GLGame
 		Camera* SceneEditorCamera;
 
 		// For the grid
-		static int GridSize = GridSmall;
 		static int GridX = 64;
 		static int GridY = 64;
 		static bool ViewGrid = true;
@@ -216,7 +208,7 @@ namespace GLGame
 			// Setup camera, batchers and shaders
 			SceneEditorCamera = new Camera(0.0f, (float)SceneEditorWidth, 0.0f, (float)SceneEditorHeight);
 			SceneEditorBatcher = new SpriteBatcher();
-			SceneEditorRenderItemShader.CreateShaderProgram(GLGAME_DEFAULT_SE_VERTEX, GLGAME_DEFAULT_SE_FRAGMENT);
+			SceneEditorRenderItemShader.CreateShaderProgramFromFile(GLGAME_DEFAULT_SE_VERTEX, GLGAME_DEFAULT_SE_FRAGMENT);
 			return SceneEditorWindow;
 		}
 
@@ -326,46 +318,21 @@ namespace GLGame
 		{
 			static SpriteBatcher grid_batcher;
 			static Texture grid_texture("Core\\Resources\\Scene Editor\\grid_tile.png");
-			static Texture grid_texture_2("Core\\Resources\\Scene Editor\\grid_tile_2.png");
-			static Texture grid_texture_4("Core\\Resources\\Scene Editor\\grid_tile_4.png");
 			
 			if (ViewGrid)
 			{
+				glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
 				GenericObject obj;
 				float x = 0, y = 0, w = GridX, h = GridX;
 
 				glfwGetFramebufferSize(SceneEditorWindow, &SceneEditorWidth, &SceneEditorHeight);
 				grid_batcher.StartSpriteBatch(SceneEditorCamera->GetProjectionMatrix());
 
-				switch (GridSize)
-				{
-					case GridSmall:
-					{
-						obj.texture = &grid_texture;
-						break;
-					}
+				obj.texture = &grid_texture;
 
-					case GridMedium:
-					{
-						obj.texture = &grid_texture_2;
-						break;
-					}
-
-					case GridLarge:
-					{
-						obj.texture = &grid_texture_4;
-						break;
-					}
-
-					default : 
-					{
-						obj.texture = &grid_texture;
-						break;
-					}
-				}
-
-				int rows = (SceneEditorWidth / GridX) + 1;
-				int cols = (SceneEditorHeight / GridY) + 1;
+				int rows = SceneEditorWidth / GridX;
+				int cols = SceneEditorHeight / GridY;
 
 				for (int i = 0; i < rows; i++)
 				{
@@ -394,6 +361,8 @@ namespace GLGame
 				}
 
 				grid_batcher.EndSpriteBatch();
+
+				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 			}
 		}
 
@@ -667,10 +636,26 @@ namespace GLGame
 				{
 					ImGui::InputInt("Grid Size X (in pixels)", &GridX);
 					ImGui::InputInt("Grid Size Y (in pixels)", &GridY); 
-					ImGui::Text("Grid Size : "); ImGui::SameLine();
-					ImGui::RadioButton("Small ", &GridSize, GridSmall); ImGui::SameLine();
-					ImGui::RadioButton("Medium ", &GridSize, GridMedium); ImGui::SameLine();
-					ImGui::RadioButton("Large ", &GridSize, GridLarge);
+
+					if (GridX < 16)
+					{
+						GridX = 16;
+					}
+
+					else if (GridX > 256)
+					{
+						GridX = 256;
+					}
+
+					if (GridY < 16)
+					{
+						GridY = 16;
+					}
+
+					else if (GridY > 256)
+					{
+						GridY = 256;
+					}
 				}
 				
 				if (GridX < 0)

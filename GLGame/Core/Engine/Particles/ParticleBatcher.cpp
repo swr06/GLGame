@@ -108,7 +108,7 @@ namespace GLGame
 		if (!m_Initialized)
 		{
 			m_VBO = new VertexBuffer(GL_ARRAY_BUFFER),
-			m_Shader.CreateShaderProgram(GLGAME_DEFAULT_PARTICLE_VERTEX, GLGAME_DEFAULT_PARTICLE_FRAGMENT);
+			m_Shader.CreateShaderProgramFromFile(GLGAME_DEFAULT_PARTICLE_VERTEX, GLGAME_DEFAULT_PARTICLE_FRAGMENT);
 			m_VAO.Bind();
 
 			m_IBO.BufferData(6 * m_MaxParticles * sizeof(GLuint), m_IndexBuffer, GL_STATIC_DRAW);

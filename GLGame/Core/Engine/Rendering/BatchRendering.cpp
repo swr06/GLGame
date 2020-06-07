@@ -6,7 +6,7 @@ namespace GLGame
 
 	// Sprite Batch Class functions
 
-	SpriteBatcher::SpriteBatcher() : m_VBO(GL_ARRAY_BUFFER), m_ViewProjectionMatrix(glm::mat4(1.0f)), m_VerticesWritten(0), m_MaximumQuads(1000), m_VertexSize(40)
+	SpriteBatcher::SpriteBatcher() : m_VBO(GL_ARRAY_BUFFER), m_ViewProjectionMatrix(glm::mat4(1.0f)), m_VerticesWritten(0), m_MaximumQuads(10000), m_VertexSize(40)
 	{
 		m_ObjectsInitialized = false;
 		m_LastElementVBuff = 0;
@@ -14,12 +14,12 @@ namespace GLGame
 		glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &m_MaximumTextureSlots);;
 		memset(m_SlottedTextures, -1, 32 * sizeof(GLuint));
 
-		m_VertexBuffer = new GLfloat[m_MaximumTextureSlots * m_VertexSize * m_MaximumQuads];
-		m_IndexBuffer = new GLuint[m_MaximumTextureSlots * 6 * m_MaximumQuads];
+		m_VertexBuffer = new GLfloat[m_VertexSize * (m_MaximumQuads + 2)];
+		m_IndexBuffer = new GLuint[6 * (m_MaximumQuads + 2)];
 		m_LastElementTex = 0;
 
 		int index_offset = 0;
-		size_t index_size = m_MaximumTextureSlots * 6 * m_MaximumQuads;
+		size_t index_size = 6 * m_MaximumQuads;
 
 		// Generate sampler array
 		for (int i = 0; i < 32; i++)
@@ -87,32 +87,6 @@ namespace GLGame
 
 	unsigned int SpriteBatcher::EndSpriteBatch()
 	{
-		if (!m_ObjectsInitialized)
-		{
-			size_t index_size = m_MaximumTextureSlots * 6 * m_MaximumQuads;
-
-			// Setting up OpenGL Objects
-			m_DefaultShader.CreateShaderProgram(GLGAME_DEFAULT_BATCH_VERTEX, GLGAME_DEFAULT_BATCH_FRAGMENT);
-
-			m_VAO.Bind();
-			m_IBO.Bind();
-			m_IBO.BufferData(index_size * sizeof(GLuint), m_IndexBuffer, GL_STATIC_DRAW);
-
-			// Attributes (4)
-			// 0 : Position
-			// 1 : Texture Coordinates
-			// 2 : Color
-			// 3 : Texture Element
-
-			m_VBO.VertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 10 * sizeof(GLfloat), (GLvoid*)0);
-			m_VBO.VertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 10 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
-			m_VBO.VertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, 10 * sizeof(GLfloat), (GLvoid*)(5 * sizeof(GLfloat)));
-			m_VBO.VertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, 10 * sizeof(GLfloat), (GLvoid*)(9 * sizeof(GLfloat)));
-			m_VAO.Unbind();
-
-			m_ObjectsInitialized = true;;
-		}
-
 		unsigned int ret_val = DrawFullBatch();
 
 		// Reset the projection matrix
@@ -488,6 +462,36 @@ namespace GLGame
 	{
 		unsigned int ret_val = 0;
 
+		if (!m_ObjectsInitialized)
+		{
+			size_t index_size = 6 * m_MaximumQuads;
+			// Setting up OpenGL Objects
+			m_DefaultShader.CreateShaderProgramFromFile(GLGAME_DEFAULT_BATCH_VERTEX, GLGAME_DEFAULT_BATCH_FRAGMENT);
+
+			m_VAO.Bind();
+			m_IBO.Bind();
+			m_IBO.BufferData(index_size * sizeof(GLuint), m_IndexBuffer, GL_STATIC_DRAW);
+
+			// Attributes (4)
+			// 0 : Position
+			// 1 : Texture Coordinates
+			// 2 : Color
+			// 3 : Texture Element
+
+			m_VBO.VertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 10 * sizeof(GLfloat), (GLvoid*)0);
+			m_VBO.VertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 10 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+			m_VBO.VertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, 10 * sizeof(GLfloat), (GLvoid*)(5 * sizeof(GLfloat)));
+			m_VBO.VertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, 10 * sizeof(GLfloat), (GLvoid*)(9 * sizeof(GLfloat)));
+			m_VAO.Unbind();
+
+			m_ObjectsInitialized = true;;
+		}
+
+		if (m_VerticesWritten == 0)
+		{
+			return 0;
+		}
+
 		if (m_BatchShader == nullptr)
 		{
 			m_BatchShader = &m_DefaultShader;
@@ -497,8 +501,13 @@ namespace GLGame
 
 		for (int i = 0; i < m_MaximumTextureSlots; i++)
 		{
+			if (m_SlottedTextures[i] < 0)
+			{
+				continue;
+			}
+
 			glActiveTexture(GL_TEXTURE0 + i);
-			glBindTexture(GL_TEXTURE_2D, (GLuint) m_SlottedTextures[i]);
+			glBindTexture(GL_TEXTURE_2D, m_SlottedTextures[i]);
 		}
 
 		m_BatchShader->SetVector4f("u_AmbientColor", m_AmbientLight, 0);
@@ -511,8 +520,8 @@ namespace GLGame
 		m_VAO.Unbind();
 
 		ret_val = m_VerticesWritten;
-		m_ViewProjectionMatrix = glm::mat4(1.0f);
-		m_AmbientLight = glm::vec4(1.0f);
+		//m_ViewProjectionMatrix = glm::mat4(1.0f);
+		//m_AmbientLight = glm::vec4(1.0f);
 		m_VerticesWritten = 0;
 		m_LastElementVBuff = 0;
 		m_LastElementTex = 0;

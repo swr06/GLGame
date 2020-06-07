@@ -149,28 +149,10 @@ void EventCallback(Event e)
 	}
 }
 
-//void DrawGrid()
-//{
-//	const int line_pixel_size = 5;
-//	static Shader shader("Core\\Shaders\\Scene Editor\\LineVertexShader.glsl", "Core\\Shaders\\Scene Editor\\LineFragmentShader.glsl");
-//
-//	shader.Use();
-//
-//	GLfloat vertex_buffer[4]
-//	{
-//		0.0f,  0.0f, 0.0f, 1.0f
-//	};
-//
-//	VertexBuffer VBO(GL_ARRAY_BUFFER);
-//
-//
-//	VBO.BufferData(4 * sizeof(GLfloat), vertex_buffer, GL_STATIC_DRAW);
-//	VBO.VertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, (GLvoid*)0);
-//
-//	VBO.Bind();
-//	glDrawArrays(GL_LINES, 0, 2);
-//	VBO.Unbind();
-//}
+void DrawGrid()
+{
+	
+}
 
 int main()
 {
@@ -181,6 +163,8 @@ int main()
 	BlinkingLight pLight(light_t, 1, 30, 1.0f);
 	Texture tex1, tex2, tile_sheet;
 	Scene scene; 
+
+	Shader custom_shader;
 
 	Animation ani({ 
 		(string)"Core\\Resources\\Animations\\Yoda\\Frame (1).gif", 
@@ -229,6 +213,7 @@ int main()
 
 	while (!game.GameWindowShouldClose())
 	{
+		//call it like this
 		game.Render(); 
 		
 		if (game.IsThereCollision(obj, obj_2))

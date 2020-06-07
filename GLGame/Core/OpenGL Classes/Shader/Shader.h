@@ -29,7 +29,7 @@ namespace GLGame
 
 		Shader(string vertex_path, const string fragment_path)
 		{
-			CreateShaderProgram(vertex_path, fragment_path);
+			CreateShaderProgramFromFile(vertex_path, fragment_path);
 		}
 
 		Shader() {}; 
@@ -37,7 +37,8 @@ namespace GLGame
 
 		~Shader();
 
-		GLuint CreateShaderProgram(const string vertex_pth, const string fragment_pth);
+		GLuint CreateShaderProgramFromFile(const string vertex_pth, const string fragment_pth);
+		GLuint CreateShaderProgramFromString(const string& vertex_data, const string& fragment_data);
 		GLuint GetProgramID();
 		inline void Use()
 		{

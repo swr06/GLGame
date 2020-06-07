@@ -31,7 +31,7 @@ namespace GLGame
 		VAO.Unbind();
 
 		// Setup the light shader
-		light_shader.CreateShaderProgram(GLGAME_DEFAULT_LIGHT_VERTEX, GLGAME_DEFAULT_LIGHT_FRAGMENT);
+		light_shader.CreateShaderProgramFromFile(GLGAME_DEFAULT_LIGHT_VERTEX, GLGAME_DEFAULT_LIGHT_FRAGMENT);
 		light_shader.Use();
 		light_shader.SetMatrix4("u_ViewProjectionMatrix", projection_matrix, 0);
 
@@ -194,7 +194,7 @@ namespace GLGame
 	{
 		if (!m_ObjectsInitialized)
 		{
-			m_Shader.CreateShaderProgram(GLGAME_DEFAULT_LIGHT_VERTEX, GLGAME_DEFAULT_LIGHT_FRAGMENT);
+			m_Shader.CreateShaderProgramFromFile(GLGAME_DEFAULT_LIGHT_VERTEX, GLGAME_DEFAULT_LIGHT_FRAGMENT);
 			m_VAO.Bind();
 
 			m_IBO.BufferData(6 * m_MaxLights * sizeof(GLuint), m_IndexBuffer, GL_STATIC_DRAW);
