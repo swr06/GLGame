@@ -74,7 +74,7 @@ GLGame has very humble dependencies.
 
 My name is Samuel Rasquinha (samuelrasquinha@gmail.com) and I am a 14 year old programmer from India. 
 
-# Development Specs
+# Development Specs 
 
 - Processor : AMD Ryzen 3 2200g
 - Graphics  : Integrated Vega 8 graphics
@@ -84,6 +84,12 @@ My name is Samuel Rasquinha (samuelrasquinha@gmail.com) and I am a 14 year old p
 This engine managed to get 500+ FPS in the game with the scene editor running. (With the above specs) and about 300 FPS on an intel HD 4000 GPU. 
 
 It got arount 1000+ FPS in game without the scene editor running and 600+ FPS on an Intel HD 4000.
+
+# Requirements 
+
+Processor : N/A
+Graphics Card : Any graphics card that supports OpenGL 3.2 and GLSL Shading language 3.3
+Ram : 100MB or Higher
 
 # Contact Me : 
 
