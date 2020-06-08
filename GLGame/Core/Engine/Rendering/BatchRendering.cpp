@@ -464,9 +464,46 @@ namespace GLGame
 
 		if (!m_ObjectsInitialized)
 		{
+			string vertex_data;
+			stringstream vert_data_s;
+			string frag_data;
+			stringstream frag_data_s;
+			ifstream vertex_file;
+			ifstream fragment_file;
+
+			vertex_file.open(GLGAME_DEFAULT_BATCH_VERTEX, ios::in);
+			fragment_file.open(GLGAME_DEFAULT_BATCH_FRAGMENT, ios::in);
+
+			if (vertex_file.good() && vertex_file.is_open() && fragment_file.good() && fragment_file.is_open())
+			{
+				// Set the max texture slot macro and add the version to the fragment shader
+
+				vert_data_s << vertex_file.rdbuf();
+				vertex_data = vert_data_s.str();
+				frag_data_s << "#version 330 core" << endl << "#define MAX_TEX_SLOTS " << m_MaximumTextureSlots << endl;
+				frag_data_s << fragment_file.rdbuf();
+				frag_data = frag_data_s.str();
+
+				m_DefaultShader.CreateShaderProgramFromString(vertex_data, frag_data);
+
+				vert_data_s.flush();
+				frag_data_s.flush();
+				vertex_file.close();
+				fragment_file.close();
+			}
+
+			else
+			{
+				vertex_file.close();
+				fragment_file.close();
+
+				Log::LogToFile("Invalid batch shader path..");
+				Log::LogToConsole("Invalid batch shader path..");
+			}
+
+			// Setting up OpenGL Objects and writing the buffer data
+
 			size_t index_size = 6 * m_MaximumQuads;
-			// Setting up OpenGL Objects
-			m_DefaultShader.CreateShaderProgramFromFile(GLGAME_DEFAULT_BATCH_VERTEX, GLGAME_DEFAULT_BATCH_FRAGMENT);
 
 			m_VAO.Bind();
 			m_IBO.Bind();

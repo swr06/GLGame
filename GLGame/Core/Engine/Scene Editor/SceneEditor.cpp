@@ -1203,8 +1203,7 @@ namespace GLGame
 			// Sneaky way to handle mouse drag events
 			if (CurrentOperationSelected == ViewScene)
 			{
-				glfwGetCursorPos(window, &MousePosX, &MousePosY);
-				SceneEditorCamera->SetPosition(glm::vec3(StartPanX - MousePosX, MousePosY - StartPanY, 1.0f));
+				SceneEditorCamera->SetPosition(glm::vec3(StartPanX - xpos, ypos - StartPanY, 1.0f));
 			}
 		}
 

@@ -275,8 +275,6 @@
     <None Include="Core\Shaders\Engine\DefaultParticleFragmentShader.glsl" />
     <None Include="Core\Shaders\Engine\DefaultParticleVertexShader.glsl" />
     <None Include="Core\Shaders\Engine\DefaultVertexShader.glsl" />
-    <None Include="Core\Shaders\Scene Editor\LineFragmentShader.glsl" />
-    <None Include="Core\Shaders\Scene Editor\LineVertexShader.glsl" />
     <None Include="ReadMe.file" />
   </ItemGroup>
   <ItemGroup>

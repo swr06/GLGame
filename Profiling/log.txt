@@ -7,61 +7,78 @@ GL VERSION : 3.3.13558 Core Profile Context 26.20.11015.1003
 RENDERER : AMD Radeon(TM) Vega 8 Graphics
 ............................................
 
-TIME : [0]	TYPE : CREATE_OBJECT [BLAH_BLAH]	ELAPSED_TIME : 2.93e-05
+TIME : [0]	TYPE : CREATE_OBJECT [BLAH_BLAH]	ELAPSED_TIME : 1.73e-05
 	VISIBLE : 1
 	HAS_SPRITE : 1
 	CULL : 1	| FILE : Object.cpp	LINE : [37]	
 
-TIME : [0]	TYPE : CREATE_OBJECT [BLAH_BLAHH]	ELAPSED_TIME : 8.4e-06
+TIME : [0]	TYPE : CREATE_OBJECT [BLAH_BLAHH]	ELAPSED_TIME : 6.3e-06
 	VISIBLE : 1
 	HAS_SPRITE : 1
 	CULL : 1	| FILE : Object.cpp	LINE : [37]	
 
-TIME : [1.36427]	TYPE : INIT_WINDOW | WIDTH : 800 HEIGHT : 600	| FILE : Game.cpp	LINE : [42]  
+TIME : [0.276851]	TYPE : INIT_WINDOW | WIDTH : 800 HEIGHT : 600	| FILE : Game.cpp	LINE : [42]  
 
-TIME : [1.43532]	TYPE : INIT_GL 3.3	| FILE : Game.cpp	LINE : [50]
+TIME : [0.28227]	TYPE : INIT_GL 3.3	| FILE : Game.cpp	LINE : [50]
 
-TIME : [1.44484]	TYPE : EVENT_INIT	CALLBACKS SET : 13	| FILE : Game.cpp	LINE : [125]
+TIME : [0.282773]	TYPE : EVENT_INIT	CALLBACKS SET : 13	| FILE : Game.cpp	LINE : [125]
 
-TIME : [1.45664]	TYPE : CREATE_SHADER	ELAPSED TIME : 0.0110326
+TIME : [0.28767]	TYPE : CREATE_SHADER	ELAPSED TIME : 0.0032952
 	VERTEX PTH : Core\Shaders\Engine\DefaultVertexShader.glsl
 	FRAGMENT PTH : Core\Shaders\Engine\DefaultFragmentShader.glsl
 	| FILE : Shader.cpp	LINE : [113]
 
-TIME : [1.45778]	TYPE : CREATE_SHADER	ELAPSED TIME : 0.0010075
+TIME : [0.288115]	TYPE : CREATE_SHADER	ELAPSED TIME : 0.0003113
 	VERTEX PTH : Core\Shaders\Engine\DefaultVertexShader.glsl
 	FRAGMENT PTH : Core\Shaders\Engine\DefaultFragmentShader.glsl
 	| FILE : Shader.cpp	LINE : [113]
 
-TIME : [1.45805]	TYPE : CREATE_OBJECT [Object_1]	ELAPSED_TIME : 1.39e-05
-	VISIBLE : 1
-	HAS_SPRITE : 1
-	CULL : 1	| FILE : Object.cpp	LINE : [37]	
-
-TIME : [1.45819]	TYPE : CREATE_OBJECT [Object_2]	ELAPSED_TIME : 1.6e-05
-	VISIBLE : 1
-	HAS_SPRITE : 1
-	CULL : 1	| FILE : Object.cpp	LINE : [37]	
-
-TIME : [1.45831]	TYPE : CREATE_OBJECT [Object_3]	ELAPSED_TIME : 1.86e-05
-	VISIBLE : 1
-	HAS_SPRITE : 1
-	CULL : 1	| FILE : Object.cpp	LINE : [37]	
-
-TIME : [1.50432]	TYPE : CREATE_SPRITE	ELAPSED_TIME : 2.93e-05	PTH [Animation paths] ID : [spr_1]	| FILE : Sprite.cpp	LINE : [75]	
-
-TIME : [1.50446]	TYPE : CREATE_SPRITE	ELAPSED_TIME : 1.27e-05	PTH [Core\Resources\ghost.png] ID : [spr_2]	| FILE : Sprite.cpp	LINE : [24]	
-
-TIME : [1.50456]	TYPE : CREATE_SPRITE	ELAPSED_TIME : 1.37e-05	PTH [Animation paths] ID : [spr_3]	| FILE : Sprite.cpp	LINE : [75]	
-
-TIME : [1.50753]	TYPE : INIT_VSYNC : false	| FILE : Game.cpp	LINE : [494]	
-
-TIME : [1.52968]	TYPE : CREATE_SHADER	ELAPSED TIME : 0.0115861
-	VERTEX PTH : Core\Shaders\Engine\DefaultBatchVertexShader.glsl
-	FRAGMENT PTH : Core\Shaders\Engine\DefaultBatchFragShader.glsl
+TIME : [0.336843]	TYPE : CREATE_SHADER	ELAPSED TIME : 0.0012466
+	VERTEX PTH : Core\Shaders\Engine\DefaultVertexShader.glsl
+	FRAGMENT PTH : Core\Shaders\Engine\DefaultFragmentShader.glsl
 	| FILE : Shader.cpp	LINE : [113]
 
-TIME : [1.53676]	TYPE : CREATE_SHADER	ELAPSED TIME : 0.0062864
+TIME : [0.337035]	TYPE : CREATE_OBJECT [Object_1]	ELAPSED_TIME : 2.09e-05
+	VISIBLE : 1
+	HAS_SPRITE : 1
+	CULL : 1	| FILE : Object.cpp	LINE : [37]	
+
+TIME : [0.337153]	TYPE : CREATE_OBJECT [Object_2]	ELAPSED_TIME : 1.56e-05
+	VISIBLE : 1
+	HAS_SPRITE : 1
+	CULL : 1	| FILE : Object.cpp	LINE : [37]	
+
+TIME : [0.337264]	TYPE : CREATE_OBJECT [Object_3]	ELAPSED_TIME : 1.79e-05
+	VISIBLE : 1
+	HAS_SPRITE : 1
+	CULL : 1	| FILE : Object.cpp	LINE : [37]	
+
+TIME : [0.379695]	TYPE : CREATE_SPRITE	ELAPSED_TIME : 2.43e-05	PTH [Animation paths] ID : [spr_1]	| FILE : Sprite.cpp	LINE : [75]	
+
+TIME : [0.37984]	TYPE : CREATE_SPRITE	ELAPSED_TIME : 1.17e-05	PTH [Core\Resources\ghost.png] ID : [spr_2]	| FILE : Sprite.cpp	LINE : [24]	
+
+TIME : [0.379918]	TYPE : CREATE_SPRITE	ELAPSED_TIME : 1.39e-05	PTH [Animation paths] ID : [spr_3]	| FILE : Sprite.cpp	LINE : [75]	
+
+TIME : [0.388452]	TYPE : INIT_VSYNC : false	| FILE : Game.cpp	LINE : [498]	
+
+TIME : [0.393834]	TYPE : CREATE_SHADER	ELAPSED TIME : 0.00116
+	VERTEX PTH : NO VERTEX PATH
+	FRAGMENT PTH : NO FRAGMENT PATH
+	| FILE : Shader.cpp	LINE : [187]
+
+TIME : [0.407024]	TYPE : CREATE_SHADER	ELAPSED TIME : 0.0070927
 	VERTEX PTH : Core\Shaders\Engine\DefaultLightingVertexShader.glsl
 	FRAGMENT PTH : Core\Shaders\Engine\DefaultLightingFragShader.glsl
 	| FILE : Shader.cpp	LINE : [113]
+
+TIME : [0.416316]	ELAPSED TIME : 0.0026723	TYPE : TEXTURE_CREATION [Core\Resources\Scene Editor\grid_tile.png] ID : [17]	| FILE : Texture.cpp	LINE : [15]	
+
+TIME : [0.41798]	TYPE : CREATE_SHADER	ELAPSED TIME : 0.0009727
+	VERTEX PTH : NO VERTEX PATH
+	FRAGMENT PTH : NO FRAGMENT PATH
+	| FILE : Shader.cpp	LINE : [187]
+
+TIME : [0.420785]	TYPE : CREATE_SHADER	ELAPSED TIME : 0.0009701
+	VERTEX PTH : NO VERTEX PATH
+	FRAGMENT PTH : NO FRAGMENT PATH
+	| FILE : Shader.cpp	LINE : [187]
