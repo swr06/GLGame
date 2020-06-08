@@ -131,6 +131,12 @@
     <Filter Include="Source Files\Helpers">
       <UniqueIdentifier>{6889e720-563f-4809-ac76-1a9f646e0139}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Engine\Saving/Loading">
+      <UniqueIdentifier>{c3114bbe-55ee-45c5-bd52-d0814ea19f5f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Engine\Saving/Loading\Saving">
+      <UniqueIdentifier>{b48f3cf4-9f6d-4f1d-b0ea-2347c96568be}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Core\Engine\Rendering\BatchRendering.cpp">
@@ -174,9 +180,6 @@
     </ClCompile>
     <ClCompile Include="Core\Engine\Particles\Particles.cpp">
       <Filter>Source Files\Engine\Particles</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\Engine\Post Processing\Post Processing.cpp">
-      <Filter>Source Files\Engine\Post Processing</Filter>
     </ClCompile>
     <ClCompile Include="Core\Engine\TextureAtlas\TextureAtlas.cpp">
       <Filter>Source Files\Engine\Texture Atlas</Filter>
@@ -311,9 +314,6 @@
     </ClInclude>
     <ClInclude Include="Core\Engine\Particles\Particles.h">
       <Filter>Source Files\Engine\Particles</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\Engine\Post Processing\Post Processing.h">
-      <Filter>Source Files\Engine\Post Processing</Filter>
     </ClInclude>
     <ClInclude Include="Core\Engine\TextureAtlas\TextureAtlas.h">
       <Filter>Source Files\Engine\Texture Atlas</Filter>

@@ -182,7 +182,6 @@
     <ClCompile Include="Core\Engine\Object\Object.cpp" />
     <ClCompile Include="Core\Engine\Particles\ParticleBatcher.cpp" />
     <ClCompile Include="Core\Engine\Particles\Particles.cpp" />
-    <ClCompile Include="Core\Engine\Post Processing\Post Processing.cpp" />
     <ClCompile Include="Core\Engine\Rendering\BatchRendering.cpp" />
     <ClCompile Include="Core\Engine\Rendering\Rendering.cpp" />
     <ClCompile Include="Core\Engine\Resource Manager\ResourceManager.cpp" />
@@ -231,7 +230,6 @@
     <ClInclude Include="Core\Engine\Object\Object.h" />
     <ClInclude Include="Core\Engine\Particles\ParticleBatcher.h" />
     <ClInclude Include="Core\Engine\Particles\Particles.h" />
-    <ClInclude Include="Core\Engine\Post Processing\Post Processing.h" />
     <ClInclude Include="Core\Engine\Rendering\BatchRendering.h" />
     <ClInclude Include="Core\Engine\Rendering\Rendering.h" />
     <ClInclude Include="Core\Engine\Resource Manager\ResourceManager.h" />

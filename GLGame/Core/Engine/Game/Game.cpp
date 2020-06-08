@@ -39,6 +39,15 @@ namespace GLGame
 		glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
 
 		m_GameWindow = glfwCreateWindow(w, h, "Tiny OpenGL Game Engine V0.0.1", nullptr, nullptr);
+		
+		if (m_GameWindow == NULL)
+		{
+			Log::LogToFile("Failed to initialize game window");
+			Log::LogToConsole("Failed to initialize game window");
+
+			return;
+		}
+		
 		Log::_LogWindowCreation(glfwGetTime(), m_GameWindowWidth, m_GameWindowHeight, __FILE__, __LINE__);
 		glfwMakeContextCurrent(m_GameWindow);
 
@@ -47,7 +56,7 @@ namespace GLGame
 
 		// This fixes a bug where glew sets the GL_INVALID_ENUM flag for some reason. real pain.
 		glGetError();
-		Log::_LogOpenGLInit(glfwGetTime(), GLGAME_OPENGL_VERSION_MINOR, GLGAME_OPENGL_VERSION_MAJOR, __FILE__, __LINE__);
+		Log::_LogOpenGLInit(glfwGetTime(), GLGAME_OPENGL_VERSION_MAJOR, GLGAME_OPENGL_VERSION_MINOR, __FILE__, __LINE__);
 
 		glViewport(0, 0, m_GameWindowWidth, m_GameWindowHeight);
 
