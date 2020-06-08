@@ -19,6 +19,8 @@
 #define GLGAME_DEFAULT_PARTICLE_FRAGMENT	"Core\\Shaders\\Engine\\DefaultParticleFragmentShader.glsl"
 
 #define GLGAME_RESIZABLE	true
+
+// Not really used in the game. The amount of layers you can use are unlimited. (I used an std::map)
 #define GLGAME_MAX_LAYERS	9
 
 #define GLGAME_INT_GLFW_KEY_COUNT 1024

@@ -38,7 +38,7 @@ namespace GLGame
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 		glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
 
-		m_GameWindow = glfwCreateWindow(w, h, "Tiny OpenGL Game Engine V0.0.1", nullptr, nullptr);
+		m_GameWindow = glfwCreateWindow(w, h, title.c_str(), nullptr, nullptr);
 		
 		if (m_GameWindow == NULL)
 		{
@@ -206,6 +206,114 @@ namespace GLGame
 		glfwTerminate();
 	}
 
+	// Helper functions
+	
+	std::pair<int, int> Game::GetWindowCenter()
+	{
+		std::pair<int, int> ret_val;
+
+		ret_val.first = (int) m_GameWindowWidth / 2;
+		ret_val.second = (int) m_GameWindowHeight / 2;
+
+		return ret_val;
+	}
+
+	// Same as GetCursorPos()
+	std::pair<double, double> Game::GetMouseXY()
+	{
+		std::pair<double, double> ret_val;
+
+		glfwGetCursorPos(m_GameWindow, &ret_val.first, &ret_val.second);
+		return ret_val;
+	}
+
+	// Same as GetMouseXY()
+	std::pair<double, double> Game::GetCursorPos()
+	{
+		std::pair<double, double> ret_val;
+
+		glfwGetCursorPos(m_GameWindow, &ret_val.first, &ret_val.second);
+		return ret_val;
+	}
+
+	AABB Game::GetAABBMouseCursor()
+	{
+		AABB ret_val;
+		double mx, my;
+
+		glfwGetCursorPos(m_GameWindow, &mx, &my);
+		ret_val.x = (float)mx;
+		ret_val.y = (float)m_GameWindowHeight - my;
+		ret_val.w = (float)2;
+		ret_val.h = (float)2;
+
+		return ret_val;
+	}
+
+	bool Game::IsVisible()
+	{
+		return (bool) glfwGetWindowAttrib(m_GameWindow, GLFW_VISIBLE);
+	}
+
+	bool Game::HasFocus()
+	{
+		return (bool) glfwGetWindowAttrib(m_GameWindow, GLFW_FOCUSED);
+	}
+
+	bool Game::SetFullScreen()
+	{
+		// Todo?
+
+		Log::LogToConsole("Fullscreen not supported yet. :I");
+		return false;
+	}
+
+	int Game::GetWindowHeight()
+	{
+		return m_GameWindowHeight;
+	}
+
+	int Game::GetWindowWidth()
+	{
+		return m_GameWindowWidth;
+	}
+
+	void Game::SetWindowPosition(const glm::vec2& pos)
+	{
+		glfwSetWindowPos(m_GameWindow, (int)pos.x, (int)pos.y);
+	}
+
+	void Game::SetWindowSize(const glm::vec2& size)
+	{
+		glfwSetWindowSize(m_GameWindow, (int)size.x, (int)size.y);
+	}
+
+	void Game::SetWindowCursorPos(const glm::vec2& pos)
+	{
+		glfwSetCursorPos(m_GameWindow, pos.x, pos.y);
+	}
+
+	void Game::MaximizeWindow()
+	{
+		glfwMaximizeWindow(m_GameWindow);
+	}
+
+	void Game::RestoreWindow()
+	{
+		glfwRestoreWindow(m_GameWindow);
+	}
+
+	void Game::ShowWindow()
+	{
+		glfwShowWindow(m_GameWindow);
+	}
+
+	void Game::HideWindow()
+	{
+		glfwHideWindow(m_GameWindow);
+	}
+
+	// Main render 
 	void Game::Render(bool should_clear)
 	{ 
 		static bool first_game_render = false;
@@ -230,7 +338,7 @@ namespace GLGame
 				}
 
 				glfwMakeContextCurrent(m_GameWindow);
-
+				glfwGetFramebufferSize(m_GameWindow, &m_GameWindowWidth, &m_GameWindowHeight);
 				glfwPollEvents();
 				PollEvents();
 
@@ -253,7 +361,7 @@ namespace GLGame
 				}
 
 				// Execute the frame advance callback
-				OnFrameAdvance(m_FpsCount);
+				OnFrameAdvance(m_FpsCount, glfwGetTime());
 
 				// ImGui
 				{
@@ -267,139 +375,142 @@ namespace GLGame
 					}
 				}
 
-				// Rendering the background data items
-
-				_SceneData current_scene_data = m_CurrentScene->IntGetSceneData();
-
-				int window_width = 0, window_height = 0;
-
-				glfwGetFramebufferSize(m_GameWindow, &window_width, &window_height);
-
-				for (auto background_iterator = current_scene_data.scene_backgrounds->begin(); background_iterator != current_scene_data.scene_backgrounds->end(); background_iterator++)
+				if (m_CurrentScene != nullptr)
 				{
-					if (background_iterator->second.background != nullptr)
-					{
-						if (background_iterator->second.background->MovesWithCamera())
-						{
-							NormallyRenderBackgrounds(&background_iterator->second,
-								m_DefaultBackgroundShader, window_width, window_height, glm::mat4(1.0f),
-								glm::mat4(1.0f), m_CurrentScene->GetSceneCamera()->GetViewProjectionMatrix());
-						}
+					// Rendering the background data items
 
-						else
+					_SceneData current_scene_data = m_CurrentScene->IntGetSceneData();
+
+					int window_width = 0, window_height = 0;
+
+					glfwGetFramebufferSize(m_GameWindow, &window_width, &window_height);
+
+					for (auto background_iterator = current_scene_data.scene_backgrounds->begin(); background_iterator != current_scene_data.scene_backgrounds->end(); background_iterator++)
+					{
+						if (background_iterator->second.background != nullptr)
 						{
-							NormallyRenderBackgrounds(&background_iterator->second,
-								m_DefaultBackgroundShader, window_width, window_height, glm::mat4(1.0f),
-								glm::mat4(1.0f), m_CurrentScene->GetSceneCamera()->GetProjectionMatrix());
+							if (background_iterator->second.background->MovesWithCamera())
+							{
+								NormallyRenderBackgrounds(&background_iterator->second,
+									m_DefaultBackgroundShader, window_width, window_height, glm::mat4(1.0f),
+									glm::mat4(1.0f), m_CurrentScene->GetSceneCamera()->GetViewProjectionMatrix());
+							}
+
+							else
+							{
+								NormallyRenderBackgrounds(&background_iterator->second,
+									m_DefaultBackgroundShader, window_width, window_height, glm::mat4(1.0f),
+									glm::mat4(1.0f), m_CurrentScene->GetSceneCamera()->GetProjectionMatrix());
+							}
 						}
 					}
-				}
 
-				//Rendering the scene items
+					//Rendering the scene items
 
-				// Get the scene data
+					// Get the scene data
 
-				// Goes through each layer and batches a group of objects and then draws it 
+					// Goes through each layer and batches a group of objects and then draws it 
 
-				m_SpriteBatcher->StartSpriteBatch(m_CurrentScene->GetSceneCamera(), m_CurrentScene->GetSceneAmbientLight());
+					m_SpriteBatcher->StartSpriteBatch(m_CurrentScene->GetSceneCamera(), m_CurrentScene->GetSceneAmbientLight());
 
-				// Iterate through each layer
-				for (auto layer_iterator = current_scene_data.scene_items->begin(); layer_iterator != current_scene_data.scene_items->end(); layer_iterator++)
-				{
-					//  Iterate through every group/vector of the same objects
-					for (auto e = layer_iterator->second.begin(); e != layer_iterator->second.end(); e++)
+					// Iterate through each layer
+					for (auto layer_iterator = current_scene_data.scene_items->begin(); layer_iterator != current_scene_data.scene_items->end(); layer_iterator++)
 					{
-						// Check if the vector is not empty
-						if (e->second.size() > 0)
+						//  Iterate through every group/vector of the same objects
+						for (auto e = layer_iterator->second.begin(); e != layer_iterator->second.end(); e++)
 						{
-							if (e->second[0].ItemType == sitem_type_object
-								&& e->second[0].ItemObjectInstance.m_Object != nullptr)
+							// Check if the vector is not empty
+							if (e->second.size() > 0)
 							{
-								// Update the object based on the frame 
-								// Usually used for animations
-								e->second[0].ItemObjectInstance.m_Object->IntUpdate(m_FpsCount);
-
-								// Check if the object does not have a custom shader
-								if (e->second[0].ItemObjectInstance.m_Object->HasShader() == false)
+								if (e->second[0].ItemType == sitem_type_object
+									&& e->second[0].ItemObjectInstance.m_Object != nullptr)
 								{
-									if (e->second[0].ItemObjectInstance.m_Object->HasSprite() &&
-										e->second[0].ItemObjectInstance.m_Object->IsVisible())
+									// Update the object based on the frame 
+									// Usually used for animations
+									e->second[0].ItemObjectInstance.m_Object->IntUpdate(m_FpsCount);
+
+									// Check if the object does not have a custom shader
+									if (e->second[0].ItemObjectInstance.m_Object->HasShader() == false)
 									{
-										for (int i = 0; i < e->second.size(); i++)
+										if (e->second[0].ItemObjectInstance.m_Object->HasSprite() &&
+											e->second[0].ItemObjectInstance.m_Object->IsVisible())
 										{
-											objects_drawn++;
-											m_SpriteBatcher->AddGLGameItemToBatch(e->second[i]);
+											for (int i = 0; i < e->second.size(); i++)
+											{
+												objects_drawn++;
+												m_SpriteBatcher->AddGLGameItemToBatch(e->second[i]);
+											}
+										}
+									}
+
+									// If the object has a custom shader, use the custom sprite batcher
+									else if (e->second[0].ItemObjectInstance.m_Object->HasShader() == true)
+									{
+										if (e->second[0].ItemObjectInstance.m_Object->HasSprite()
+											&& e->second[0].ItemObjectInstance.m_Object->IsVisible())
+										{
+											m_CustomShaderBatcher->StartSpriteBatch(m_CurrentScene->GetSceneCamera(), m_CurrentScene->GetSceneAmbientLight(), e->second[0].ItemObjectInstance.m_Object->GetShader());
+
+											for (int i = 0; i < e->second.size(); i++)
+											{
+												objects_drawn++;
+												m_CustomShaderBatcher->AddGLGameItemToBatch(e->second[i]);
+											}
+
+											m_CustomShaderBatcher->EndSpriteBatch();
 										}
 									}
 								}
 
-								// If the object has a custom shader, use the custom sprite batcher
-								else if (e->second[0].ItemObjectInstance.m_Object->HasShader() == true)
+								// If it is a sprite, add it as a generic texture to the batch
+								else if (e->second[0].ItemType == sitem_type_sprite
+									&& e->second[0].ItemSpriteInstance.m_Sprite != nullptr)
 								{
-									if (e->second[0].ItemObjectInstance.m_Object->HasSprite() 
-										&& e->second[0].ItemObjectInstance.m_Object->IsVisible())
+									for (int i = 0; i < e->second.size(); i++)
 									{
-										m_CustomShaderBatcher->StartSpriteBatch(m_CurrentScene->GetSceneCamera(), m_CurrentScene->GetSceneAmbientLight(), e->second[0].ItemObjectInstance.m_Object->GetShader());
-
-										for (int i = 0; i < e->second.size(); i++)
-										{
-											objects_drawn++;
-											m_CustomShaderBatcher->AddGLGameItemToBatch(e->second[i]);
-										}
-
-										m_CustomShaderBatcher->EndSpriteBatch();
+										sprites_drawn++;
+										m_SpriteBatcher->AddGenericTextureToBatch(e->second[i].ItemSpriteInstance.m_Sprite->GetCurrentTexture(), e->second[i].ItemPos);
 									}
-								}
-							}
-
-							// If it is a sprite, add it as a generic texture to the batch
-							else if (e->second[0].ItemType == sitem_type_sprite
-								&& e->second[0].ItemSpriteInstance.m_Sprite != nullptr)
-							{
-								for (int i = 0; i < e->second.size(); i++)
-								{
-									sprites_drawn++;
-									m_SpriteBatcher->AddGenericTextureToBatch(e->second[i].ItemSpriteInstance.m_Sprite->GetCurrentTexture(), e->second[i].ItemPos);
 								}
 							}
 						}
 					}
-				}
 
-				// Update the quad count
-				m_DebugInfo.QuadCount = m_SpriteBatcher->EndSpriteBatch();
+					// Update the quad count
+					m_DebugInfo.QuadCount = m_SpriteBatcher->EndSpriteBatch();
 
-				// Set the lighting blend function
-				glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+					// Set the lighting blend function
+					glBlendFunc(GL_SRC_ALPHA, GL_ONE);
 
-				m_LightBatcher->StartLightBatch(m_CurrentScene->GetSceneCamera()->GetViewProjectionMatrix());
+					m_LightBatcher->StartLightBatch(m_CurrentScene->GetSceneCamera()->GetViewProjectionMatrix());
 
-				// Draw lights using LightBatcher
-				for (int i = 0; i < current_scene_data.scene_lights->size(); i++)
-				{
-					// Check if the light* is not null
-					if (current_scene_data.scene_lights->at(i) != nullptr)
+					// Draw lights using LightBatcher
+					for (int i = 0; i < current_scene_data.scene_lights->size(); i++)
 					{
-						m_LightBatcher->AddLightToBatch(*(current_scene_data.scene_lights->at(i)));
+						// Check if the light* is not null
+						if (current_scene_data.scene_lights->at(i) != nullptr)
+						{
+							m_LightBatcher->AddLightToBatch(*(current_scene_data.scene_lights->at(i)));
+						}
 					}
-				}
 
-				// Batch the animated lights
-				for (int i = 0; i < current_scene_data.scene_blinking_lights->size(); i++)
-				{
-					if (current_scene_data.scene_blinking_lights->at(i) != nullptr)
+					// Batch the animated lights
+					for (int i = 0; i < current_scene_data.scene_blinking_lights->size(); i++)
 					{
-						m_LightBatcher->AddLightToBatch(current_scene_data.scene_blinking_lights->at(i)->GetCurrentLightFrame());
-						current_scene_data.scene_blinking_lights->at(i)->UpdateLightBlink(m_FpsCount);
+						if (current_scene_data.scene_blinking_lights->at(i) != nullptr)
+						{
+							m_LightBatcher->AddLightToBatch(current_scene_data.scene_blinking_lights->at(i)->GetCurrentLightFrame());
+							current_scene_data.scene_blinking_lights->at(i)->UpdateLightBlink(m_FpsCount);
+						}
 					}
+
+					// Update the debug info
+					m_DebugInfo.LightsDrawn = m_LightBatcher->EndLightBatch();
+					m_DebugInfo.QuadCount += m_DebugInfo.LightsDrawn;
+
+					// TODO : REVERT IT TO THE USER DEFINED BLEND FUNCTION
+					glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 				}
-
-				// Update the debug info
-				m_DebugInfo.LightsDrawn = m_LightBatcher->EndLightBatch();
-				m_DebugInfo.QuadCount += m_DebugInfo.LightsDrawn;
-
-				// TODO : REVERT IT TO THE USER DEFINED BLEND FUNCTION
-				glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 				// ImGui 
 				{
@@ -409,7 +520,7 @@ namespace GLGame
 						ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 					}
 				}
-
+				
 				// Display the FPS if needed
 
 				if (m_DisplayFPS)
@@ -440,11 +551,8 @@ namespace GLGame
 						SetVSync(m_Vsync, false);
 					}
 
-					int fx = 0, fy = 0;
-
 					glfwMakeContextCurrent(m_GameWindow);
-					glfwGetFramebufferSize(m_GameWindow, &fx, &fy);
-					glViewport(0, 0, fx, fy);
+					glViewport(0, 0, m_GameWindowWidth, m_GameWindowHeight);
 				}
 			}
 
@@ -471,6 +579,11 @@ namespace GLGame
 	void Game::SetCurrentScene(Scene& scene)
 	{
 		m_CurrentScene = &scene;
+	}
+
+	void Game::SetCurrentScene(Scene* scene)
+	{
+		m_CurrentScene = scene;
 	}
 
 	Scene& Game::GetCurrentScene()
@@ -535,84 +648,156 @@ namespace GLGame
 	// To test the collision between 2 objects
 	bool Game::IsThereCollision(Object& obj_1, Object& obj_2)
 	{
-		_SceneData curr_scene_data = m_CurrentScene->IntGetSceneData();
 		bool return_val = false;
 
-		// Reference the scene data
-		map<int, unordered_map<string, vector<SceneDataItem>>>& scene_data = *(curr_scene_data.scene_items);
-		const string& obj1_id = obj_1.GetObjectID();
-		const string& obj2_id = obj_2.GetObjectID();
-		int map_element_size = scene_data.size();
-		
-		bool specific_layer = true;
-		vector<SceneDataItem*> obj1_item_list;
-		vector<SceneDataItem*> obj2_item_list;
+		if (m_CurrentScene != nullptr)
+		{
+			_SceneData curr_scene_data = m_CurrentScene->IntGetSceneData();
 
-		AABB obj1_AABB;
-		AABB obj2_AABB;
+			// Reference the scene data
+			map<int, unordered_map<string, vector<SceneDataItem>>>& scene_data = *(curr_scene_data.scene_items);
+			const string& obj1_id = obj_1.GetObjectID();
+			const string& obj2_id = obj_2.GetObjectID();
+			int map_element_size = scene_data.size();
 
-		// Get all the respective objects from the scene
-		{ 
-			// Object 1
-			for (auto e = scene_data.begin(); e != scene_data.end(); ++e)
+			bool specific_layer = true;
+			vector<SceneDataItem*> obj1_item_list;
+			vector<SceneDataItem*> obj2_item_list;
+
+			AABB obj1_AABB;
+			AABB obj2_AABB;
+
+			// Get all the respective objects from the scene
 			{
-				// Check if the element exists
-
-				if (e->second.find(obj1_id) != e->second.end())
+				// Object 1
+				for (auto e = scene_data.begin(); e != scene_data.end(); ++e)
 				{
-					vector<SceneDataItem>& objs_1 = e->second.at(obj1_id);
+					// Check if the element exists
 
-					for (int i = 0; i < objs_1.size(); i++)
+					if (e->second.find(obj1_id) != e->second.end())
 					{
-						obj1_item_list.push_back(&objs_1[i]);
+						vector<SceneDataItem>& objs_1 = e->second.at(obj1_id);
+
+						for (int i = 0; i < objs_1.size(); i++)
+						{
+							obj1_item_list.push_back(&objs_1[i]);
+						}
+					}
+				}
+
+				// Object 2
+				for (auto e = scene_data.begin(); e != scene_data.end(); e++)
+				{
+					// Check if the element exists
+
+					if (e->second.find(obj2_id) != e->second.end())
+					{
+						vector<SceneDataItem>& objs_2 = e->second.at(obj2_id);
+
+						for (int i = 0; i < objs_2.size(); i++)
+						{
+							obj2_item_list.push_back(&objs_2[i]);
+						}
 					}
 				}
 			}
 
-			// Object 2
-			for (auto e = scene_data.begin(); e != scene_data.end(); e++)
+			if (obj1_item_list.size() > 0 && obj2_item_list.size() > 0)
 			{
-				// Check if the element exists
+				// If both of the collision masks are rects, use the AABB collision method
 
-				if (e->second.find(obj2_id) != e->second.end())
+				if (obj1_item_list[0]->ItemObjectInstance.m_Object->GetCollisionMaskType() == mask_rect &&
+					obj2_item_list[0]->ItemObjectInstance.m_Object->GetCollisionMaskType() == mask_rect)
 				{
-					vector<SceneDataItem>& objs_2 = e->second.at(obj2_id);
+					// Get each of their bounding boxes
 
-					for (int i = 0; i < objs_2.size(); i++)
+					glm::vec4 obj1_bounding_box = obj1_item_list[0]->ItemObjectInstance.m_Object->GetBoundingBox();
+					glm::vec4 obj2_bounding_box = obj2_item_list[0]->ItemObjectInstance.m_Object->GetBoundingBox();
+
+					for (int i = 0; i < obj1_item_list.size(); i++)
 					{
-						obj2_item_list.push_back(&objs_2[i]);
+						obj1_AABB.x = obj1_item_list[i]->ItemPos.x + obj1_bounding_box.x;
+						obj1_AABB.y = obj1_item_list[i]->ItemPos.y + obj1_bounding_box.y;
+						obj1_AABB.w = obj1_bounding_box.z;
+						obj1_AABB.h = obj1_bounding_box.w;
+
+						for (int j = 0; j < obj2_item_list.size(); j++)
+						{
+							obj2_AABB.x = obj2_item_list[j]->ItemPos.x + obj2_bounding_box.x;
+							obj2_AABB.y = obj2_item_list[j]->ItemPos.y + obj2_bounding_box.y;
+							obj2_AABB.w = obj2_bounding_box.z;
+							obj2_AABB.h = obj2_bounding_box.w;
+
+							if (CheckAABBCollision(obj1_AABB, obj2_AABB))
+							{
+								return_val = true;
+								break;
+							}
+						}
 					}
 				}
+			}
+
+			else
+			{
+				return_val = false;
 			}
 		}
-		
-		if (obj1_item_list.size() > 0 && obj2_item_list.size() > 0)
+
+		return return_val;
+	}
+
+	bool Game::IsThereCollision(Object& obj_1, AABB aabb_2)
+	{
+		bool return_val = false;
+
+		if (m_CurrentScene != nullptr)
 		{
-			// If both of the collision masks are rects, use the AABB collision method
+			_SceneData curr_scene_data = m_CurrentScene->IntGetSceneData();
 
-			if (obj1_item_list[0]->ItemObjectInstance.m_Object->GetCollisionMaskType() == mask_rect &&
-				obj2_item_list[0]->ItemObjectInstance.m_Object->GetCollisionMaskType() == mask_rect)
+			map<int, unordered_map<string, vector<SceneDataItem>>>& scene_data = *(curr_scene_data.scene_items);
+			const string& obj1_id = obj_1.GetObjectID();
+			int map_element_size = scene_data.size();
+
+			bool specific_layer = true;
+
+			vector<SceneDataItem*> obj1_item_list;
+
+			AABB obj1_AABB;
+
+			// Get all the respective objects from the scene
 			{
-				// Get each of their bounding boxes
-
-				glm::vec4 obj1_bounding_box = obj1_item_list[0]->ItemObjectInstance.m_Object->GetBoundingBox();
-				glm::vec4 obj2_bounding_box = obj2_item_list[0]->ItemObjectInstance.m_Object->GetBoundingBox();
-
-				for (int i = 0; i < obj1_item_list.size(); i++)
+				// Object 1
+				for (auto e = scene_data.begin(); e != scene_data.end(); ++e)
 				{
-					obj1_AABB.x = obj1_item_list[i]->ItemPos.x + obj1_bounding_box.x;
-					obj1_AABB.y = obj1_item_list[i]->ItemPos.y + obj1_bounding_box.y;
-					obj1_AABB.w = obj1_bounding_box.z;
-					obj1_AABB.h = obj1_bounding_box.w;
+					// Check if the element exists
 
-					for (int j = 0; j < obj2_item_list.size(); j++)
+					if (e->second.find(obj1_id) != e->second.end())
 					{
-						obj2_AABB.x = obj2_item_list[j]->ItemPos.x + obj2_bounding_box.x;
-						obj2_AABB.y = obj2_item_list[j]->ItemPos.y + obj2_bounding_box.y;
-						obj2_AABB.w = obj2_bounding_box.z;
-						obj2_AABB.h = obj2_bounding_box.w;
+						vector<SceneDataItem>& objs_1 = e->second.at(obj1_id);
 
-						if (CheckAABBCollision(obj1_AABB, obj2_AABB))
+						for (int i = 0; i < objs_1.size(); i++)
+						{
+							obj1_item_list.push_back(&objs_1[i]);
+						}
+					}
+				}
+			}
+
+			if (obj1_item_list.size() > 0)
+			{
+				if (obj1_item_list[0]->ItemObjectInstance.m_Object->GetCollisionMaskType() == mask_rect)
+				{
+					glm::vec4 obj1_bounding_box = obj1_item_list[0]->ItemObjectInstance.m_Object->GetBoundingBox();
+
+					for (int i = 0; i < obj1_item_list.size(); i++)
+					{
+						obj1_AABB.x = obj1_item_list[i]->ItemPos.x + obj1_bounding_box.x;
+						obj1_AABB.y = obj1_item_list[i]->ItemPos.y + obj1_bounding_box.y;
+						obj1_AABB.w = obj1_bounding_box.z;
+						obj1_AABB.h = obj1_bounding_box.w;
+
+						if (CheckAABBCollision(obj1_AABB, aabb_2))
 						{
 							return_val = true;
 							break;
@@ -620,15 +805,16 @@ namespace GLGame
 					}
 				}
 			}
-		}
 
-		else
-		{
-			return_val = false;
+			else
+			{
+				return_val = false;
+			}
 		}
 
 		return return_val;
 	}
+
 
 	void Game::DisplayFpsOnWindowTitleBar(bool display)
 	{
@@ -685,7 +871,7 @@ namespace GLGame
 		return data;
 	}
 
-	Sprite* Game::_GetSpriteFromArr(const string& id)
+	Sprite* Game::GetSpriteFromArr(const string& id)
 	{
 		unordered_map<string, Sprite*>::iterator chk = m_GlobalSprites.find(id);
 
@@ -705,7 +891,7 @@ namespace GLGame
 		}
 	}
 
-	Object* Game::_GetObjectFromArr(const string& id)
+	Object* Game::GetObjectFromArr(const string& id)
 	{
 		unordered_map<string, Object*>::iterator chk = m_GlobalObjects.find(id);
 
@@ -749,12 +935,12 @@ namespace GLGame
 
 		Object* _GetObjectFromGlobalArray(const string& id)
 		{
-			return GameRef->_GetObjectFromArr(id);
+			return GameRef->GetObjectFromArr(id);
 		}
 
 		Sprite* _GetSpriteFromGlobalArray(const string& id)
 		{
-			return GameRef->_GetSpriteFromArr(id);
+			return GameRef->GetSpriteFromArr(id);
 		}
 
 		void _GetObjectPosition(const string& id, uint32_t instance_id, int layer, glm::vec3& pos)

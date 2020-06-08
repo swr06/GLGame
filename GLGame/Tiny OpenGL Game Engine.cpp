@@ -38,9 +38,8 @@ public :
 		cout << "Game Destroyed! TS : " << ts;
 	}
 
-	void OnFrameAdvance(long long frame) override
+	void OnFrameAdvance(long long frame, double ts) override
 	{
-
 		//for (int i = 0; i < 5; i++)
 		//{
 		//	PS.Emit(particle);
@@ -218,6 +217,11 @@ int main()
 		if (game.IsThereCollision(obj, obj_2))
 		{
 			cout << "\nCOLLISION!\n";
+		}
+
+		if (game.IsThereCollision(obj, game.GetAABBMouseCursor()))
+		{
+			cout << "\MOUSE COLLISION!\n";
 		}
 	}
 } 

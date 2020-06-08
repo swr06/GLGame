@@ -78,12 +78,14 @@ namespace GLGame
 		void SetVSync(bool vsync, bool log = true);
 		void DisplayFpsOnWindowTitleBar(bool display);
 		void SetCurrentScene(Scene& scene);
+		void SetCurrentScene(Scene* scene);
 		bool GameWindowShouldClose();
 
 		void SetBlend(bool blend);
 		void SetBlendFunction(GLenum blendfuncS, GLenum blendfuncD);
 
 		bool IsThereCollision(Object& obj_1, Object& obj_2);
+		bool IsThereCollision(Object& obj_1, AABB aabb_2);
 
 		// Event handling
 
@@ -102,9 +104,45 @@ namespace GLGame
 
 		// Helper Functions : 
 
+		// Is functions
+		bool IsVisible(); 
+		bool HasFocus(); 
+		bool SetFullScreen();
 
+		// Setters
+		void SetWindowPosition(const glm::vec2& pos);
+		void SetWindowSize(const glm::vec2& size);
+		void SetWindowCursorPos(const glm::vec2& pos);
 
+		void MaximizeWindow();
+		void RestoreWindow();
+		void ShowWindow();
+		void HideWindow();
 
+		// Getters
+		int GetWindowHeight();
+		int GetWindowWidth();
+
+		GLFWwindow* GetWindowHandle() { return m_GameWindow; }
+		pair<int, int> GetWindowCenter();
+
+		// Same as GetCursorPos()
+		pair<double, double> GetMouseXY();
+
+		// Same as GetMouseXY()
+		pair<double, double> GetCursorPos();
+
+		// Returns an AABB struct which can be used for collision testing 
+		AABB GetAABBMouseCursor();
+
+		// Gets the window title
+		const string& GetWindowCaption() { return m_WindowTitle; }
+
+		// Gets a sprite from the global array based on an id
+		Sprite* GetSpriteFromArr(const string& id);
+
+		// Gets an object from the global array based on an id
+		Object* GetObjectFromArr(const string& id);
 
 		// Internal functions.
 
@@ -122,14 +160,6 @@ namespace GLGame
 
 		// Internal function. Not meant to use.
 		GameInternal::_GlobalGameData _GetGlobalData();
-
-		// Internal function. Not meant to use.
-		// Gets a sprite from the global array based on an id
-		Sprite* _GetSpriteFromArr(const string& id);
-
-		// Internal function. Not meant to use.
-		// Gets an object from the global array based on an id
-		Object* _GetObjectFromArr(const string& id);
 
 	private:
 		void PollEvents();
@@ -185,7 +215,7 @@ namespace GLGame
 		virtual void OnObjectMove(Object* object) {} // TODO
 		virtual void OnEvent(Event e) {}
 		virtual void OnImGuiRender(long long frame) {}
-		virtual void OnFrameAdvance(long long frame) {}
+		virtual void OnFrameAdvance(long long frame, double ts) {}
 		virtual void OnGameDestroy(double ts) {}
 	};
 
