@@ -30,7 +30,6 @@ A Tiny 2D OpenGL based C++ Game Engine that is fast, lightweight and comes with 
 - Transformations ✓
 - Logger ✓
 - Audio 
-- Post Processing (W.I.P)
 - Lighting ✓
 - Particles ✓
   - Particle Batcher ✓
@@ -46,6 +45,7 @@ I would like to implement the following features in the coming years :
 - Multithreading
 - Networking
 - Save game
+- Post Processing
 - More helper functions
 - Custom GUI Library
 
