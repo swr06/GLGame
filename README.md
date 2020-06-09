@@ -87,9 +87,9 @@ It got arount 1000+ FPS in game without the scene editor running and 600+ FPS on
 
 # Requirements 
 
-Processor : N/A
-Graphics Card : Any graphics card that supports OpenGL 3.2 and GLSL Shading language 3.3
-Ram : 100MB or Higher
+- Processor : N/A
+- Graphics Card : Any graphics card that supports OpenGL 3.2 and GLSL Shading language 3.3
+- Ram : 100MB or Higher
 
 # Contact Me : 
 
