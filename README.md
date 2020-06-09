@@ -58,7 +58,7 @@ You can compile it in both modes (Debug or Release) with the x86 (Win32) configu
 # About the Scene Editor 
 
 The scene editor has to be run during runtime.
-Just call the ``SceneEditor::LaunchSceneEditor()`` function and it will launch the Scene Editor with all the objects you have or will create.
+Just set the fifth argument of the ``Init()`` function to true and it will launch the Scene Editor with all the objects you have or will create. 
 
 # Dependencies 
 
