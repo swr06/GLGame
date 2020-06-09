@@ -27,7 +27,7 @@ Todo :
 - SpriteBatcher Class ✓
 - Test Batcher ✓
 - Fix Culling bugs ✓
-- Scene::RemoveObject() & Scene::RemoveSprite()
+- Scene::RemoveObject() & Scene::RemoveSprite() 
 - Rendering objects with custom shaders ✓
 	- Using SpriteBatch for this too ✓
 - Commenting the render function (Game.cpp) ✓

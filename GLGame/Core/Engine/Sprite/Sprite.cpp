@@ -71,8 +71,12 @@ namespace GLGame
 		auto end = chrono::steady_clock::now();
 		double elapsed_time = std::chrono::duration_cast<std::chrono::duration<double>>(end - start).count();
 
-		// Todo : Log this correctly
 		Log::_LogSpriteCreation(glfwGetTime(), elapsed_time, m_DisplayID, "Animation paths", __FILE__, __LINE__);
+	}
+
+	Sprite::~Sprite()
+	{
+		GameInternal::_IntDeregisterSprite(this);
 	}
 
 	void Sprite::UpdateSprite(long long fps)

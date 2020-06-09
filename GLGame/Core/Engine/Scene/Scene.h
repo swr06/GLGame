@@ -25,6 +25,7 @@ namespace GLGame
 	namespace GameInternal
 	{
 		void _IntRegisterScene(Scene* scene);
+		void _IntDeregisterScene(Scene* scene);
 	}
 
 	namespace SceneParser
@@ -50,6 +51,7 @@ namespace GLGame
 	public : 
 
 		Scene(); 
+		~Scene();
 
 		// To handle scene files
 		void LoadSceneFile(string scene_path);

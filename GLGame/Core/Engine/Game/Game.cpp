@@ -940,15 +940,30 @@ namespace GLGame
 		m_GlobalObjects[object->GetObjectID()] = object;
 	}
 
+	void Game::_DeregisterObject(Object* object)
+	{
+		m_GlobalObjects.erase(object->GetObjectID());
+	}
+
 	void Game::_RegisterSprite(Sprite* sprite)
 	{
 		m_SpriteItemNames.push_back(sprite->GetSpriteID());
 		m_GlobalSprites[sprite->GetSpriteID()] = sprite;
 	}
 
+	void Game::_DeregisterSprite(Sprite* sprite)
+	{
+		m_GlobalSprites.erase(sprite->GetSpriteID());
+	}
+
 	void Game::_RegisterScene(Scene* scene)
 	{
 		m_GlobalScenes[scene->GetSceneID()] = scene;
+	}
+
+	void Game::_DeregisterScene(Scene* scene)
+	{
+		m_GlobalScenes.erase(scene->GetSceneID());
 	}
 
 	void Game::_QueueEvent(Event e)
@@ -1044,7 +1059,7 @@ namespace GLGame
 			{
 				Log::LogToFile("Tried to call _GetObjectFromGlobalArray() without a game instance");
 
-				return;
+				return nullptr;
 			}
 
 
@@ -1057,7 +1072,7 @@ namespace GLGame
 			{
 				Log::LogToFile("Tried to call _GetSpriteFromGlobalArray() without a game instance");
 
-				return;
+				return nullptr;
 			}
 
 			return GameRef->GetSpriteFromArr(id);
@@ -1155,7 +1170,7 @@ namespace GLGame
 			}
 		}
 
-		// Register Functions 
+		// Register and deregister Functions 
 
 		void _IntRegisterObject(Object* object)
 		{
@@ -1167,6 +1182,14 @@ namespace GLGame
 			else
 			{
 				RegisterObjectQueue.push_back(object);
+			}
+		}
+
+		void _IntDeregisterObject(Object* object)
+		{
+			if (GameRef != nullptr)
+			{
+				GameRef->_DeregisterObject(object);
 			}
 		}
 
@@ -1183,6 +1206,14 @@ namespace GLGame
 			}
 		}
 
+		void _IntDeregisterSprite(Sprite* sprite)
+		{
+			if (GameRef != nullptr)
+			{
+				GameRef->_DeregisterSprite(sprite);
+			}
+		}
+
 		void _IntRegisterScene(Scene* scene)
 		{
 			if (GameRef != nullptr)
@@ -1193,6 +1224,14 @@ namespace GLGame
 			else
 			{
 				RegisterSceneQueue.push_back(scene);
+			}
+		}
+
+		void _IntDeregisterScene(Scene* scene)
+		{
+			if (GameRef != nullptr)
+			{
+				GameRef->_DeregisterScene(scene);
 			}
 		}
 

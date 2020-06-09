@@ -28,6 +28,7 @@ namespace GLGame
 		void _UpdateObjectPosition(const string& id, const glm::vec3& pos);
 		void _GetObjectPosition(const string& id, uint32_t instance_id, int layer, glm::vec3& pos);
 		void _IncrementObjectPosition(const string& id, const glm::vec3& amt);
+		void _IntDeregisterObject(Object* object);
 	}
 
 	enum ObjectTransformations
@@ -48,6 +49,7 @@ namespace GLGame
 
 		Object(const string& id, bool should_cull = true, bool visible = true, Shader* shader = nullptr, bool record_collision_event = false, const glm::vec4& bounding_box = { 0.0f,0.0f,0.0f,0.0f });
 		Object(const string& id, Sprite& sprite, bool should_cull = true, bool visible = true, Shader* shader = nullptr, bool record_collision_event = false, const glm::vec4& bounding_box = { -1.0f,-1.0f,-1.0f,-1.0f });
+		~Object();
 
 		// Applies a rotation to the object
 		void ApplyRotationTransformation(float angle);

@@ -20,6 +20,11 @@ namespace GLGame
 		GameInternal::_IntRegisterScene(this);
 	}
 
+	Scene::~Scene()
+	{
+		GameInternal::_IntDeregisterScene(this);
+	}
+
 	void Scene::LoadSceneFile(string scene_path)
 	{
 		SceneParser::ParseSceneData(scene_path, this);

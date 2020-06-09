@@ -27,6 +27,7 @@ namespace GLGame
 	namespace GameInternal
 	{
 		void _IntRegisterSprite(Sprite* sprite);
+		void _IntDeregisterSprite(Sprite* sprite);
 	}
 
 	class Sprite
@@ -36,6 +37,7 @@ namespace GLGame
 		Sprite(const string& id, Texture& tex);
 		Sprite(const string& id, Texture* tex);
 		Sprite(const string& id, Animation& animation, size_t speed);
+		~Sprite();
 
 		void UpdateSprite(long long fps);
 

@@ -254,6 +254,7 @@ namespace GLGame
 
 		void LogToFile(string str)
 		{
+			str.insert(0, "\nLOG : ");
 			log_queue.push_back(str);
 		}
 	}

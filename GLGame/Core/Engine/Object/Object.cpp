@@ -82,6 +82,12 @@ namespace GLGame
 		Log::_LogObjectCreation(glfwGetTime(), elapsed_time, m_DisplayName, visible, should_cull, true, __FILE__, __LINE__);
 	}
 
+	Object::~Object()
+	{
+		// Deregister the object
+		GameInternal::_IntDeregisterObject(this);
+	}
+
 	void Object::ApplyRotationTransformation(float angle)
 	{
 		m_ModelMatrix = glm::rotate(glm::mat4(m_ModelMatrix), glm::radians(angle), glm::vec3(0,0,1));

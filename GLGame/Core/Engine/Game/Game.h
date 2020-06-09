@@ -149,12 +149,15 @@ namespace GLGame
 
 		// Internal function. Not meant to use.
 		void _RegisterObject(Object* object);
+		void _DeregisterObject(Object* object);
 
 		// Internal function. Not meant to use.
 		void _RegisterSprite(Sprite* sprite);
+		void _DeregisterSprite(Sprite* sprite);
 
 		// Internal function. Not meant to use.
 		void _RegisterScene(Scene* scene);
+		void _DeregisterScene(Scene* scene);
 
 		// Internal function. Not meant to use.
 		void _QueueEvent(Event e);

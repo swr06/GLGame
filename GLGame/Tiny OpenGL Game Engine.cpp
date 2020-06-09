@@ -148,7 +148,7 @@ void EventCallback(Event e)
 }
 
 int main()
-{
+{	
 	Light light_2(glm::vec3(400.0f, 400.0f, 0.0f), glm::vec4(0.0f, 1.0f, 0.0f, 2.0f), 400.0f);
 	Light light_3(glm::vec3(600.0f, 400.0f, 0.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), 800.0f);
 
@@ -185,8 +185,15 @@ int main()
 // 	scene.AddBlinkingLightAtPosition(pLight);
 // 	scene.AddSceneBackground(bg, 1);
 
-	tex1.CreateTexture("Core\\Resources\\tree.png");
-	tex2.CreateTexture("Core\\Resources\\ghost.png"); // Alpha = 50.0%
+	tile_sheet.CreateTexture("Core\\Resources\\terrain_atlas.png");
+	TextureAtlas tex_atlas(tile_sheet);
+
+	tex2 = *tex_atlas.SampleTexture({ 0,0,32,32 }, true);
+	//tex1.CreateTexture("Core\\Resources\\tree.png");
+	//tex2.CreateTexture("Core\\Resources\\ghost.png"); // Alpha = 50.0%
+	
+
+	
 
 	Sprite spr("spr_1", ani, 5); 
 	Sprite spr_2("spr_2", tex2);
@@ -202,7 +209,7 @@ int main()
 	game.SetCurrentScene(scene);
 	game.DisplayFpsOnWindowTitleBar(true);
 	game.SetBlend(true);
-	game.SetVSync(false);
+	game.SetVSync(true);
 
 	while (!game.GameWindowShouldClose())
 	{
@@ -216,7 +223,8 @@ int main()
 
 		if (game.IsThereCollision(obj_2, game.GetAABBMouseCursor()))
 		{
-			obj_2.SetPosition(glm::vec3(rand() % game.GetWindowWidth(), rand() % game.GetWindowHeight(), 1.0f));
+			Log::LogToConsole("\nMouse!");
+			obj_2.SetPosition(glm::vec3(abs(rand() % game.GetWindowWidth()), abs(rand() % game.GetWindowHeight()), 1.0f));
 		}
 	}
 } 
