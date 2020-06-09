@@ -86,9 +86,10 @@ namespace GLGame
 
 		bool IsThereCollision(Object& obj_1, Object& obj_2);
 		bool IsThereCollision(Object& obj_1, AABB aabb_2);
+		bool IsThereCollisionOnLayer(Object& obj_1, Object& obj_2, int layer_1, int layer_2);
 
 		// Event handling
-
+		 
 		// It is recommended to handle the key hold/repeat events in the OnEvent callback.
 		bool KeyIsBeingPressed(int Key);
 		

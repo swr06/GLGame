@@ -815,6 +815,103 @@ namespace GLGame
 		return return_val;
 	}
 
+	bool Game::IsThereCollisionOnLayer(Object& obj_1, Object& obj_2, int layer_1, int layer_2)
+	{
+		bool return_val = false;
+
+		if (m_CurrentScene != nullptr)
+		{
+			_SceneData curr_scene_data = m_CurrentScene->IntGetSceneData();
+
+			// Reference the scene data
+			map<int, unordered_map<string, vector<SceneDataItem>>>& scene_data = *(curr_scene_data.scene_items);
+			const string& obj1_id = obj_1.GetObjectID();
+			const string& obj2_id = obj_2.GetObjectID();
+			int map_element_size = scene_data.size();
+
+			bool specific_layer = true;
+			vector<SceneDataItem*> obj1_item_list;
+			vector<SceneDataItem*> obj2_item_list;
+
+			AABB obj1_AABB;
+			AABB obj2_AABB;
+
+			// Get all the respective objects from the scene
+			{
+				// Object 1
+
+				// Check if the layer is present in the layer map
+				if (scene_data.find(layer_1) != scene_data.end())
+				{
+					// Check if the object vector exists in the object map (inside the layer map)
+					if (scene_data.at(layer_1).find(obj1_id) != scene_data.at(layer_1).end())
+					{
+						// Add all the items to the 1st list
+						for (int i = 0; i < scene_data.at(layer_1).at(obj1_id).size(); i++)
+						{
+							obj1_item_list.push_back(&scene_data.at(layer_1).at(obj1_id).at(i));
+						}
+					}
+				}
+
+				if (scene_data.find(layer_2) != scene_data.end())
+				{
+					// Check if the object vector exists in the object map (inside the layer map)
+					if (scene_data.at(layer_2).find(obj2_id) != scene_data.at(layer_2).end())
+					{
+						// Add all the items to the 1st list
+						for (int i = 0; i < scene_data.at(layer_2).at(obj2_id).size(); i++)
+						{
+							obj2_item_list.push_back(&scene_data.at(layer_2).at(obj2_id).at(i));
+						}
+					}
+				}
+			}
+
+			if (obj1_item_list.size() > 0 && obj2_item_list.size() > 0)
+			{
+				// If both of the collision masks are rects, use the AABB collision method
+
+				if (obj1_item_list[0]->ItemObjectInstance.m_Object->GetCollisionMaskType() == mask_rect &&
+					obj2_item_list[0]->ItemObjectInstance.m_Object->GetCollisionMaskType() == mask_rect)
+				{
+					// Get each of their bounding boxes
+
+					glm::vec4 obj1_bounding_box = obj1_item_list[0]->ItemObjectInstance.m_Object->GetBoundingBox();
+					glm::vec4 obj2_bounding_box = obj2_item_list[0]->ItemObjectInstance.m_Object->GetBoundingBox();
+
+					for (int i = 0; i < obj1_item_list.size(); i++)
+					{
+						obj1_AABB.x = obj1_item_list[i]->ItemPos.x + obj1_bounding_box.x;
+						obj1_AABB.y = obj1_item_list[i]->ItemPos.y + obj1_bounding_box.y;
+						obj1_AABB.w = obj1_bounding_box.z;
+						obj1_AABB.h = obj1_bounding_box.w;
+
+						for (int j = 0; j < obj2_item_list.size(); j++)
+						{
+							obj2_AABB.x = obj2_item_list[j]->ItemPos.x + obj2_bounding_box.x;
+							obj2_AABB.y = obj2_item_list[j]->ItemPos.y + obj2_bounding_box.y;
+							obj2_AABB.w = obj2_bounding_box.z;
+							obj2_AABB.h = obj2_bounding_box.w;
+
+							if (CheckAABBCollision(obj1_AABB, obj2_AABB))
+							{
+								return_val = true;
+								break;
+							}
+						}
+					}
+				}
+			}
+
+			else
+			{
+				return_val = false;
+			}
+		}
+
+		return return_val;
+	}
 
 	void Game::DisplayFpsOnWindowTitleBar(bool display)
 	{

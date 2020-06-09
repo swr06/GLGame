@@ -64,7 +64,7 @@ namespace GLGame
 		static int ItemTypeSelected = Nothing;
 
 		// Render queue and layering
-		static float CurrentSceneEditorLayer = 0;
+		static int CurrentSceneEditorLayer = 0;
 		static map<int, vector<SceneEditorRenderItem>> SceneEditorItemQueue;
 		static SceneEditorRenderItem GhostObjectImage;
 
@@ -722,7 +722,7 @@ namespace GLGame
 					}
 
 					ImGui::Text("\n\n");
-					ImGui::InputFloat("Layer/Depth", &CurrentSceneEditorLayer);
+					ImGui::InputInt("Layer/Depth", &CurrentSceneEditorLayer);
 				}
 
 				ImGui::End();

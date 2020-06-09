@@ -147,11 +147,6 @@ void EventCallback(Event e)
 	}
 }
 
-void DrawGrid()
-{
-	
-}
-
 int main()
 {
 	Light light_2(glm::vec3(400.0f, 400.0f, 0.0f), glm::vec4(0.0f, 1.0f, 0.0f, 2.0f), 400.0f);
@@ -214,14 +209,14 @@ int main()
 		//call it like this
 		game.Render(); 
 		
-		if (game.IsThereCollision(obj, obj_2))
+		if (game.IsThereCollisionOnLayer(obj, obj_2, 1, 0))
 		{
 			cout << "\nCOLLISION!\n";
 		}
 
-		if (game.IsThereCollision(obj, game.GetAABBMouseCursor()))
+		if (game.IsThereCollision(obj_2, game.GetAABBMouseCursor()))
 		{
-			cout << "\MOUSE COLLISION!\n";
+			obj_2.SetPosition(glm::vec3(rand() % game.GetWindowWidth(), rand() % game.GetWindowHeight(), 1.0f));
 		}
 	}
 } 
