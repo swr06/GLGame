@@ -83,7 +83,7 @@ My name is Samuel Rasquinha (samuelrasquinha@gmail.com) and I am a 14 year old p
 
 This engine managed to get 500+ FPS in the game with the scene editor running. (With the above specs) and about 300 FPS on an intel HD 4000 GPU. 
 
-It got arount 1000+ FPS in game without the scene editor running and 600+ FPS on an Intel HD 4000.
+It got arount 1000+ FPS in game without the scene editor running and 400+ FPS on an Intel HD 4000.
 
 # Requirements 
 
