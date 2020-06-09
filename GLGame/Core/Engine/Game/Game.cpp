@@ -1014,6 +1014,14 @@ namespace GLGame
 	{
 		void _UpdateObjectPosition(const string& id, const glm::vec3& pos)
 		{
+			if (GameRef == nullptr)
+			{
+				Log::LogToConsole("Game Instance missing. Did you inherit from the Game class?");
+				Log::LogToFile("Game Instance missing. Did you inherit from the Game class?");
+
+				return;
+			}
+
 			_SceneData curr_scene_data = GameRef->GetCurrentScene().IntGetSceneData();
 
 			map<int, std::unordered_map<string, vector<SceneDataItem>>>& scene_data = *(curr_scene_data.scene_items);
@@ -1032,16 +1040,39 @@ namespace GLGame
 
 		Object* _GetObjectFromGlobalArray(const string& id)
 		{
+			if (GameRef == nullptr)
+			{
+				Log::LogToFile("Tried to call _GetObjectFromGlobalArray() without a game instance");
+
+				return;
+			}
+
+
 			return GameRef->GetObjectFromArr(id);
 		}
 
 		Sprite* _GetSpriteFromGlobalArray(const string& id)
 		{
+			if (GameRef == nullptr)
+			{
+				Log::LogToFile("Tried to call _GetSpriteFromGlobalArray() without a game instance");
+
+				return;
+			}
+
 			return GameRef->GetSpriteFromArr(id);
 		}
 
 		void _GetObjectPosition(const string& id, uint32_t instance_id, int layer, glm::vec3& pos)
 		{
+			if (GameRef == nullptr)
+			{
+				Log::LogToConsole("Game Instance missing. Did you inherit from the Game class?");
+				Log::LogToFile("Game Instance missing. Did you inherit from the Game class?");
+
+				return;
+			}
+
 			_SceneData curr_scene_data = GameRef->GetCurrentScene().IntGetSceneData();
 
 			map<int, std::unordered_map<string, vector<SceneDataItem>>>& scene_data = *(curr_scene_data.scene_items);
@@ -1050,6 +1081,14 @@ namespace GLGame
 
 		void _IncrementObjectPosition(const string& id, const glm::vec3& amt)
 		{
+			if (GameRef == nullptr)
+			{
+				Log::LogToConsole("Game Instance missing. Did you inherit from the Game class?");
+				Log::LogToFile("Game Instance missing. Did you inherit from the Game class?");
+
+				return;
+			}
+
 			_SceneData curr_scene_data = GameRef->GetCurrentScene().IntGetSceneData();
 
 			map<int, std::unordered_map<string, vector<SceneDataItem>>>& scene_data = *(curr_scene_data.scene_items);
@@ -1070,6 +1109,14 @@ namespace GLGame
 
 		void _SetBackgroundPosition(uint32_t id, const glm::vec3& pos)
 		{
+			if (GameRef == nullptr)
+			{
+				Log::LogToConsole("Game Instance missing. Did you inherit from the Game class?");
+				Log::LogToFile("Game Instance missing. Did you inherit from the Game class?");
+
+				return;
+			}
+
 			_SceneData curr_scene_data = GameRef->GetCurrentScene().IntGetSceneData();
 
 			map<int, SceneBackground>& background_data = *(curr_scene_data.scene_backgrounds);
@@ -1085,6 +1132,14 @@ namespace GLGame
 
 		void _IncrementBackgroundPosition(uint32_t id, const glm::vec3& increment)
 		{
+			if (GameRef == nullptr)
+			{
+				Log::LogToConsole("Game Instance missing. Did you inherit from the Game class?");
+				Log::LogToFile("Game Instance missing. Did you inherit from the Game class?");
+
+				return;
+			}
+
 			_SceneData curr_scene_data = GameRef->GetCurrentScene().IntGetSceneData();
 
 			map<int, SceneBackground>& background_data = *(curr_scene_data.scene_backgrounds);
@@ -1143,6 +1198,14 @@ namespace GLGame
 
 		void _IntAddEventToQueue(Event e)
 		{
+			if (GameRef == nullptr)
+			{
+				Log::LogToConsole("Game Instance missing. Did you inherit from the Game class?");
+				Log::LogToFile("Game Instance missing. Did you inherit from the Game class?");
+
+				return;
+			}
+
 			GameRef->_QueueEvent(e);
 		}
 	}
