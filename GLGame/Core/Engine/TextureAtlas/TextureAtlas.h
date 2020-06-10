@@ -18,27 +18,45 @@ namespace GLGame
 	{
 	public : 
 
-		TextureAtlas(string atlas_path, array<uint32_t, 2> atlas_tile_size);
-		TextureAtlas(Texture & atlas);
-		// ToDo : Texture GetTile() ; 
+		TextureAtlas(Texture* atlas_texture, int tx, int ty)
+		{
+			m_Atlas = atlas_texture;
+			m_TileX = tx;
+			m_TileY = ty;
+		}
 
-		Texture* SampleTexture(array<GLfloat, 4> texture_coords, bool convert); // convert tells whether the function has to convert the coordinates
-		Texture* SampleTexture_(array<GLfloat, 8> texture_coords, bool convert);
-		uint32_t GetAmountVerticalTiles();
-		uint32_t GetAmountHorizontalTiles();
-		uint32_t GetAmountTiles();
+		Texture* Sample(const glm::vec2& start_coords, const glm::vec2& end_coords)
+		{
+			float width, height;
 
-	private :
+			width = m_TileX * (end_coords.x - start_coords.x);
+			height = m_TileY * (end_coords.y - start_coords.y);
+		
+			array<GLfloat, 8> TextureCoordinates;
 
-		//uint32_t ConvertValue(uint32_t value, uint32_t old_min, uint32_t old_max, uint32_t new_min, uint32_t new_max);
-		float ConvertValue(float value, float old_min, float old_max, float new_min, float new_max); 
+			TextureCoordinates[0] = (end_coords.x * m_TileX) / m_Atlas->GetHeight();
+			TextureCoordinates[1] = (end_coords.y * m_TileY) / m_Atlas->GetWidth();
 
+			TextureCoordinates[2] = (end_coords.x * m_TileX) / m_Atlas->GetWidth();
+			TextureCoordinates[3] = (start_coords.y * m_TileY) / m_Atlas->GetHeight();
+
+			TextureCoordinates[4] = (start_coords.x * m_TileX) / m_Atlas->GetWidth();
+			TextureCoordinates[5] = (start_coords.y * m_TileY) / m_Atlas->GetHeight();
+
+			TextureCoordinates[6] = (start_coords.x * m_TileX) / m_Atlas->GetWidth();
+			TextureCoordinates[7] = (end_coords.y * m_TileY) / m_Atlas->GetHeight();
+
+			Texture *tex = new Texture;
+
+			*tex = *m_Atlas;
+			tex->IntCreateTexture(m_Atlas->GetTextureID(), TextureCoordinates, width, height, false);
+
+			return tex;
+		}
+
+	private : 
+
+		int m_TileX, m_TileY;
 		Texture* m_Atlas;
-		vector<Texture> m_TextureLookup;
-		string m_AtlasPath;
-		uint32_t m_TileCount;
-		array<uint32_t, 2> m_SingleTileSize;
-		int m_AtlasSizeX;
-		int m_AtlasSizeY;
 	};
 }

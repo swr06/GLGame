@@ -148,52 +148,49 @@ void EventCallback(Event e)
 }
 
 int main()
-{	
+{
 	Light light_2(glm::vec3(400.0f, 400.0f, 0.0f), glm::vec4(0.0f, 1.0f, 0.0f, 2.0f), 400.0f);
 	Light light_3(glm::vec3(600.0f, 400.0f, 0.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), 800.0f);
 
 	Light light_t(glm::vec3(100.0f, 300.0f, 0.0f), glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), 100.0f);
 	BlinkingLight pLight(light_t, 1, 30, 1.0f);
 	Texture tex1, tex2, tile_sheet;
-	Scene scene; 
+	Scene scene;
 
 	Shader custom_shader;
 
-	Animation ani({ 
-		(string)"Core\\Resources\\Animations\\Yoda\\Frame (1).gif", 
-		(string)"Core\\Resources\\Animations\\Yoda\\Frame (2).gif", 
-		(string)"Core\\Resources\\Animations\\Yoda\\Frame (3).gif", 
-		(string)"Core\\Resources\\Animations\\Yoda\\Frame (4).gif", 
-		(string)"Core\\Resources\\Animations\\Yoda\\Frame (5).gif", 
-		(string)"Core\\Resources\\Animations\\Yoda\\Frame (6).gif", 
-		(string)"Core\\Resources\\Animations\\Yoda\\Frame (7).gif", 
-		(string)"Core\\Resources\\Animations\\Yoda\\Frame (8).gif", 
-		(string)"Core\\Resources\\Animations\\Yoda\\Frame (9).gif", 
-		(string)"Core\\Resources\\Animations\\Yoda\\Frame (10).gif", 
-		(string)"Core\\Resources\\Animations\\Yoda\\Frame (11).gif", 
-		(string)"Core\\Resources\\Animations\\Yoda\\Frame (12).gif", 
-		(string)"Core\\Resources\\Animations\\Yoda\\Frame (13).gif", 
-		(string)"Core\\Resources\\Animations\\Yoda\\Frame (14).gif", 
+	Animation ani({
+		(string)"Core\\Resources\\Animations\\Yoda\\Frame (1).gif",
+		(string)"Core\\Resources\\Animations\\Yoda\\Frame (2).gif",
+		(string)"Core\\Resources\\Animations\\Yoda\\Frame (3).gif",
+		(string)"Core\\Resources\\Animations\\Yoda\\Frame (4).gif",
+		(string)"Core\\Resources\\Animations\\Yoda\\Frame (5).gif",
+		(string)"Core\\Resources\\Animations\\Yoda\\Frame (6).gif",
+		(string)"Core\\Resources\\Animations\\Yoda\\Frame (7).gif",
+		(string)"Core\\Resources\\Animations\\Yoda\\Frame (8).gif",
+		(string)"Core\\Resources\\Animations\\Yoda\\Frame (9).gif",
+		(string)"Core\\Resources\\Animations\\Yoda\\Frame (10).gif",
+		(string)"Core\\Resources\\Animations\\Yoda\\Frame (11).gif",
+		(string)"Core\\Resources\\Animations\\Yoda\\Frame (12).gif",
+		(string)"Core\\Resources\\Animations\\Yoda\\Frame (13).gif",
+		(string)"Core\\Resources\\Animations\\Yoda\\Frame (14).gif",
 		});
 
 	//bg = new Background("Core\\Resources\\grass_block.png");
 
 	scene.SetSceneCamera(cam);
 	scene.SetSceneAmbientLight(glm::vec4(0.5f, 0.5f, 0.5f, 1.0f));
-// 	scene.AddLightAtPosition(light_2);
-// 	scene.AddLightAtPosition(light_3);
-// 	scene.AddBlinkingLightAtPosition(pLight);
-// 	scene.AddSceneBackground(bg, 1);
+	// 	scene.AddLightAtPosition(light_2);
+	// 	scene.AddLightAtPosition(light_3);
+	// 	scene.AddBlinkingLightAtPosition(pLight);
+	// 	scene.AddSceneBackground(bg, 1);
 
 	tile_sheet.CreateTexture("Core\\Resources\\terrain_atlas.png");
-	TextureAtlas tex_atlas(tile_sheet);
+	TextureAtlas tex_atlas(&tile_sheet, 32, 32);
 
-	tex2 = *tex_atlas.SampleTexture({ 0,0,32,32 }, true);
+	tex2 = *tex_atlas.Sample(glm::vec2(1,3), glm::vec2(3,4));
 	//tex1.CreateTexture("Core\\Resources\\tree.png");
 	//tex2.CreateTexture("Core\\Resources\\ghost.png"); // Alpha = 50.0%
-	
-
-	
 
 	Sprite spr("spr_1", ani, 5); 
 	Sprite spr_2("spr_2", tex2);
