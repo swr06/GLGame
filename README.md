@@ -29,6 +29,7 @@ A Tiny 2D OpenGL based C++ Game Engine that is fast, lightweight and comes with 
 - Scene Editor ✓
   - Parser ✓
   - Slight encryption ✓
+  - Grid ✓
 - Transformations ✓
 - Logger ✓
 - Audio 
@@ -37,6 +38,8 @@ A Tiny 2D OpenGL based C++ Game Engine that is fast, lightweight and comes with 
   - Particle Batcher ✓
 - Physics 
 - Helper functions (such as windowing functions etc..)  ✓
+- Texture atlas ✓
+  - Custom Sampling
 
 This engine is still in development.
 
