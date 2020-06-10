@@ -21,7 +21,9 @@ A Tiny 2D OpenGL based C++ Game Engine that is fast, lightweight and comes with 
 - Abstract OpenGL (To write custom code) ✓
 - Camera Culling ✓
 - Sprite Batching ✓
-- Light Batching ✓
+- Lighting  ✓
+  - Custom Light colors  ✓
+  - Light Batching ✓
 - Animations ✓
   - Custom animation speed ✓
 - Scene Editor ✓
@@ -33,11 +35,10 @@ A Tiny 2D OpenGL based C++ Game Engine that is fast, lightweight and comes with 
 - Lighting ✓
 - Particles ✓
   - Particle Batcher ✓
-  - Texturing (W.I.P)
 - Physics 
-- Helper functions (such as windowing functions etc..)
+- Helper functions (such as windowing functions etc..)  ✓
 
-This engine is still highly in development.
+This engine is still in development.
 
 # Features to come
 
