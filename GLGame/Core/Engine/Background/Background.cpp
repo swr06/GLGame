@@ -2,9 +2,11 @@
 
 namespace GLGame
 {
-	Background::Background(const string& background, Shader* shader, GLenum repeat_type_s, GLenum repeat_type_t, GLenum min_filter, GLenum mag_filter, array<GLfloat, 8> texture_sampler_coordinates)
+	Background::Background(const string& background, bool stretch_to_window, Shader* shader, GLenum repeat_type_s, GLenum repeat_type_t, GLenum min_filter, GLenum mag_filter, array<GLfloat, 8> texture_sampler_coordinates)
 		: m_Background(nullptr), m_RepeatTypeS(GL_REPEAT), m_RepeatTypeT(GL_REPEAT), m_Shader(nullptr)
 	{
+		m_StretchToWindow = stretch_to_window;
+
 		if (shader != nullptr)
 		{
 			m_Shader = shader;

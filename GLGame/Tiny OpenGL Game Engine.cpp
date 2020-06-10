@@ -176,10 +176,11 @@ int main()
 		(string)"Core\\Resources\\Animations\\Yoda\\Frame (14).gif",
 		});
 
-	//bg = new Background("Core\\Resources\\grass_block.png");
+	bg = new Background("Core\\Resources\\grass_block.png");
 
 	scene.SetSceneCamera(cam);
 	scene.SetSceneAmbientLight(glm::vec4(0.5f, 0.5f, 0.5f, 1.0f));
+	scene.AddSceneBackground(bg, 0);
 	// 	scene.AddLightAtPosition(light_2);
 	// 	scene.AddLightAtPosition(light_3);
 	// 	scene.AddBlinkingLightAtPosition(pLight);

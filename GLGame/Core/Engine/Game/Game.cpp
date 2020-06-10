@@ -381,25 +381,47 @@ namespace GLGame
 
 					_SceneData current_scene_data = m_CurrentScene->IntGetSceneData();
 
-					int window_width = 0, window_height = 0;
-
-					glfwGetFramebufferSize(m_GameWindow, &window_width, &window_height);
-
 					for (auto background_iterator = current_scene_data.scene_backgrounds->begin(); background_iterator != current_scene_data.scene_backgrounds->end(); background_iterator++)
 					{
 						if (background_iterator->second.background != nullptr)
 						{
+							// background width and height
+							float bg_w, bg_h;
+							Shader* bg_shader = nullptr;
+
+							if (background_iterator->second.background->GetShader() != nullptr)
+							{
+								bg_shader = background_iterator->second.background->GetShader();
+							}
+
+							else
+							{
+								bg_shader = &m_DefaultBackgroundShader;
+							}
+
+							if (background_iterator->second.background->ShouldStretchToWindow())
+							{
+								bg_w = m_GameWindowWidth;
+								bg_h = m_GameWindowHeight;
+							}
+
+							else
+							{
+								bg_w = background_iterator->second.background->GetTexture().GetWidth();
+								bg_h = background_iterator->second.background->GetTexture().GetHeight();
+							}
+
 							if (background_iterator->second.background->MovesWithCamera())
 							{
 								NormallyRenderBackgrounds(&background_iterator->second,
-									m_DefaultBackgroundShader, window_width, window_height, glm::mat4(1.0f),
+									*bg_shader, bg_w, bg_h, glm::mat4(1.0f),
 									glm::mat4(1.0f), m_CurrentScene->GetSceneCamera()->GetViewProjectionMatrix());
 							}
 
 							else
 							{
 								NormallyRenderBackgrounds(&background_iterator->second,
-									m_DefaultBackgroundShader, window_width, window_height, glm::mat4(1.0f),
+									*bg_shader, bg_w, bg_h, glm::mat4(1.0f),
 									glm::mat4(1.0f), m_CurrentScene->GetSceneCamera()->GetProjectionMatrix());
 							}
 						}
