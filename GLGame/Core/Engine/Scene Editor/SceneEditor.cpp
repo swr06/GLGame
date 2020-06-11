@@ -10,6 +10,7 @@ namespace GLGame
 		{
 			SE_ObjectType,
 			SE_SpriteType,
+			SE_BackgroundType
 		};
 
 		struct SceneEditorRenderItem
@@ -177,7 +178,7 @@ namespace GLGame
 			glfwSetFramebufferSizeCallback(SceneEditorWindow, SEWindowResizeCallback);
 			glfwSetWindowCloseCallback(SceneEditorWindow, SEWindowCloseCallback);
 			glfwSetCursorPosCallback(SceneEditorWindow, SECursorPosCallback);
-
+			                                                                   
 			SceneEditorInitialized = true;
 
 			// Imgui initialization

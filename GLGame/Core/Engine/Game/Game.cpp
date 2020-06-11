@@ -1213,6 +1213,17 @@ namespace GLGame
 			{
 				GameRef->_DeregisterObject(object);
 			}
+
+			else
+			{
+				for (int i = 0; i < RegisterObjectQueue.size(); i++)
+				{
+					if (RegisterObjectQueue[i] == object)
+					{
+						RegisterObjectQueue.erase(RegisterObjectQueue.begin() + i);
+					}
+				}
+			}
 		}
 
 		void _IntRegisterSprite(Sprite* sprite)
@@ -1234,6 +1245,17 @@ namespace GLGame
 			{
 				GameRef->_DeregisterSprite(sprite);
 			}
+
+			else
+			{
+				for (int i = 0; i < RegisterSpriteQueue.size(); i++)
+				{
+					if (RegisterSpriteQueue[i] == sprite)
+					{
+						RegisterSpriteQueue.erase(RegisterSpriteQueue.begin() + i);
+					}
+				}
+			}
 		}
 
 		void _IntRegisterScene(Scene* scene)
@@ -1254,6 +1276,17 @@ namespace GLGame
 			if (GameRef != nullptr)
 			{
 				GameRef->_DeregisterScene(scene);
+			}
+
+			else
+			{
+				for (int i = 0; i < RegisterSceneQueue.size(); i++)
+				{
+					if (RegisterSceneQueue[i] == scene)
+					{
+						RegisterSceneQueue.erase(RegisterSceneQueue.begin() + i);
+					}
+				}
 			}
 		}
 
