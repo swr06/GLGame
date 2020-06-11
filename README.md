@@ -38,8 +38,9 @@ A Tiny 2D OpenGL based C++ Game Engine that is fast, lightweight and comes with 
   - Particle Batcher ✓
 - Physics 
 - Helper functions (such as windowing functions etc..)  ✓
-- Texture atlas ✓
-  - Custom Sampling
+- Texture atlas / Sprite Sheet api ✓
+  - Custom Sampling ✓
+  
 
 This engine is still in development.
 
