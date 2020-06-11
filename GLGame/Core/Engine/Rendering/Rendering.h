@@ -32,6 +32,9 @@ namespace GLGame
 		Texture* tex;
 	};
 
-	void NormallyRenderBackgrounds(SceneBackground* bg, Shader shader, float w, float h, const glm::mat4& model_matrix, const glm::mat4& view_matrix, const glm::mat4& view_projection_matrix);
+	
+	void NormallyRenderBackgrounds(SceneBackground* bg, Shader* shader, float w, float h, const glm::vec4& color, const glm::mat4& model_matrix, const glm::mat4& view_matrix, const glm::mat4& view_projection_matrix);
+	
+	// This function was originally used to test opengl code for the scene editor
 	void _NormallyRenderSEItems(_RenderItem item, Shader shader, const glm::mat4& projection_matrix);
 }

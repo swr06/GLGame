@@ -53,8 +53,8 @@ Todo :
 - Think.
 	- Check the collisions for all objects whenever their position is updated.
 
-- Add a deregister function when the objects/sprites/scenes are deleted
-- In the background shader, the model matrix is not multiplied
+- Add a deregister function when the objects/sprites/scenes are deleted ✓
+- In the background shader, the model matrix is not multiplied ✓
 
 - Particles (Basic particles with batch rendering)  ✓
 	- Simple colored quads ✓
@@ -67,24 +67,22 @@ Todo :
 
 Additional Features
 - Random Number Generator (Singleton) ✓
-- Virtual keys 
+- Virtual keys ??
 -
 - GameSetBlendMode() ✓
 - Drawing Primitives 
 	- Rectangles, circles, triangles and squares. 
 - Window Functions 
-	- GetWindowHandle() 
-	- GetWindowCenter() 
-	- GetWindowCaption() 
-	- IsFullScreen() 
-	- HasFocus() 
-	- SetFullScreen() 
-	- GetWindowHeight() 
-	- GetWindowWidth() 
-	- GetMouseXY(glm::vec2&)
-	- SetWindowPosition() 
-	- SetWindowSize()
-	- SetWindowCursor() 
+	- GetWindowHandle() ✓
+	- GetWindowCenter() ✓
+	- GetWindowCaption() ✓
+	- HasFocus() ✓
+	- GetWindowHeight() ✓
+	- GetWindowWidth() ✓
+	- GetMouseXY(glm::vec2&) ✓
+	- SetWindowPosition()  ✓
+	- SetWindowSize() ✓
+	- SetWindowCursor()  ✓
 
 - Networking
 	- Create Socket

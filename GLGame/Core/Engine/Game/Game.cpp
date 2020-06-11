@@ -414,14 +414,14 @@ namespace GLGame
 							if (background_iterator->second.background->MovesWithCamera())
 							{
 								NormallyRenderBackgrounds(&background_iterator->second,
-									*bg_shader, bg_w, bg_h, glm::mat4(1.0f),
+									bg_shader, bg_w, bg_h, m_CurrentScene->GetSceneAmbientLight(), background_iterator->second.background->GetModelMatrix(),
 									glm::mat4(1.0f), m_CurrentScene->GetSceneCamera()->GetViewProjectionMatrix());
 							}
 
 							else
 							{
 								NormallyRenderBackgrounds(&background_iterator->second,
-									*bg_shader, bg_w, bg_h, glm::mat4(1.0f),
+									bg_shader, bg_w, bg_h, m_CurrentScene->GetSceneAmbientLight(), background_iterator->second.background->GetModelMatrix(),
 									glm::mat4(1.0f), m_CurrentScene->GetSceneCamera()->GetProjectionMatrix());
 							}
 						}

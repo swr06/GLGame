@@ -189,9 +189,8 @@ int main()
 	tile_sheet.CreateTexture("Core\\Resources\\terrain_atlas.png");
 	TextureAtlas tex_atlas(&tile_sheet, 32, 32);
 
-	tex2 = *tex_atlas.Sample(glm::vec2(1,3), glm::vec2(3,4));
 	//tex1.CreateTexture("Core\\Resources\\tree.png");
-	//tex2.CreateTexture("Core\\Resources\\ghost.png"); // Alpha = 50.0%
+	tex2.CreateTexture("Core\\Resources\\ghost.png"); // Alpha = 50.0%
 
 	Sprite spr("spr_1", ani, 5); 
 	Sprite spr_2("spr_2", tex2);
@@ -217,12 +216,6 @@ int main()
 		if (game.IsThereCollisionOnLayer(obj, obj_2, 1, 0))
 		{
 			cout << "\nCOLLISION!\n";
-		}
-
-		if (game.IsThereCollision(obj_2, game.GetAABBMouseCursor()))
-		{
-			Log::LogToConsole("\nMouse!");
-			obj_2.SetPosition(glm::vec3(abs(rand() % game.GetWindowWidth()), abs(rand() % game.GetWindowHeight()), 1.0f));
 		}
 	}
 } 
