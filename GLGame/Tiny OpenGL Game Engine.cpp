@@ -176,7 +176,7 @@ int main()
 		(string)"Core\\Resources\\Animations\\Yoda\\Frame (14).gif",
 		});
 
-	bg = new Background("Core\\Resources\\grass_block.png");
+	bg = new Background("Core\\Resources\\grass_block.png", "Test Background");
 
 	scene.SetSceneCamera(cam);
 	scene.SetSceneAmbientLight(glm::vec4(0.5f, 0.5f, 0.5f, 1.0f));
@@ -218,5 +218,7 @@ int main()
 			cout << "\nCOLLISION!\n";
 		}
 	}
+
+	cout << "\n\n\n\n";
 } 
 

@@ -54,8 +54,7 @@ namespace GLGame
 	{
 		using namespace std;
 		
-		GLFWwindow* InitSceneEditor(GameDebugInfo* debug_info, unordered_map<string, Object*>* global_objects, unordered_map<string, Sprite*>* global_sprites, vector<string>* objid_list, vector<string>* sprid_list, GLFWwindow* window, ImGuiContext* context);
-
+		GLFWwindow* InitSceneEditor(GameDebugInfo* debug_info, unordered_map<string, Object*>* global_objects, unordered_map<string, Sprite*>* global_sprites, unordered_map<string, Background*>* global_bgs, vector<string>* objid_list, vector<string>* sprid_list, vector<string>* bgid_list, GLFWwindow* window, ImGuiContext* context);
 		void _SetSceneEditorCloseFlag(bool val);
 		bool RenderSceneEditor();
 		bool SceneEditorAlive();

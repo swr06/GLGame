@@ -53,8 +53,11 @@ namespace GLGame
 		// Data to display/store/show
 		static unordered_map<string, Object*>* SceneEditorGlobalObjects = nullptr;
 		static unordered_map<string, Sprite*>* SceneEditorGlobalSprites = nullptr;
+		static unordered_map<string, Background*>* SceneEditorGlobalBackgrounds = nullptr;
+
 		static vector<string>* ObjectIDList = nullptr;
 		static vector<string>* SpriteIDList = nullptr;
+		static vector<string>* BackgroundIDList = nullptr;
 		static SpriteBatcher* SceneEditorBatcher;
 
 		// Data used by the UI elements and widgets
@@ -62,7 +65,8 @@ namespace GLGame
 		// To select the type of data
 		static int RadioObjectSelected = -1;
 		static int RadioSpriteSelected = -1;
-		static int ItemTypeSelected = Nothing;
+		static int RadioBackgroundSelected = -1;
+	    static int ItemTypeSelected = Nothing;
 
 		// Render queue and layering
 		static int CurrentSceneEditorLayer = 0;
@@ -112,10 +116,11 @@ namespace GLGame
 		// Scene editor camera
 		Camera* SceneEditorCamera;
 
-		// For the grid
+		// For the grid and snap
 		static int GridX = 64;
 		static int GridY = 64;
 		static bool ViewGrid = true;
+		static bool ShouldSnap = true;
 
 		// Other needed structures
 		int CurrentOperationSelected = 0; // Has to be an int for imgui. Used as an enum class "Operations" 
@@ -140,17 +145,21 @@ namespace GLGame
 		void SEMouseCallback(GLFWwindow* window, int button, int action, int mods);
 		void SEScrollCallback(GLFWwindow* window, double xoffset, double yoffset);
 		void SEWindowCloseCallback(GLFWwindow* window);
+		void _DrawBackgroundAddWidget();
 		void _DrawGrid();
 		void _DrawDebugWindow();
 		///////////////////////
 
-		GLFWwindow* InitSceneEditor(GameDebugInfo* debug_info, unordered_map<string, Object*>* global_objects, unordered_map<string, Sprite*>* global_sprites, vector<string>* objid_list, vector<string>* sprid_list, GLFWwindow* window, ImGuiContext* context)
+		GLFWwindow* InitSceneEditor(GameDebugInfo* debug_info, unordered_map<string, Object*>* global_objects, unordered_map<string, Sprite*>* global_sprites, unordered_map<string, Background*>* global_bgs, vector<string>* objid_list, vector<string>* sprid_list, vector<string>* bgid_list, GLFWwindow* window, ImGuiContext* context)
 		{
 			DebugInfo = debug_info;
 			SceneEditorGlobalObjects = global_objects;
 			SceneEditorGlobalSprites = global_sprites;
+			SceneEditorGlobalBackgrounds = global_bgs;
+
 			ObjectIDList = objid_list;
 			SpriteIDList = sprid_list;
+			BackgroundIDList = bgid_list;
 
 			return (_Init(window, context));
 		}
@@ -408,6 +417,7 @@ namespace GLGame
 				{
 					ShouldBlockInput = true;
 
+					ImGui::Text("If you want to report bugs or request features, send me an email (samuelrasquinha@gmail.com)\n");
 					ImGui::Text("The entire GLGame project was made by Samuel Rasquinha (samuelrasquinha@gmail.com)");
 					ImGui::Text("Since I am only 14 years old, I don't have paypal. But you can show your support by starring this project on GitHub.");
 
@@ -632,6 +642,7 @@ namespace GLGame
 				ImGui::Text("\n\nEditor settings : \n\n"); 
 				ImGui::Separator();
 				ImGui::Checkbox("View Grid", &ViewGrid);
+				ImGui::Checkbox("Snap to grid", &ShouldSnap);
 
 				if (ViewGrid)
 				{
@@ -674,6 +685,34 @@ namespace GLGame
 			}
 		}
 
+		void _DrawBackgroundAddWidget()
+		{
+			static int t;
+			static int bgl;
+
+			if (CurrentOperationSelected == ChangeBackground)
+			{
+				if (ImGui::Begin("Change backgrounds"))
+				{
+					for (int i = 0; i < BackgroundIDList->size(); i++)
+					{
+						ImGui::RadioButton(BackgroundIDList->at(i).c_str(), &t);
+					}
+
+					ImGui::NewLine();
+					ImGui::Separator();
+					ImGui::InputInt("Background Layer", &bgl);
+					
+					if (ImGui::Button("OK"))
+					{
+
+					}
+
+					ImGui::End();
+				}
+			}
+		}
+
 		void _DrawSEPlaceItemWidgets()
 		{
 			static bool show_window = true;
@@ -688,33 +727,42 @@ namespace GLGame
 				{
 					if (ImGui::CollapsingHeader("Place Scene Items"))
 					{
-						if (ImGui::TreeNode("Objects"))
+						if (ItemTypeSelected == ObjectSelection)
 						{
-							string obj_name_holder;
-
-							for (int i = 0; i < ObjectIDList->size(); i++)
+							if (ImGui::TreeNode("Objects"))
 							{
-								obj_name_holder = ObjectIDList->at(i);
-								obj_name_holder.erase(obj_name_holder.begin(), obj_name_holder.begin() + 5);
-								ImGui::RadioButton(obj_name_holder.c_str(), &RadioObjectSelected, i);
-							}
+								string obj_name_holder;
 
-							ImGui::TreePop();
+								for (int i = 0; i < ObjectIDList->size(); i++)
+								{
+									obj_name_holder = ObjectIDList->at(i);
+									obj_name_holder.erase(obj_name_holder.begin(), obj_name_holder.begin() + 5);
+									ImGui::RadioButton(obj_name_holder.c_str(), &RadioObjectSelected, i);
+								}
+
+								ImGui::TreePop();
+							}
 						}
 
-						if (ImGui::TreeNode("Sprites"))
+						else if (ItemTypeSelected == SpriteSelection)
 						{
-							string spr_name_holder;
-
-							for (int i = 0; i < SpriteIDList->size(); i++)
+							if (ImGui::TreeNode("Sprites"))
 							{
-								spr_name_holder = SpriteIDList->at(i);
-								spr_name_holder.erase(spr_name_holder.begin(), spr_name_holder.begin() + 5);
-								ImGui::RadioButton(spr_name_holder.c_str(), &RadioSpriteSelected, i);
-							}
+								string spr_name_holder;
 
-							ImGui::TreePop();
+								for (int i = 0; i < SpriteIDList->size(); i++)
+								{
+									spr_name_holder = SpriteIDList->at(i);
+									spr_name_holder.erase(spr_name_holder.begin(), spr_name_holder.begin() + 5);
+									ImGui::RadioButton(spr_name_holder.c_str(), &RadioSpriteSelected, i);
+								}
+
+								ImGui::TreePop();
+							}
 						}
+
+						ImGui::NewLine();
+						ImGui::Separator();
 
 						ImGui::Text("\nTYPE OF SCENE ITEM THAT YOU WOULD LIKE TO PLACE : \n\n");
 						ImGui::RadioButton("GLGame::Object", &ItemTypeSelected, ObjectSelection);
@@ -935,6 +983,8 @@ namespace GLGame
 				_ShowModalWindows();
 				_DrawSEWidgets();
 				_DrawSEPlaceItemWidgets();
+
+				_DrawBackgroundAddWidget();
 					
 				// Draws the debug window if that operation is actually selected
 				_DrawDebugWindow();
@@ -1038,6 +1088,11 @@ namespace GLGame
 		// function to snap an object to a particular grid
 		float SnapToGrid(int value, int size)
 		{
+			if (!ShouldSnap)
+			{
+				size = 1;
+			}
+
 			if (size == 0)
 			{
 				size = 1;

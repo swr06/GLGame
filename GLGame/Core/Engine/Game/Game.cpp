@@ -8,6 +8,7 @@ namespace GLGame
 	static vector<Object*> RegisterObjectQueue;
 	static vector<Sprite*> RegisterSpriteQueue;
 	static vector<Scene*> RegisterSceneQueue;
+	static vector<Background*> RegisterBackgroundQueue;
 
 	void Game::Init(int w, int h, bool can_resize, string title, bool start_SE, bool use_imgui, ImGuiStyle imgui_style)
 	{
@@ -172,9 +173,17 @@ namespace GLGame
 			}
 		}
 
+		for (int i = 0; i < RegisterBackgroundQueue.size(); i++)
+		{
+			if (RegisterBackgroundQueue[i] != nullptr)
+			{
+				this->_RegisterBackground(RegisterBackgroundQueue[i]);
+			}
+		}
+
 		if (init_scene_editor)
 		{
-			m_SceneEditorWindow = SceneEditor::InitSceneEditor(&this->m_DebugInfo ,&this->m_GlobalObjects, &this->m_GlobalSprites, &this->m_ObjectItemNames, &this->m_SpriteItemNames, m_GameWindow, m_IMContext);
+			m_SceneEditorWindow = SceneEditor::InitSceneEditor(&this->m_DebugInfo ,&this->m_GlobalObjects, &this->m_GlobalSprites, &this->m_GlobalBackgrounds, &this->m_ObjectItemNames, &this->m_SpriteItemNames, &this->m_BackgroundNames, m_GameWindow, m_IMContext);
 
 			if (m_SceneEditorWindow == nullptr)
 			{
@@ -958,6 +967,8 @@ namespace GLGame
 
 	void Game::_RegisterObject(Object* object)
 	{
+		// Add it to the id list (used for the scene editor)
+
 		m_ObjectItemNames.push_back(object->GetObjectID());
 		m_GlobalObjects[object->GetObjectID()] = object;
 	}
@@ -965,10 +976,20 @@ namespace GLGame
 	void Game::_DeregisterObject(Object* object)
 	{
 		m_GlobalObjects.erase(object->GetObjectID());
+
+		// Remove it from the id list
+		for (int i = 0; i < m_ObjectItemNames.size(); i++)
+		{
+			if (m_ObjectItemNames[i] == object->GetObjectID())
+			{
+				m_ObjectItemNames.erase(m_ObjectItemNames.begin() + i);
+			}
+		}
 	}
 
 	void Game::_RegisterSprite(Sprite* sprite)
 	{
+		// Add it to the id list (used for the scene editor)
 		m_SpriteItemNames.push_back(sprite->GetSpriteID());
 		m_GlobalSprites[sprite->GetSpriteID()] = sprite;
 	}
@@ -976,6 +997,15 @@ namespace GLGame
 	void Game::_DeregisterSprite(Sprite* sprite)
 	{
 		m_GlobalSprites.erase(sprite->GetSpriteID());
+
+		// Remove it from the id list
+		for (int i = 0; i < m_SpriteItemNames.size(); i++)
+		{
+			if (m_SpriteItemNames[i] == sprite->GetSpriteID())
+			{
+				m_SpriteItemNames.erase(m_SpriteItemNames.begin() + i);
+			}
+		}
 	}
 
 	void Game::_RegisterScene(Scene* scene)
@@ -986,6 +1016,26 @@ namespace GLGame
 	void Game::_DeregisterScene(Scene* scene)
 	{
 		m_GlobalScenes.erase(scene->GetSceneID());
+	}
+
+	void Game::_RegisterBackground(Background* bg)
+	{
+		m_BackgroundNames.push_back(bg->GetBackgroundID());
+		m_GlobalBackgrounds[bg->GetBackgroundID()] = bg;
+	}
+
+	void Game::_DeregisterBackground(Background* bg)
+	{
+		m_GlobalBackgrounds.erase(bg->GetBackgroundID());
+
+		// Remove it from the id list
+		for (int i = 0; i < m_BackgroundNames.size(); i++)
+		{
+			if (m_BackgroundNames[i] == bg->GetBackgroundID())
+			{
+				m_BackgroundNames.erase(m_BackgroundNames.begin() + i);
+			}
+		}
 	}
 
 	void Game::_QueueEvent(Event e)
@@ -1144,7 +1194,7 @@ namespace GLGame
 			}
 		}
 
-		void _SetBackgroundPosition(uint32_t id, const glm::vec3& pos)
+		void _SetBackgroundPosition(const string& id, const glm::vec3& pos)
 		{
 			if (GameRef == nullptr)
 			{
@@ -1167,7 +1217,7 @@ namespace GLGame
 			}
 		}
 
-		void _IncrementBackgroundPosition(uint32_t id, const glm::vec3& increment)
+		void _IncrementBackgroundPosition(const string& id, const glm::vec3& increment)
 		{
 			if (GameRef == nullptr)
 			{
@@ -1285,6 +1335,39 @@ namespace GLGame
 					if (RegisterSceneQueue[i] == scene)
 					{
 						RegisterSceneQueue.erase(RegisterSceneQueue.begin() + i);
+					}
+				}
+			}
+		}
+
+
+		void _IntRegisterBackground(Background* bg)
+		{
+			if (GameRef != nullptr)
+			{
+				GameRef->_RegisterBackground(bg);
+			}
+
+			else
+			{
+				RegisterBackgroundQueue.push_back(bg);
+			}
+		}
+
+		void _IntDeregisterBackground(Background* bg)
+		{
+			if (GameRef != nullptr)
+			{
+				GameRef->_DeregisterBackground(bg);
+			}
+
+			else
+			{
+				for (int i = 0; i < RegisterBackgroundQueue.size(); i++)
+				{
+					if (RegisterBackgroundQueue[i] == bg)
+					{
+						RegisterBackgroundQueue.erase(RegisterBackgroundQueue.begin() + i);
 					}
 				}
 			}

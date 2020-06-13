@@ -51,7 +51,7 @@ namespace GLGame
 	{
 		struct _GlobalGameData
 		{
-			unordered_map <uint32_t, Background*>* gBackgrounds;
+			unordered_map <string, Background*>* gBackgrounds;
 			unordered_map <uint32_t, Scene*>* gScenes;
 			unordered_map <string, Object*>* gObjects;
 			unordered_map <string, Sprite*>* gSprites;
@@ -159,6 +159,9 @@ namespace GLGame
 		void _RegisterScene(Scene* scene);
 		void _DeregisterScene(Scene* scene);
 
+		void _RegisterBackground(Background* bg);
+		void _DeregisterBackground(Background* bg);
+
 		// Internal function. Not meant to use.
 		void _QueueEvent(Event e);
 
@@ -174,10 +177,11 @@ namespace GLGame
 		vector<Event> m_EventQueue;
 		GLFWwindow* m_SceneEditorWindow;
 
-		unordered_map <uint32_t, Background*> m_GlobalBackgrounds;
+		unordered_map <string, Background*> m_GlobalBackgrounds;
 		unordered_map <uint32_t, Scene*> m_GlobalScenes; // Internal vector
 		unordered_map <string, Object*> m_GlobalObjects; // Internal vector
 		unordered_map <string, Sprite*> m_GlobalSprites; // Internal vector
+		vector<string> m_BackgroundNames;
 		vector<string> m_ObjectItemNames;
 		vector<string> m_SpriteItemNames;
 

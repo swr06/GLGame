@@ -2,7 +2,7 @@
 
 namespace GLGame
 {
-	Background::Background(const string& background, bool stretch_to_window, Shader* shader, GLenum repeat_type_s, GLenum repeat_type_t, GLenum min_filter, GLenum mag_filter, array<GLfloat, 8> texture_sampler_coordinates)
+	Background::Background(const string& background, const string& bg_id, bool stretch_to_window, Shader* shader, GLenum repeat_type_s, GLenum repeat_type_t, GLenum min_filter, GLenum mag_filter, array<GLfloat, 8> texture_sampler_coordinates)
 		: m_Background(nullptr), m_RepeatTypeS(GL_REPEAT), m_RepeatTypeT(GL_REPEAT), m_Shader(nullptr)
 	{
 		m_StretchToWindow = stretch_to_window;
@@ -25,8 +25,14 @@ namespace GLGame
 		m_RepeatTypeS = repeat_type_s;
 		m_RepeatTypeT = repeat_type_t;
 
-		m_ID = GenerateBackgroundID();
+		m_ID = bg_id;
 		m_ModelMatrix = glm::mat4(1.0f);
+		GameInternal::_IntRegisterBackground(this);
+	}
+
+	Background::~Background()
+	{
+		GameInternal::_IntDeregisterBackground(this);
 	}
 
 	void Background::SetShader(Shader& shader)

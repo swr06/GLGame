@@ -18,20 +18,25 @@ namespace GLGame
 {
 	using namespace std;
 
+	class Background;
+
 	namespace GameInternal
 	{
-		void _SetBackgroundPosition(uint32_t id, const glm::vec3& pos);
-		void _IncrementBackgroundPosition(uint32_t id, const glm::vec3& increment);
+		void _IntRegisterBackground(Background* bg);
+		void _IntDeregisterBackground(Background* bg);
+		void _SetBackgroundPosition(const string& id, const glm::vec3& pos);
+		void _IncrementBackgroundPosition(const string& id, const glm::vec3& increment);
 	}
 
 	class Background
 	{
 	public:
 
-		Background(const string& background, bool stretch_to_window = true, Shader* shader = nullptr, GLenum repeat_type_s = GL_REPEAT,
+		Background(const string& background, const string& bg_id, bool stretch_to_window = true, Shader* shader = nullptr, GLenum repeat_type_s = GL_REPEAT,
 			GLenum repeat_type_t = GL_REPEAT, GLenum min_filter = GL_NEAREST,
 			GLenum mag_filter = GL_NEAREST,
 			array<GLfloat, 8> texture_sampler_coordinates = { 1.0f, 1.0f,  1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f });
+		~Background();
 
 		void SetShader(Shader& shader);
 		Shader* GetShader() { return m_Shader; }
@@ -46,7 +51,7 @@ namespace GLGame
 		bool MovesWithCamera() { return m_MovesWithCamera; }
 		bool ShouldStretchToWindow() { return m_StretchToWindow; }
 		void SetMovesWithCamera(bool flag);
-		uint32_t GetBackgroundID() const { return m_ID; }
+		string GetBackgroundID() const { return m_ID; }
 
 	private:
 
@@ -59,6 +64,6 @@ namespace GLGame
 		GLenum m_RepeatTypeS;
 		GLenum m_RepeatTypeT;
 		Shader* m_Shader = nullptr;
-		uint32_t m_ID;
+		string m_ID;
 	};
 }
