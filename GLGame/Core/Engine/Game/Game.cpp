@@ -147,6 +147,8 @@ namespace GLGame
 
 		m_DefaultObjectShader.CreateShaderProgramFromFile(GLGAME_DEFAULT_OBJECT_VERTEX, GLGAME_DEFAULT_OBJECT_FRAGMENT);
 		m_DefaultBackgroundShader.CreateShaderProgramFromFile(GLGAME_DEFAULT_BGSHADER_VERTEX, GLGAME_DEFAULT_BGSHADER_FRAGMENT);
+		m_DefaultBackgroundShader.CompileShaders();
+		m_DefaultObjectShader.CompileShaders();
 
 		// Register all the items from the register queues
 		for (int i = 0; i < RegisterObjectQueue.size(); i++)

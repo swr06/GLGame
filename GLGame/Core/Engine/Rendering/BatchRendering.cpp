@@ -485,6 +485,7 @@ namespace GLGame
 				frag_data = frag_data_s.str();
 
 				m_DefaultShader.CreateShaderProgramFromString(vertex_data, frag_data);
+				m_DefaultShader.CompileShaders();
 
 				vert_data_s.flush();
 				frag_data_s.flush();

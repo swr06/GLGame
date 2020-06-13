@@ -37,12 +37,14 @@ namespace GLGame
 
 		~Shader();
 
-		GLuint CreateShaderProgramFromFile(const string vertex_pth, const string fragment_pth);
-		GLuint CreateShaderProgramFromString(const string& vertex_data, const string& fragment_data);
+		void CompileShaders();
+		void CreateShaderProgramFromFile(const string vertex_pth, const string fragment_pth);
+		void CreateShaderProgramFromString(const string& vertex_data, const string& fragment_data);
 		GLuint GetProgramID();
+		
 		inline void Use()
 		{
-			glUseProgram(this->Program);
+			glUseProgram(this->m_Program);
 		}
 
 		void SetFloat(const GLchar* name, GLfloat value, GLboolean useShader = GL_FALSE);
@@ -59,8 +61,12 @@ namespace GLGame
 	 private:
 
 		unordered_map<string, GLint> Location_map; // To avoid unnecessary calls to glGetUniformLocation()
-		GLuint Program = 0;
+		GLuint m_Program;
 
 		GLint GetUniformLocation(string uniform_name);
+		string m_VertexData;
+		string m_VertexPath;
+		string m_FragmentData;
+		string m_FragmentPath;
 	};
 }

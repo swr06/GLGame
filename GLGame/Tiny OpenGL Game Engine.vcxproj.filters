@@ -116,9 +116,6 @@
     <Filter Include="Source Files\Engine\Logger">
       <UniqueIdentifier>{8fc9e13f-7f5b-4813-b954-b4836a366ed4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Abstract OpenGL\Texturing">
-      <UniqueIdentifier>{459d316b-6531-4817-9f34-dc59c3e33541}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Shaders\GLGame Shaders">
       <UniqueIdentifier>{2f5e1159-9c46-4376-bea5-c7cb5729dfc4}</UniqueIdentifier>
     </Filter>
@@ -136,6 +133,9 @@
     </Filter>
     <Filter Include="Source Files\Engine\Saving/Loading\Saving">
       <UniqueIdentifier>{b48f3cf4-9f6d-4f1d-b0ea-2347c96568be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Abstract OpenGL\Texturing">
+      <UniqueIdentifier>{459d316b-6531-4817-9f34-dc59c3e33541}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

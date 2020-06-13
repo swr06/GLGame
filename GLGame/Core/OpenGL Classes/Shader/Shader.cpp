@@ -13,23 +13,77 @@ namespace GLGame
 		glUseProgram(0);
 	}
 
-	GLuint Shader::CreateShaderProgramFromFile(const string vertex_pth, const string fragment_pth)
+	void Shader::CompileShaders()
 	{
 		auto start = chrono::steady_clock::now();
 
+		GLuint vs;
+		GLuint fs;
+		GLint successful;
+		GLchar GLInfoLog[512];
+
+		vs = glCreateShader(GL_VERTEX_SHADER);
+		fs = glCreateShader(GL_FRAGMENT_SHADER);
+
+		const char* vs_char = m_VertexData.c_str();
+		const char* fs_char = m_FragmentData.c_str();
+
+		glShaderSource(vs, 1, &vs_char, 0);
+		glShaderSource(fs, 1, &fs_char, 0);
+
+		glCompileShader(vs);
+
+		glGetShaderiv(vs, GL_COMPILE_STATUS, &successful);
+
+		if (!successful)
+		{
+			glGetShaderInfoLog(vs, 512, NULL, GLInfoLog);
+			std::cout << "\nCOMPILATION ERROR IN VERTEX SHADER (" << m_VertexPath << ")" << "\n" << GLInfoLog << "\n\n";
+
+			Log::_LogShaderError(glfwGetTime(), m_VertexPath.c_str(), GLInfoLog, 0, __FILE__, __LINE__);
+		}
+
+		glCompileShader(fs);
+		glGetShaderiv(fs, GL_COMPILE_STATUS, &successful);
+
+		if (!successful)
+		{
+			glGetShaderInfoLog(fs, 512, NULL, GLInfoLog);
+			std::cout << "\nCOMPILATION ERROR IN FRAGMENT SHADER (" << m_FragmentPath << ")" << "\n" << GLInfoLog << "\n";
+
+			Log::_LogShaderError(glfwGetTime(), m_FragmentPath.c_str(), GLInfoLog, 1, __FILE__, __LINE__);
+		}
+
+		m_Program = glCreateProgram();
+		glAttachShader(m_Program, vs);
+		glAttachShader(m_Program, fs);
+		glLinkProgram(m_Program);
+
+		glGetProgramiv(m_Program, GL_LINK_STATUS, &successful);
+
+		if (!successful)
+		{
+			glGetProgramInfoLog(m_Program, 512, NULL, GLInfoLog);
+			std::cout << "ERROR : SHADER LINKING FAILED : \n" << GLInfoLog << std::endl;
+		}
+
+		glDeleteShader(vs);
+		glDeleteShader(fs);
+
+		auto end = chrono::steady_clock::now();
+		double elapsed_time = std::chrono::duration_cast<std::chrono::duration<double>>(end - start).count();
+
+		Log::_LogShaderCreation(glfwGetTime(), elapsed_time, m_VertexPath.c_str(), m_FragmentPath.c_str(), __FILE__, __LINE__);
+	}
+
+	void Shader::CreateShaderProgramFromFile(const string vertex_pth, const string fragment_pth)
+	{
 		stringstream v_cont;
 		stringstream f_cont;
 		string vertex_cont;
 		string frag_cont;
 		ifstream vertex_file;
 		ifstream frag_file;
-
-		// error displaying
-		GLint success;
-		GLchar infoLog[512];
-
-		// final program
-		GLuint program;
 
 		vertex_file.exceptions(ifstream::badbit | ifstream::failbit);
 		frag_file.exceptions(ifstream::badbit | ifstream::failbit);
@@ -41,160 +95,26 @@ namespace GLGame
 		{
 			v_cont << vertex_file.rdbuf();
 			f_cont << frag_file.rdbuf();
-			vertex_cont = v_cont.str();
-			frag_cont = f_cont.str();
+			m_VertexData = v_cont.str();
+			m_FragmentData = f_cont.str();
 
 			vertex_file.close();
 			frag_file.close();
-
-			GLuint vertex_shader;
-			GLuint fragment_shader;
-
-			vertex_shader = glCreateShader(GL_VERTEX_SHADER);
-			fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
-
-			const char* vchar_data = vertex_cont.c_str();
-			glShaderSource(vertex_shader, 1, &vchar_data, 0);
-			const char* fchar_data = frag_cont.c_str();
-			glShaderSource(fragment_shader, 1, &fchar_data, 0);
-			glCompileShader(vertex_shader);
-
-			glGetShaderiv(vertex_shader, GL_COMPILE_STATUS, &success);
-
-			if (!success)
-			{
-				string vert_file_name = GetFileName(vertex_pth);
-
-				glGetShaderInfoLog(vertex_shader, 512, NULL, infoLog);
-				std::cout << "\nCOMPILATION ERROR IN VERTEX SHADER (" << vert_file_name << ")" << "\nShader Contents : " << vertex_cont << "\n\n" << infoLog << "\n\n";
-
-				Log::_LogShaderError(glfwGetTime(), vertex_pth.c_str(), infoLog, 0, __FILE__, __LINE__);
-			}
-
-			glCompileShader(fragment_shader);
-			glGetShaderiv(fragment_shader, GL_COMPILE_STATUS, &success);
-
-			if (!success)
-			{
-				string frag_file_name = GetFileName(fragment_pth);
-
-				glGetShaderInfoLog(fragment_shader, 512, NULL, infoLog);
-				std::cout << "\nCOMPILATION ERROR IN FRAGMENT SHADER (" << frag_file_name << ")" << "\nShader Contents : " << frag_cont << "\n\n" << infoLog << "\n";
-
-				Log::_LogShaderError(glfwGetTime(), fragment_pth.c_str(), infoLog, 1, __FILE__, __LINE__);
-			}
-
-			program = glCreateProgram();
-			glAttachShader(program, vertex_shader);
-			glAttachShader(program, fragment_shader);
-			glLinkProgram(program);
-
-			glGetProgramiv(program, GL_LINK_STATUS, &success);
-
-			if (!success)
-			{
-				glGetProgramInfoLog(program, 512, NULL, infoLog);
-				std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
-			}
-
-			glDeleteShader(vertex_shader);
-			glDeleteShader(fragment_shader);
 		}
-
-		else
-		{
-			cout << "The vertex or the fragment shader path is bad !";
-			return -1; 
-		}
-
-		auto end = chrono::steady_clock::now();
-		double elapsed_time = std::chrono::duration_cast<std::chrono::duration<double>>(end - start).count();
-
-		Log::_LogShaderCreation(glfwGetTime(), elapsed_time, vertex_pth.c_str(), fragment_pth.c_str(), __FILE__, __LINE__);
-
-		this->Program = program;
-		return program;
 	}
 
-	GLuint Shader::CreateShaderProgramFromString(const string& vertex_data, const string& fragment_data)
+	void Shader::CreateShaderProgramFromString(const string& vertex_data, const string& fragment_data)
 	{
-		auto start = chrono::steady_clock::now();
-
-		ifstream vertex_file;
-		ifstream frag_file;
-
-		// error displaying
-		GLint success;
-		GLchar infoLog[512];
-
-		// final program
-		GLuint program;
-
-		GLuint vertex_shader;
-		GLuint fragment_shader;
-
-		vertex_shader = glCreateShader(GL_VERTEX_SHADER);
-		fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
-
-		const char* vchar_data = vertex_data.c_str();
-		glShaderSource(vertex_shader, 1, &vchar_data, 0);
-
-		const char* fchar_data = fragment_data.c_str();
-		glShaderSource(fragment_shader, 1, &fchar_data, 0);
-
-		glCompileShader(vertex_shader);
-
-		glGetShaderiv(vertex_shader, GL_COMPILE_STATUS, &success);
-
-		if (!success)
-		{
-			glGetShaderInfoLog(vertex_shader, 512, NULL, infoLog);
-			std::cout << "\nCOMPILATION ERROR IN VERTEX SHADER (" << "NO PATH" << ")" << "\nShader Contents : " << vertex_data << "\n\n" << infoLog << "\n\n";
-
-			Log::_LogShaderError(glfwGetTime(), "NO_PATH", infoLog, 0, __FILE__, __LINE__);
-		}
-
-		glCompileShader(fragment_shader);
-		glGetShaderiv(fragment_shader, GL_COMPILE_STATUS, &success);
-
-		if (!success)
-		{
-			glGetShaderInfoLog(fragment_shader, 512, NULL, infoLog);
-			std::cout << "\nCOMPILATION ERROR IN FRAGMENT SHADER (" << "NO_PATH" << ")" << "\nShader Contents : " << fragment_data << "\n\n" << infoLog << "\n";
-
-			Log::_LogShaderError(glfwGetTime(), "NO_PATH", infoLog, 0, __FILE__, __LINE__);
-		}
-
-		program = glCreateProgram();
-		glAttachShader(program, vertex_shader);
-		glAttachShader(program, fragment_shader);
-		glLinkProgram(program);
-
-		glGetProgramiv(program, GL_LINK_STATUS, &success);
-
-		if (!success)
-		{
-			glGetProgramInfoLog(program, 512, NULL, infoLog);
-			std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
-		}
-
-		glDeleteShader(vertex_shader);
-		glDeleteShader(fragment_shader);
-
-		auto end = chrono::steady_clock::now();
-		double elapsed_time = std::chrono::duration_cast<std::chrono::duration<double>>(end - start).count();
-
-		Log::_LogShaderCreation(glfwGetTime(), elapsed_time, "NO VERTEX PATH", "NO FRAGMENT PATH", __FILE__, __LINE__);
-
-		this->Program = program;
-		return program;
+		m_VertexData = vertex_data;
+		m_FragmentData = fragment_data;
+		m_VertexPath = "PASSED_VIA_DATA";
+		m_FragmentPath = "PASSED_VIA_DATA";
 	}
 
 	GLuint Shader::GetProgramID()
 	{
-		return Program;
+		return m_Program;
 	}
-
 
 	void Shader::SetFloat(const GLchar* name, GLfloat value, GLboolean useShader)
 	{
@@ -301,7 +221,7 @@ namespace GLGame
 	{
 		if (Location_map.find(uniform_name) == Location_map.end())
 		{
-			Location_map[uniform_name] = glGetUniformLocation(this->Program, uniform_name.c_str()); 
+			Location_map[uniform_name] = glGetUniformLocation(this->m_Program, uniform_name.c_str()); 
 		}
 
 		return Location_map[uniform_name];
