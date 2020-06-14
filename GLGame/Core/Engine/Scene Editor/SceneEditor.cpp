@@ -65,8 +65,11 @@ namespace GLGame
 		// To select the type of data
 		static int RadioObjectSelected = -1;
 		static int RadioSpriteSelected = -1;
-		static int RadioBackgroundSelected = -1;
 	    static int ItemTypeSelected = Nothing;
+
+		// For adding or removing backgrounds
+		static map<int, vector<Background*>> SceneEditorBackgroundQueue;
+		static int BackgroundSelected = 0;
 
 		// Render queue and layering
 		static int CurrentSceneEditorLayer = 0;
@@ -74,6 +77,7 @@ namespace GLGame
 		static SceneEditorRenderItem GhostObjectImage;
 
 		static Shader SceneEditorRenderItemShader;
+		static Shader SceneEditorBackgroundShader;
 
 		// Saving file
 
@@ -128,27 +132,29 @@ namespace GLGame
 		// Debug Window
 		GameDebugInfo* DebugInfo;
 
-		///////////////////////
 		GLFWwindow* _Init(GLFWwindow* share_window, ImGuiContext* context);
 		void ExtendString(string& str, int ex_amt, const string& ex_c);
 		void FlushSceneFile();
-		void _ShowModalWindows();
-		void _RenderSceneEditorItems();
-		void _DrawSEWidgets();
-		void _DrawSEPlaceItemWidgets();
-		void _DrawSEMenuBar();
-		void _SetSceneEditorCloseFlag(bool val);
-		void SEWindowResizeCallback(GLFWwindow* window, int width, int height);
+		void DrawModalWindows();
+		void RenderSceneEditorItems();
+		void RenderSceneEditorBackgrounds();
+		void DrawFloatingWidgets();
+		void DrawPlaceItemWindowWidget();
+		void DrawMenuBar();
 		float SnapToGrid(int value, int size);
+		void RenderBackgroundAddWidget();
+		void DrawGrid();
+		void RenderDebugWindow();
+
+		// Event callbacks
+
+		void SEWindowResizeCallback(GLFWwindow* window, int width, int height);
 		void SEKeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
 		void SECursorPosCallback(GLFWwindow* window, double xpos, double ypos);
 		void SEMouseCallback(GLFWwindow* window, int button, int action, int mods);
 		void SEScrollCallback(GLFWwindow* window, double xoffset, double yoffset);
 		void SEWindowCloseCallback(GLFWwindow* window);
-		void _DrawBackgroundAddWidget();
-		void _DrawGrid();
-		void _DrawDebugWindow();
-		///////////////////////
+		void _SetSceneEditorCloseFlag(bool val);
 
 		GLFWwindow* InitSceneEditor(GameDebugInfo* debug_info, unordered_map<string, Object*>* global_objects, unordered_map<string, Sprite*>* global_sprites, unordered_map<string, Background*>* global_bgs, vector<string>* objid_list, vector<string>* sprid_list, vector<string>* bgid_list, GLFWwindow* window, ImGuiContext* context)
 		{
@@ -218,7 +224,12 @@ namespace GLGame
 			// Setup camera, batchers and shaders
 			SceneEditorCamera = new Camera(0.0f, (float)SceneEditorWidth, 0.0f, (float)SceneEditorHeight);
 			SceneEditorBatcher = new SpriteBatcher();
+			
 			SceneEditorRenderItemShader.CreateShaderProgramFromFile(GLGAME_DEFAULT_SE_VERTEX, GLGAME_DEFAULT_SE_FRAGMENT);
+			SceneEditorBackgroundShader.CreateShaderProgramFromFile(GLGAME_DEFAULT_BGSHADER_VERTEX, GLGAME_DEFAULT_BGSHADER_FRAGMENT);
+			SceneEditorRenderItemShader.CompileShaders();
+			SceneEditorBackgroundShader.CompileShaders();
+
 			return SceneEditorWindow;
 		}
 
@@ -324,7 +335,7 @@ namespace GLGame
 			scene_file.close();
 		}
 
-		void _DrawGrid()
+		void DrawGrid()
 		{
 			static SpriteBatcher grid_batcher;
 			static Texture grid_texture("Core\\Resources\\Scene Editor\\grid_tile.png");
@@ -376,7 +387,7 @@ namespace GLGame
 			}
 		}
 
-		void _ShowModalWindows()
+		void DrawModalWindows()
 		{
 			// Shows all the modal windows that are flagged true.
 			// (Windows such as About me, Support me etc..
@@ -539,7 +550,7 @@ namespace GLGame
 			}
 		}
 
-		void _RenderSceneEditorItems()
+		void RenderSceneEditorItems()
 		{
 			stbi_set_flip_vertically_on_load(true);
 
@@ -604,7 +615,28 @@ namespace GLGame
 			// Drawing the ghost mouse image ends..
 		}
 
-		void _DrawDebugWindow()
+		void RenderSceneEditorBackgrounds()
+		{
+			GenericObject obj;
+
+			SceneEditorBatcher->StartSpriteBatch(SceneEditorCamera->GetViewProjectionMatrix());
+
+			for (auto e = SceneEditorBackgroundQueue.begin(); e != SceneEditorBackgroundQueue.end(); e++)
+			{
+				for (int i = 0; i < e->second.size(); i++)
+				{
+					if (e->second.at(i)->ShouldStretchToWindow())
+					{
+						SceneEditorBatcher->AddGenericTextureToBatchCustom((Texture*)&e->second.at(i)->GetTexture(), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1000, 1000));
+						//SceneEditorBatcher->AddGenericTextureToBatch((Texture*)&e->second.at(i)->GetTexture(), glm::vec3(1.0f, 1.0f, 1.0f));
+					}
+				}
+			}
+
+			SceneEditorBatcher->EndSpriteBatch();
+		}
+
+		void RenderDebugWindow()
 		{
 			if (CurrentOperationSelected == DebugGame)
 			{
@@ -625,7 +657,7 @@ namespace GLGame
 			}
 		}
 
-		void _DrawSEWidgets()
+		void DrawFloatingWidgets()
 		{
 			static ImVec4 color = ImVec4(114.0f / 255.0f, 144.0f / 255.0f, 154.0f / 255.0f, 200.0f / 255.0f);
 			ImGui::SetNextWindowPos(ImVec2(SceneEditorWidth * 0.75, 20), ImGuiCond_FirstUseEver);
@@ -685,27 +717,51 @@ namespace GLGame
 			}
 		}
 
-		void _DrawBackgroundAddWidget()
+		void RenderBackgroundAddWidget()
 		{
-			static int t;
 			static int bgl;
+			static int allocation_size = BackgroundIDList->size();
+			static char** bg_items = new char* [2048];
+			static char* bg_button = new char [2048];
 
 			if (CurrentOperationSelected == ChangeBackground)
 			{
-				if (ImGui::Begin("Change backgrounds"))
+				if (ImGui::Begin("Change/Add backgrounds"))
 				{
-					for (int i = 0; i < BackgroundIDList->size(); i++)
+					if (ImGui::CollapsingHeader("Add Backgrounds"))
 					{
-						ImGui::RadioButton(BackgroundIDList->at(i).c_str(), &t);
-					}
+						for (int i = 0; i < BackgroundIDList->size(); i++)
+						{
+							bg_items[i] = (char*)BackgroundIDList->at(i).c_str();
+						}
 
-					ImGui::NewLine();
-					ImGui::Separator();
-					ImGui::InputInt("Background Layer", &bgl);
-					
-					if (ImGui::Button("OK"))
-					{
+						ImGui::Text("Backgrounds : \n\n");
+						ImGui::ListBox("", &BackgroundSelected, bg_items, BackgroundIDList->size(), 10);
+				
+						ImGui::Separator();
+						ImGui::Text("Current Background Selected : %s", BackgroundIDList->at(BackgroundSelected).c_str());
+						ImGui::NewLine();
+						
+						sprintf(bg_button, "Add \"%s\" at layer (%d)", BackgroundIDList->at(BackgroundSelected).c_str(), bgl);
 
+						if (ImGui::Button((const char*)bg_button))
+						{
+							if (BackgroundSelected >= 0 && BackgroundSelected < BackgroundIDList->size())
+							{
+								SceneEditorBackgroundQueue[bgl].push_back(SceneEditorGlobalBackgrounds->at(BackgroundIDList->at(BackgroundSelected)));
+								
+								// Todo : MAKE THIS PROPERLY
+								ImGui::TextColored(ImVec4(1.0f, 0.6f, 0.4f, 1.0f), "Added \"%s\" successfully to Layer (%d)", BackgroundIDList->at(BackgroundSelected).c_str(), bgl);
+							}
+
+							else
+							{
+								ImGui::TextColored(ImVec4(1.0f, 0.6f, 0.4f, 1.0f), "ERROR ADDING BACKGROUND");
+							}
+						}
+
+						ImGui::Separator();
+						ImGui::InputInt("Background Layer", &bgl);	
 					}
 
 					ImGui::End();
@@ -713,7 +769,7 @@ namespace GLGame
 			}
 		}
 
-		void _DrawSEPlaceItemWidgets()
+		void DrawPlaceItemWindowWidget()
 		{
 			static bool show_window = true;
 
@@ -815,7 +871,7 @@ namespace GLGame
 			}
 		}
 
-		void _DrawSEMenuBar()
+		void DrawMenuBar()
 		{
 			if (ImGui::BeginMainMenuBar())
 			{
@@ -965,8 +1021,9 @@ namespace GLGame
 					ShouldBlockInput = false;
 				}
 
-				_DrawGrid();
-				_RenderSceneEditorItems();
+				RenderSceneEditorBackgrounds();
+				DrawGrid();
+				RenderSceneEditorItems();
 
 				bool display_title_place_item = true;
 				bool display_title_selected_item = true;
@@ -979,15 +1036,12 @@ namespace GLGame
 				ImGui_ImplGlfw_NewFrame();
 				ImGui::NewFrame();
 
-				_DrawSEMenuBar();
-				_ShowModalWindows();
-				_DrawSEWidgets();
-				_DrawSEPlaceItemWidgets();
-
-				_DrawBackgroundAddWidget();
-					
-				// Draws the debug window if that operation is actually selected
-				_DrawDebugWindow();
+				DrawMenuBar();
+				DrawModalWindows();
+				DrawFloatingWidgets();
+				DrawPlaceItemWindowWidget();
+				RenderBackgroundAddWidget();
+				RenderDebugWindow();
 
 				// Scope : show modal window when you click on the close button
 				{

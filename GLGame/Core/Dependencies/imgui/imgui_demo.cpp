@@ -712,7 +712,7 @@ static void ShowDemoWindowWidgets()
             // List box
             const char* items[] = { "Apple", "Banana", "Cherry", "Kiwi", "Mango", "Orange", "Pineapple", "Strawberry", "Watermelon" };
             static int item_current = 1;
-            ImGui::ListBox("listbox\n(single select)", &item_current, items, IM_ARRAYSIZE(items), 4);
+            ImGui::ListBox("listbox\n(single select)", &item_current, items, IM_ARRAYSIZE(items), 10);
 
             //static int listbox_item_current2 = 2;
             //ImGui::SetNextItemWidth(-1);

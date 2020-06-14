@@ -14,7 +14,7 @@ class game_ : public Game
 public : 
 	game_() : obj("BLAH_BLAH"), obj_2("BLAH_BLAHH")
 	{
-		Init(800, 600, true, "Test Game", true, ImGuiStyleDark);
+		Init(800, 600, true, "Test Game", true, false, ImGuiStyleDark);
 
 		particle.ColorBegin = { 1 / 255.0f, 1 / 255.0f, 1 / 255.0f, 1.0f };
 		particle.ColorEnd = { 255 / 255.0f, 255 / 255.0f, 255 / 255.0f, 1.0f };
@@ -64,6 +64,11 @@ public :
 	{
 		
 	}
+
+	void OnImGuiRender(long long frame) override
+	{
+		ImGui::ShowDemoWindow();
+	}
 	
 private : 
 	
@@ -94,6 +99,7 @@ void EventCallback(Event e)
 
 	if (e.EventType == Event_WindowResize || e.EventType == Event_FrameBufferResize)
 	{
+		glViewport(0, 0, e.WindowFrameBufferX, e.WindowFrameBufferY);
 		cam.SetProjection(0, e.WindowFrameBufferX, 0, e.WindowFrameBufferY);
 	}
 
@@ -177,6 +183,11 @@ int main()
 		});
 
 	bg = new Background("Core\\Resources\\grass_block.png", "Test Background");
+	Background new_bg("Core\\Resources\\grass_block.png", "Test Background_1");
+	Background new_bg_1("Core\\Resources\\grass_block.png", "Test Background_2");
+	Background new_bg_2("Core\\Resources\\grass_block.png", "Test Background_3");
+	Background new_bg_3("Core\\Resources\\grass_block.png", "Test Background_4");
+	Background new_bg_4("Core\\Resources\\grass_block.png", "Test Background_5");
 
 	scene.SetSceneCamera(cam);
 	scene.SetSceneAmbientLight(glm::vec4(0.5f, 0.5f, 0.5f, 1.0f));
@@ -213,6 +224,8 @@ int main()
 		//call it like this
 		game.Render(); 
 		
+		static Background bg("Core\\Resources\\grass_block.png", "Runtime bg");
+
 		if (game.IsThereCollisionOnLayer(obj, obj_2, 1, 0))
 		{
 			cout << "\nCOLLISION!\n";

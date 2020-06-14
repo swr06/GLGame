@@ -50,6 +50,7 @@ namespace GLGame
 		// Returns the amount of vertices that were written
 		unsigned int EndSpriteBatch();
 		void AddGenericTextureToBatch(Texture* texture, const glm::vec3 &pos, const glm::vec4& color = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+		void AddGenericTextureToBatchCustom(Texture* texture, const glm::vec3& pos, const glm::vec2& size, const glm::vec4& color = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 		void AddGenericObjectToBatch(GenericObject object);
 		void AddGLGameItemToBatch(SceneDataItem item, const glm::vec4& color = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 
