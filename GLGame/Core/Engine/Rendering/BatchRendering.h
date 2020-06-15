@@ -12,6 +12,7 @@
 #include <array>
 #include <string>
 
+#include "Core\Engine\Structs\Structures.h"
 #include "Core\OpenGL Classes\GLDebug\GLDebug.h"
 #include "Core\Dependencies\imgui\imgui.h"
 #include "Core\Engine\Collision\AABB.h"
@@ -48,7 +49,7 @@ namespace GLGame
 		void StartSpriteBatch();
 
 		// Returns the amount of vertices that were written
-		unsigned int EndSpriteBatch();
+		BatcherInfo& EndSpriteBatch();
 		void AddGenericTextureToBatch(Texture* texture, const glm::vec3 &pos, const glm::vec4& color = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 		void AddGenericTextureToBatchCustom(Texture* texture, const glm::vec3& pos, const glm::vec2& size, const glm::vec4& color = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 		void AddGenericObjectToBatch(GenericObject object);
@@ -56,11 +57,13 @@ namespace GLGame
 
 	private : 
 
-		unsigned int DrawFullBatch();
+		void DrawFullBatch();
 
 		glm::mat4 m_ViewProjectionMatrix;
 		AABB m_CameraCull;
 		glm::vec4 m_AmbientLight;
+
+		BatcherInfo m_Info;
 
 		int m_MaximumTextureSlots;
 		const int m_MaximumQuads;

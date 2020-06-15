@@ -20,8 +20,9 @@
 
 // Also included in the scene editor files
 // #include "Core\Engine\Scene\Scene.h"
-//#include "Core\Engine\Rendering\Rendering.h"
+// #include "Core\Engine\Rendering\Rendering.h"
 
+#include "Core\Engine\Structs\Structures.h"
 #include "Core\Engine\Scene Editor\SceneEditor.h"
 #include "Core\OpenGL Classes\FPS\Fps.h"
 #include "Core\Engine\Events\Events.h"

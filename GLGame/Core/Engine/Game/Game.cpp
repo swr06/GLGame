@@ -328,7 +328,8 @@ namespace GLGame
 	void Game::Render(bool should_clear)
 	{ 
 		static bool first_game_render = false;
-
+		BatcherInfo info;
+		BatcherInfo sp_info;
 		unsigned int objects_drawn = 0;
 		unsigned int sprites_drawn = 0;
 
@@ -435,6 +436,10 @@ namespace GLGame
 									bg_shader, bg_w, bg_h, m_CurrentScene->GetSceneAmbientLight(), background_iterator->second.background->GetModelMatrix(),
 									glm::mat4(1.0f), m_CurrentScene->GetSceneCamera()->GetProjectionMatrix());
 							}
+
+							// Log the background draw calls
+							info.m_QuadCount += 1;
+							info.m_DrawCalls += 1;
 						}
 					}
 
@@ -510,7 +515,9 @@ namespace GLGame
 					}
 
 					// Update the quad count
-					m_DebugInfo.QuadCount = m_SpriteBatcher->EndSpriteBatch();
+					sp_info = m_SpriteBatcher->EndSpriteBatch();
+					info.m_DrawCalls += sp_info.m_DrawCalls;
+					info.m_QuadCount += sp_info.m_QuadCount;
 
 					// Set the lighting blend function
 					glBlendFunc(GL_SRC_ALPHA, GL_ONE);
@@ -537,9 +544,24 @@ namespace GLGame
 						}
 					}
 
+					sp_info = m_LightBatcher->EndLightBatch();
+
 					// Update the debug info
-					m_DebugInfo.LightsDrawn = m_LightBatcher->EndLightBatch();
-					m_DebugInfo.QuadCount += m_DebugInfo.LightsDrawn;
+
+					m_DebugInfo.LightsDrawn = sp_info.m_QuadCount;
+					m_DebugInfo.TotalDrawCalls = sp_info.m_DrawCalls;
+					m_DebugInfo.TotalDrawCalls += info.m_DrawCalls;
+					m_DebugInfo.TotalQuads = sp_info.m_QuadCount + info.m_QuadCount;
+					m_DebugInfo.TotalVertices = m_DebugInfo.TotalQuads * 4;
+					m_DebugInfo.TotalIndices = m_DebugInfo.TotalQuads * 6;
+					m_DebugInfo.QuadCount = info.m_QuadCount;
+					m_DebugInfo.CurrentFrame += 1;
+					m_DebugInfo.VerticesCount = m_DebugInfo.QuadCount * 4;
+					m_DebugInfo.IndicesCount = m_DebugInfo.QuadCount * 6;
+					m_DebugInfo.ObjectsDrawn = objects_drawn;
+					m_DebugInfo.SpritesDrawn = sprites_drawn;
+					m_DebugInfo.RenderTime = glfwGetTime() - m_DebugInfo.CurrentTS;
+					m_DebugInfo.CurrentTS = glfwGetTime();
 
 					// TODO : REVERT IT TO THE USER DEFINED BLEND FUNCTION
 					glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -561,16 +583,6 @@ namespace GLGame
 					DisplayFrameRate(m_GameWindow, m_WindowTitle);
 				}
 
-				// Update the debug info
-
-				m_DebugInfo.ObjectsDrawn = objects_drawn;
-				m_DebugInfo.SpritesDrawn = sprites_drawn;
-				m_DebugInfo.VerticesCount = m_DebugInfo.QuadCount * 4;
-				m_DebugInfo.IndicesCount = m_DebugInfo.QuadCount * 6;
-				m_DebugInfo.CurrentFrame = m_FpsCount;
-				m_DebugInfo.RenderTime = glfwGetTime() - m_DebugInfo.CurrentTS;
-				m_DebugInfo.CurrentTS = glfwGetTime();
-				
 				m_FpsCount += 1;
 
 				glfwSwapBuffers(m_GameWindow);

@@ -694,6 +694,10 @@ namespace GLGame
 					ImGui::Text("Objects Drawn : %d", DebugInfo->ObjectsDrawn);
 					ImGui::Text("Sprites Drawn : %d", DebugInfo->SpritesDrawn);
 					ImGui::Text("Lights Drawn : %d", DebugInfo->LightsDrawn);
+					ImGui::Text("Total Quad Count : %d", DebugInfo->TotalQuads);
+					ImGui::Text("Total Vertices : %d", DebugInfo->TotalVertices);
+					ImGui::Text("Total Indices : %d", DebugInfo->TotalIndices);
+					ImGui::Text("Total Draw Calls (Backgrounds + Items) : %d", DebugInfo->TotalDrawCalls);
 
 					ImGui::End();
 				}

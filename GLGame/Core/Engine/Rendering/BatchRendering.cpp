@@ -8,6 +8,7 @@ namespace GLGame
 
 	SpriteBatcher::SpriteBatcher() : m_VBO(GL_ARRAY_BUFFER), m_ViewProjectionMatrix(glm::mat4(1.0f)), m_VerticesWritten(0), m_MaximumQuads(10000), m_VertexSize(40)
 	{
+		m_Info.m_MaximumQuads = m_MaximumQuads;
 		m_ObjectsInitialized = false;
 		m_LastElementVBuff = 0;
 		m_AmbientLight = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
@@ -49,6 +50,9 @@ namespace GLGame
 
 	void SpriteBatcher::StartSpriteBatch(Camera* scene_camera, const glm::vec4& ambient_light, Shader* custom_shader)
 	{
+		m_Info.m_DrawCalls = 0;
+		m_Info.m_QuadCount = 0;
+
 		glm::vec4 camera_projection = scene_camera->GetProjectionCoords();
 		glm::vec3 camera_position = scene_camera->GetPosition();
 
@@ -75,24 +79,30 @@ namespace GLGame
 
 	void SpriteBatcher::StartSpriteBatch()
 	{
+		m_Info.m_DrawCalls = 0;
+		m_Info.m_QuadCount = 0;
+
 		m_ViewProjectionMatrix = glm::mat4(1.0f);
 		m_CameraCullGiven = false;
 	}
 
 	void SpriteBatcher::StartSpriteBatch(const glm::mat4& view_projection_matrix)
 	{
+		m_Info.m_DrawCalls = 0;
+		m_Info.m_QuadCount = 0;
+
 		m_ViewProjectionMatrix = view_projection_matrix;
 		m_CameraCullGiven = false;
 	}
 
-	unsigned int SpriteBatcher::EndSpriteBatch()
+	BatcherInfo& SpriteBatcher::EndSpriteBatch()
 	{
-		unsigned int ret_val = DrawFullBatch();
+		DrawFullBatch();
 
 		// Reset the projection matrix
 		m_ViewProjectionMatrix = glm::mat4(1.0f);
 
-		return ret_val;
+		return m_Info;
 	}
 
 	void SpriteBatcher::AddGLGameItemToBatch(SceneDataItem item, const glm::vec4& color)
@@ -548,10 +558,8 @@ namespace GLGame
 		m_VerticesWritten++;
 	}
 
-	unsigned int SpriteBatcher::DrawFullBatch()
+	void SpriteBatcher::DrawFullBatch()
 	{
-		unsigned int ret_val = 0;
-
 		if (!m_ObjectsInitialized)
 		{
 			string vertex_data;
@@ -614,10 +622,11 @@ namespace GLGame
 
 			m_ObjectsInitialized = true;;
 		}
-
-		if (m_VerticesWritten == 0)
+		
+		// Buffer is empty
+		if (m_VerticesWritten < 1)
 		{
-			return 0;
+			return;
 		}
 
 		if (m_BatchShader == nullptr)
@@ -647,9 +656,10 @@ namespace GLGame
 		glDrawElements(GL_TRIANGLES, 6 * m_VerticesWritten, GL_UNSIGNED_INT, (void*)0);
 		m_VAO.Unbind();
 
-		ret_val = m_VerticesWritten;
 		//m_ViewProjectionMatrix = glm::mat4(1.0f);
 		//m_AmbientLight = glm::vec4(1.0f);
+		m_Info.m_QuadCount += m_VerticesWritten;
+		m_Info.m_DrawCalls += 1;
 		m_VerticesWritten = 0;
 		m_LastElementVBuff = 0;
 		m_LastElementTex = 0;
@@ -661,8 +671,6 @@ namespace GLGame
 		}
 
 		m_CurrSlottedTexElement = 0;
-
-		return ret_val;
 	}
 
 	// All of the below batch rendering functions are deprecated.

@@ -24,6 +24,7 @@
 #include "Core\Dependencies\imgui\imgui_impl_glfw.h"
 #include "Core\Dependencies\imgui\imgui_impl_opengl3.h"
 
+#include "Core\Engine\Structs\Structures.h"
 #include "Core\Engine\Logger\Log.h"
 #include "Core\Engine\Macros\Macros.h"
 #include "Core\Engine\Collision\AABB.h"
@@ -37,20 +38,6 @@
 
 namespace GLGame
 {
-	struct GameDebugInfo
-	{
-		long VerticesCount = 0;
-		long IndicesCount = 0;
-		unsigned int QuadCount = 0;
-		long long CurrentFrame = 0;
-		double CurrentTS = 0;
-		unsigned int ObjectsDrawn = 0;
-		unsigned int SpritesDrawn = 0;
-		unsigned int ParticlesDrawn = 0;
-		unsigned int LightsDrawn = 0;
-		double RenderTime;
-	};
-
 	namespace SceneEditor
 	{
 		using namespace std;

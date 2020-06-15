@@ -238,6 +238,7 @@
     <ClInclude Include="Core\Engine\Scene\SceneData.h" />
     <ClInclude Include="Core\Engine\Scene\SceneFileParser.h" />
     <ClInclude Include="Core\Engine\Sprite\Sprite.h" />
+    <ClInclude Include="Core\Engine\Structs\Structures.h" />
     <ClInclude Include="Core\Engine\TextureAtlas\TextureAtlas.h" />
     <ClInclude Include="Core\OpenGL Classes\AbstractOpengGL.h" />
     <ClInclude Include="Core\OpenGL Classes\Fps\Fps.h" />

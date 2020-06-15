@@ -408,6 +408,9 @@
     <ClInclude Include="Core\Engine\Helpers\Helper.h">
       <Filter>Source Files\Helpers</Filter>
     </ClInclude>
+    <ClInclude Include="Core\Engine\Structs\Structures.h">
+      <Filter>Source Files\Engine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Core\Resources\container.jpg">

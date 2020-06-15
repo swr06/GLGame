@@ -5,7 +5,6 @@ namespace GLGame
 	// This function is INCREDIBLY slow. It was originally only used to test my lighting concept. Please use LightBatcher
 	void DrawLight(Light light)
 	{
-
 		GLfloat* vertex_buffer = new GLfloat[36];
 		GLuint index_buffer[] = { 0,1,3,1,2,3 };
 
@@ -94,6 +93,7 @@ namespace GLGame
 
 	LightBatcher::LightBatcher() : m_VBO(GL_ARRAY_BUFFER), m_MaxLights(512), m_VertexBuffer(nullptr), m_IndexBuffer(nullptr)
 	{
+		m_Info.m_MaximumQuads = m_MaxLights;
 		m_ObjectsInitialized = false;
 		m_VertexBuffer = new GLfloat[35 * m_MaxLights];
 		m_IndexBuffer = new GLuint[6 * m_MaxLights];
@@ -190,7 +190,7 @@ namespace GLGame
 		m_VerticesWritten = 0;
 	}
 
-	unsigned int LightBatcher::EndLightBatch()
+	BatcherInfo& LightBatcher::EndLightBatch()
 	{
 		if (!m_ObjectsInitialized)
 		{
@@ -211,12 +211,15 @@ namespace GLGame
 			m_ObjectsInitialized = true;
 		}
 
-		return DrawFullBatch();
+		return m_Info;
 	}
 
-	unsigned int LightBatcher::DrawFullBatch()
+	void LightBatcher::DrawFullBatch()
 	{
-		unsigned int ret_val = 0;
+		if (m_VerticesWritten == 0)
+		{
+			return;
+		}
 
 		m_Shader.Use();
 
@@ -226,10 +229,9 @@ namespace GLGame
 		glDrawElements(GL_TRIANGLES, m_VerticesWritten * 6, GL_UNSIGNED_INT, (void*)0);
 		m_VAO.Unbind();
 
-		ret_val = m_VerticesWritten;
+		m_Info.m_QuadCount += m_VerticesWritten;
+		m_Info.m_DrawCalls += 1;
 		m_CurrentElement = 0;
 		m_VerticesWritten = 0;
-
-		return ret_val;
 	}
 }

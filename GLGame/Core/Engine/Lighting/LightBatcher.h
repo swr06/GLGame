@@ -7,6 +7,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include "Core\Engine\Structs\Structures.h"
 #include "Core\OpenGL Classes\Index Buffer\IndexBuffer.h"
 #include "Core\OpenGL Classes\Vertex Array\VertexArray.h"
 #include "Core\OpenGL Classes\Vertex Buffer\VertexBuffer.h"
@@ -28,11 +29,11 @@ namespace GLGame
 		void StartLightBatch(const glm::mat4& vp_matrix);
 
 		// Returns the amount of lights that have been drawn
-		unsigned int EndLightBatch();
+		BatcherInfo& EndLightBatch();
 
 	private : 
 
-		unsigned int DrawFullBatch();
+		void DrawFullBatch();
 
 		int m_CurrentElement;
 		unsigned int m_VerticesWritten = 0;
@@ -50,6 +51,8 @@ namespace GLGame
 		VertexArray m_VAO;
 		IndexBuffer m_IBO;
 		Shader m_Shader;
+
+		BatcherInfo m_Info;
 
 		glm::mat4 m_VPMatrix = glm::mat4(1.0f);
 	};
