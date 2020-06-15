@@ -760,20 +760,33 @@ namespace GLGame
 				}
 
 				ImGui::Text("\n");
+				ImGui::Separator();
+				ImGui::Text("\n%.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 				ImGui::End();
 			}
 		}
 
 		void RenderBackgroundAddWidget()
 		{
+			struct background_map_data_element
+			{
+				string id;
+				int layer;
+				int vector_element;
+			};
+
 			static int bgl;
 			static int allocation_size = BackgroundIDList->size();
 			static char** bg_items = new char* [2048];
 			static char* bg_button = new char [2048];
+			static char* bg_remove_label = new char[256];
+			static int erase_element = 0;
+			
+			vector<background_map_data_element> background_map_contents;
 
 			if (CurrentOperationSelected == ChangeBackground)
 			{
-				if (ImGui::Begin("Change/Add backgrounds"))
+				if (ImGui::Begin("Add backgrounds"))
 				{
 					if (ImGui::CollapsingHeader("Add Backgrounds"))
 					{
@@ -809,6 +822,51 @@ namespace GLGame
 
 						ImGui::Separator();
 						ImGui::InputInt("Background Layer", &bgl);	
+					}
+
+					ImGui::Text("\n");
+					ImGui::Separator();
+					ImGui::Text("\n");
+
+					if (ImGui::CollapsingHeader("Remove Backgrounds"))
+					{
+						// Write the map contents to the vector so it becomes easier to display it
+
+						for (auto e = SceneEditorBackgroundQueue.begin(); e != SceneEditorBackgroundQueue.end(); e++)
+						{
+							background_map_data_element element_data;
+
+							for (int i = 0; i < e->second.size(); i++)
+							{
+								element_data.id = e->second.at(i)->GetBackgroundID();
+								element_data.layer = e->first;
+								element_data.vector_element = i;
+								background_map_contents.push_back(element_data);
+							}
+						}
+
+						for (int i = 0; i < background_map_contents.size(); i++)
+						{
+							ImGui::RadioButton(background_map_contents.at(i).id.c_str(), &erase_element, i);
+						}
+
+						ImGui::Text("\n");
+
+						if (background_map_contents.size() > 0 && erase_element >= 0 && erase_element < background_map_contents.size())
+						{
+							sprintf(bg_remove_label, "Erase \"%s\" from Layer(%d)", background_map_contents.at(erase_element).id.c_str(), background_map_contents.at(erase_element).layer);
+
+							if (ImGui::Button(bg_remove_label))
+							{
+								SceneEditorBackgroundQueue.at(background_map_contents.at(erase_element).layer).erase(
+									SceneEditorBackgroundQueue.at(background_map_contents.at(erase_element).layer).begin() + background_map_contents.at(erase_element).vector_element);
+							}
+						}
+
+						else
+						{
+							ImGui::Button("No Backgrounds to erase!");
+						}
 					}
 
 					ImGui::End();
