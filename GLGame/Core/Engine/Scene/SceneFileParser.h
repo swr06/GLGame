@@ -15,6 +15,7 @@ namespace GLGame
 	{
 		Object* _GetObjectFromGlobalArray(const string& id);
 		Sprite* _GetSpriteFromGlobalArray(const string& id);
+		Background* _GetBackgroundFromGlobalArray(const string& id);
 	}
 
 	namespace SceneParser
@@ -24,6 +25,7 @@ namespace GLGame
 			ItemTypeObject,
 			ItemTypeSprite,
 			ItemTypeTex,
+			ItemTypeBackground
 		};
 
 		struct SceneParsedDataItem

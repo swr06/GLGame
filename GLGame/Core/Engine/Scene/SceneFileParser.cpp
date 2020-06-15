@@ -9,6 +9,7 @@ namespace GLGame
 		static const string object_chunk_type = (string)"OBJ";
 		static const string sprite_chunk_type = (string)"SPR"; 
 		static const string atlas_chunk_type = (string)"ATL";
+		static const string background_chunk_type = (string)"BG_";
 
 		std::ifstream::pos_type GetFileSize(const string& filename)
 		{
@@ -29,6 +30,7 @@ namespace GLGame
 		{
 			Object* obj;
 			Sprite* spr;
+			Background* bg;
 
 			glm::vec3 pos;
 
@@ -47,7 +49,7 @@ namespace GLGame
 					}
 				}
 
-				if (items[i].type == ItemTypeSprite)
+				else if (items[i].type == ItemTypeSprite)
 				{
 					spr = (Sprite*)GameInternal::_GetSpriteFromGlobalArray(items[i].id);
 
@@ -57,6 +59,16 @@ namespace GLGame
 						pos.y = items[i].y;
 						pos.z = 1.0f;
 						scene->AddSpriteAtPosition(*spr, items[i].layer, pos);
+					}
+				}
+
+				else if (items[i].type == ItemTypeBackground)
+				{
+					bg = (Background*)GameInternal::_GetBackgroundFromGlobalArray(items[i].id);
+
+					if (bg != nullptr)
+					{
+						scene->AddSceneBackground(bg, items[i].layer);
 					}
 				}
 			}
@@ -190,6 +202,38 @@ namespace GLGame
 
 							// converting the values to a struct
 							item.type = ItemTypeSprite;
+							item.id = string(scene_data_curr_id);
+							item.x = (float)atoi(scene_data_curr_x);
+							item.y = (float)atoi(scene_data_curr_y);
+							item.layer = atoi(scene_data_curr_layer);
+
+							// reading the garbage string
+							scene_data_file.read(scene_dada_curr_garbage_buff, 8);
+
+							// adding it to the vector
+							scene_parsed_items.push_back(item);
+						}
+
+						else if (!strcmp(scene_data_curr_type, background_chunk_type.c_str()))
+						{
+							// read format = sprite chunk
+
+							scene_data_file.read(scene_data_curr_layer, 8);
+							scene_data_file.read(scene_data_curr_x, 12);
+							scene_data_file.read(scene_data_curr_y, 12);
+
+							scene_data_file.read(scene_data_curr_idsz_buff, 8);
+							RemoveCharacterFromArray(scene_data_curr_idsz_buff, '$', 8);
+							int rd_size = atoi(scene_data_curr_idsz_buff);
+							scene_data_file.read(scene_data_curr_id, rd_size);
+							scene_data_curr_id[rd_size] = '\0';
+
+							RemoveCharacterFromArray(scene_data_curr_layer, '!', 8);
+							RemoveCharacterFromArray(scene_data_curr_x, '@', 12);
+							RemoveCharacterFromArray(scene_data_curr_y, '#', 12);
+
+							// converting the values to a struct
+							item.type = ItemTypeBackground;
 							item.id = string(scene_data_curr_id);
 							item.x = (float)atoi(scene_data_curr_x);
 							item.y = (float)atoi(scene_data_curr_y);

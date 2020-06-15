@@ -192,7 +192,7 @@ int main()
 	new_bg.SetStretchToWindow(false);
 	scene.SetSceneCamera(cam);
 	scene.SetSceneAmbientLight(glm::vec4(0.5f, 0.5f, 0.5f, 1.0f));
-	scene.AddSceneBackground(bg, 0);
+	//scene.AddSceneBackground(bg, 0);
 	// 	scene.AddLightAtPosition(light_2);
 	// 	scene.AddLightAtPosition(light_3);
 	// 	scene.AddBlinkingLightAtPosition(pLight);

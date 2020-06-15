@@ -270,6 +270,44 @@ namespace GLGame
 				// Write the scene header
 				scene_file.write(scene_file_header.c_str(), scene_file_header.size());
 
+				// Write the backgrounds to the scene file
+				for (auto e = SceneEditorBackgroundQueue.begin(); e != SceneEditorBackgroundQueue.end(); e++)
+				{
+					for (int i = 0; i < e->second.size(); i++)
+					{
+						layer = to_string(e->first);
+						x = to_string(0);
+						y = to_string(0);
+
+						item_type_str = "BG_";
+						id = e->second.at(i)->GetBackgroundID();
+						id_size = to_string(id.size());
+
+						ExtendString(layer, 8, "!");
+						ExtendString(x, 12, "@");
+						ExtendString(y, 12, "#");
+						ExtendString(id_size, 8, "$");
+
+						scene_file.write(item_type_str.c_str(), item_type_str.size());
+						scene_file.write(layer.c_str(), 8);
+						scene_file.write(x.c_str(), 12);
+						scene_file.write(y.c_str(), 12);
+						scene_file.write(id_size.c_str(), 8);
+						scene_file.write(id.c_str(), id.size());
+
+						// Generate a garbage string of 8 characters and write it to the file stream
+						// To further limit readability of the outputted scene file
+						for (int i = 0; i < 8; i++)
+						{
+							scene_garbage_str[i] = (char)rand() % 200;
+						}
+
+						scene_garbage_str[9] = '\0';
+						scene_file.write(scene_garbage_str, 8);
+					}
+				}
+
+				// Write the scene items to the scene file
 				for (auto e = SceneEditorItemQueue.begin(); e != SceneEditorItemQueue.end(); e++)
 				{
 					for (int i = 0; i < e->second.size(); i++)
@@ -352,8 +390,8 @@ namespace GLGame
 
 				obj.texture = &grid_texture;
 
-				int rows = SceneEditorWidth / GridX;
-				int cols = SceneEditorHeight / GridY;
+				int rows = SceneEditorWidth / GridX + 4;
+				int cols = SceneEditorHeight / GridY + 4;
 
 				for (int i = 0; i < rows; i++)
 				{
@@ -628,12 +666,12 @@ namespace GLGame
 				{
 					if (e->second.at(i)->ShouldStretchToWindow())
 					{
-						SceneEditorBatcher->AddGenericTextureToBatchCustom((Texture*)&e->second.at(i)->GetTexture(), glm::vec3(10.0f, 10.0f, 1.0f), glm::vec2((float)SceneEditorWidth, (float) SceneEditorHeight), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+						SceneEditorBatcher->AddGenericTextureToBatchCustom((Texture*)&e->second.at(i)->GetTexture(), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2((float)SceneEditorWidth - 10, (float) SceneEditorHeight - 10), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 					}
 
 					else if (e->second.at(i)->ShouldStretchToWindow() == false)
 					{
-						SceneEditorBatcher->AddGenericTextureToBatch((Texture*)&e->second.at(i)->GetTexture(), glm::vec3(10.0f, 10.0f, 1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+						SceneEditorBatcher->AddGenericTextureToBatchCustom((Texture*)&e->second.at(i)->GetTexture(), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2((float)e->second.at(i)->GetTexture().GetWidth() - 10, (float)e->second.at(i)->GetTexture().GetHeight() - 10), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 					}
 				}
 			}

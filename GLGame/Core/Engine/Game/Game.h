@@ -145,6 +145,9 @@ namespace GLGame
 		// Gets an object from the global array based on an id
 		Object* GetObjectFromArr(const string& id);
 
+		// Gets background from the global array based on an id
+		Background* GetBackgroundFromArr(const string& id);
+
 		// Internal functions.
 
 		// Internal function. Not meant to use.

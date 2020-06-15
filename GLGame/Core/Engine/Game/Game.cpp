@@ -1072,6 +1072,7 @@ namespace GLGame
 
 			str << "UNREGISTERED SPRITE REQUESTED AT LINE : " << __LINE__ << " AND FILE : " << __FILE__ << "  " << "  | " << "ID : " << id << "  ";
 			Log::LogToFile(str.str());
+			Log::LogToConsole(str.str());
 
 			return nullptr;
 		}
@@ -1092,6 +1093,28 @@ namespace GLGame
 
 			str << "UNREGISTERED OBJECT REQUESTED AT LINE : " << __LINE__ << " AND FILE : " << __FILE__ << "  | " << "ID : " << id << "  ";
 			Log::LogToFile(str.str());
+			Log::LogToConsole(str.str());
+
+			return nullptr;
+		}
+	}
+
+	Background* Game::GetBackgroundFromArr(const string& id)
+	{
+		unordered_map<string, Background*>::iterator chk = m_GlobalBackgrounds.find(id);
+
+		if (chk != m_GlobalBackgrounds.end())
+		{ 
+			return m_GlobalBackgrounds[id];
+		}
+
+		else
+		{
+			stringstream str;
+
+			str << "UNREGISTERED BACKGROUND REQUESTED AT LINE : " << __LINE__ << " AND FILE : " << __FILE__ << "  | " << "ID : " << id << "  ";
+			Log::LogToFile(str.str());
+			Log::LogToConsole(str.str());
 
 			return nullptr;
 		}
@@ -1140,6 +1163,8 @@ namespace GLGame
 			return GameRef->GetObjectFromArr(id);
 		}
 
+
+
 		Sprite* _GetSpriteFromGlobalArray(const string& id)
 		{
 			if (GameRef == nullptr)
@@ -1150,6 +1175,18 @@ namespace GLGame
 			}
 
 			return GameRef->GetSpriteFromArr(id);
+		}
+
+		Background* _GetBackgroundFromGlobalArray(const string& id)
+		{
+			if (GameRef == nullptr)
+			{
+				Log::LogToFile("Tried to call _GetBackgroundFromGlobalArray() without a game instance");
+
+				return nullptr;
+			}
+
+			return GameRef->GetBackgroundFromArr(id);
 		}
 
 		void _GetObjectPosition(const string& id, uint32_t instance_id, int layer, glm::vec3& pos)
