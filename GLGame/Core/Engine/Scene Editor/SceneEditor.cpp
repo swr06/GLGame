@@ -619,6 +619,7 @@ namespace GLGame
 		{
 			GenericObject obj;
 
+			glfwGetFramebufferSize(SceneEditorWindow, &SceneEditorWidth, &SceneEditorHeight);
 			SceneEditorBatcher->StartSpriteBatch(SceneEditorCamera->GetViewProjectionMatrix());
 
 			for (auto e = SceneEditorBackgroundQueue.begin(); e != SceneEditorBackgroundQueue.end(); e++)
@@ -627,8 +628,12 @@ namespace GLGame
 				{
 					if (e->second.at(i)->ShouldStretchToWindow())
 					{
-						SceneEditorBatcher->AddGenericTextureToBatchCustom((Texture*)&e->second.at(i)->GetTexture(), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1000, 1000));
-						//SceneEditorBatcher->AddGenericTextureToBatch((Texture*)&e->second.at(i)->GetTexture(), glm::vec3(1.0f, 1.0f, 1.0f));
+						SceneEditorBatcher->AddGenericTextureToBatchCustom((Texture*)&e->second.at(i)->GetTexture(), glm::vec3(10.0f, 10.0f, 1.0f), glm::vec2((float)SceneEditorWidth, (float) SceneEditorHeight), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+					}
+
+					else if (e->second.at(i)->ShouldStretchToWindow() == false)
+					{
+						SceneEditorBatcher->AddGenericTextureToBatch((Texture*)&e->second.at(i)->GetTexture(), glm::vec3(10.0f, 10.0f, 1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 					}
 				}
 			}
@@ -1035,6 +1040,8 @@ namespace GLGame
 				ImGui_ImplOpenGL3_NewFrame();
 				ImGui_ImplGlfw_NewFrame();
 				ImGui::NewFrame();
+
+				glfwGetFramebufferSize(SceneEditorWindow, &SceneEditorWidth, &SceneEditorHeight);
 
 				DrawMenuBar();
 				DrawModalWindows();

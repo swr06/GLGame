@@ -189,6 +189,7 @@ int main()
 	Background new_bg_3("Core\\Resources\\grass_block.png", "Test Background_4");
 	Background new_bg_4("Core\\Resources\\grass_block.png", "Test Background_5");
 
+	new_bg.SetStretchToWindow(false);
 	scene.SetSceneCamera(cam);
 	scene.SetSceneAmbientLight(glm::vec4(0.5f, 0.5f, 0.5f, 1.0f));
 	scene.AddSceneBackground(bg, 0);
