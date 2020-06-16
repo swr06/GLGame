@@ -119,6 +119,7 @@ namespace GLGame
 			// Color attribute
 			m_VBO->VertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 7 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
 			m_Initialized = true;
+			m_Shader.CompileShaders();
 		}
 
 		m_Shader.Use();

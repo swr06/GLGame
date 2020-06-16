@@ -15,6 +15,7 @@ namespace GLGame
 
 	void Shader::CompileShaders()
 	{
+		m_CompiledShader = true;
 		auto start = chrono::steady_clock::now();
 
 		GLuint vs;

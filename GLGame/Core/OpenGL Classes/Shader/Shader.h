@@ -44,6 +44,11 @@ namespace GLGame
 		
 		inline void Use()
 		{
+			if (m_CompiledShader == false)
+			{
+				this->CompileShaders();
+			}
+
 			glUseProgram(this->m_Program);
 		}
 
@@ -62,6 +67,7 @@ namespace GLGame
 
 		unordered_map<string, GLint> Location_map; // To avoid unnecessary calls to glGetUniformLocation()
 		GLuint m_Program;
+		bool m_CompiledShader = false;
 
 		GLint GetUniformLocation(string uniform_name);
 		string m_VertexData;

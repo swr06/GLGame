@@ -41,19 +41,19 @@ public :
 
 	void OnFrameAdvance(long long frame, double ts) override
 	{
-		//for (int i = 0; i < 5; i++)
-		//{
-		//	PS.Emit(particle);
-		//	PS_1.Emit(particle_2);
-		//}
+		for (int i = 0; i < 5; i++)
+		{
+			PS.Emit(particle);
+			PS_1.Emit(particle_2);
+		}
 
-		//static Camera cam(0.0f, 800.0f, 0.0f, 600.0f);
+		static Camera cam(0.0f, 800.0f, 0.0f, 600.0f);
 
-		//PS.OnRender(cam);
-		//PS_1.OnRender(cam);
+		PS.OnRender(cam);
+		PS_1.OnRender(cam);
 
-		//PS.OnUpdate(glfwGetTime());
-		//PS_1.OnUpdate(glfwGetTime());
+		PS.OnUpdate(glfwGetTime());
+		PS_1.OnUpdate(glfwGetTime());
 	}
 
 	void OnEvent(Event e) override
@@ -198,18 +198,10 @@ int main()
 	new_bg.SetStretchToWindow(false);
 	scene.SetSceneCamera(cam);
 	scene.SetSceneAmbientLight(glm::vec4(0.5f, 0.5f, 0.5f, 1.0f));
-   // scene.AddSceneBackground(bg, 0);
- //	scene.AddLightAtPosition(light_1);
- //	scene.AddLightAtPosition(light_2);
-	//scene.AddLightAtPosition(light_3);
-	//scene.AddLightAtPosition(light_t);
- 	//scene.AddBlinkingLightAtPosition(pLight);
-	// 	scene.AddSceneBackground(bg, 1);
 
 	tile_sheet.CreateTexture("Core\\Resources\\terrain_atlas.png");
 	TextureAtlas tex_atlas(&tile_sheet, 32, 32);
 
-	//tex1.CreateTexture("Core\\Resources\\tree.png");
 	tex2.CreateTexture("Core\\Resources\\ghost.png"); // Alpha = 50.0%
 
 	Sprite spr("spr_1", ani, 5); 
@@ -221,7 +213,7 @@ int main()
 	obj_2.SetSprite(spr_2); // tex2
 	obj_3.SetSprite(spr_3);
 
-	scene.LoadSceneFile("SmallScene.sce");
+	//scene.LoadSceneFile("SmallScene.sce");
 
 	game.SetCurrentScene(scene);
 	game.DisplayFpsOnWindowTitleBar(true);
@@ -230,10 +222,7 @@ int main()
 
 	while (!game.GameWindowShouldClose())
 	{
-		//call it like this
 		game.Render(); 
-		
-		//static Background bg("Core\\Resources\\grass_block.png", "Runtime bg");
 
 		if (game.IsThereCollisionOnLayer(obj, obj_2, 1, 0))
 		{
