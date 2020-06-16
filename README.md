@@ -128,10 +128,15 @@ If you like this project and would like to support it, please do star it on GitH
 <i>The GLGame Scene Editor created and rendered at runtime</i>
 </p>
 
-
-![GLGame Demo-4](https://github.com/swr06/GLGame/blob/master/Docs/Readme/Batch%20Rendering.png)
+![GLGame Demo-4](https://github.com/swr06/GLGame/blob/master/Docs/Readme/Particle%20Demo.png)
 <p align="center">
-<i>The batch renderer that comes with GLGame can render upto 10000 sprites in one draw call</i>
+<i>The particle emitter demo that has a particle batcher and can render upto 10,000 particles in one draw call</i>
+</p>
+
+
+![GLGame Demo-5](https://github.com/swr06/GLGame/blob/master/Docs/Readme/Batch%20Rendering.png)
+<p align="center">
+<i>The batch renderer that comes with GLGame can render upto 10,000 sprites in one draw call</i>
 </p>
 
 Thankyou for visiting the GLGame github page.
