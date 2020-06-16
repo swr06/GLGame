@@ -162,7 +162,6 @@ namespace GLGame
 		void DrawGrid();
 		void RenderDebugWindow();
 		
-
 		// Event callbacks
 
 		void SEWindowResizeCallback(GLFWwindow* window, int width, int height);
@@ -748,9 +747,9 @@ namespace GLGame
 					ImGui::Text("Total Vertices : %d", DebugInfo->TotalVertices);
 					ImGui::Text("Total Indices : %d", DebugInfo->TotalIndices);
 					ImGui::Text("Total Draw Calls (Backgrounds + Items) : %d", DebugInfo->TotalDrawCalls);
-
-					ImGui::End();
 				}
+
+				ImGui::End();
 			}
 		}
 
@@ -812,8 +811,9 @@ namespace GLGame
 				ImGui::Text("\n");
 				ImGui::Separator();
 				ImGui::Text("\n%.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-				ImGui::End();
 			}
+
+			ImGui::End();
 		}
 
 		void RenderBackgroundAddWidget()
@@ -830,7 +830,17 @@ namespace GLGame
 			static char** bg_items = new char* [2048];
 			static char* bg_button = new char [2048];
 			static char* bg_remove_label = new char[256];
+			static char* bg_display_label = new char[512];
 			static int erase_element = 0;
+			static bool first_run = true;
+
+			if (first_run == true)
+			{
+				first_run = false;
+				memset(bg_display_label, '\0', 512);
+				memset(bg_remove_label, '\0', 256);
+				memset(bg_button, '\0', 2048);
+			}
 			
 			vector<background_map_data_element> background_map_contents;
 
@@ -860,15 +870,17 @@ namespace GLGame
 							{
 								SceneEditorBackgroundQueue[bgl].push_back(SceneEditorGlobalBackgrounds->at(BackgroundIDList->at(BackgroundSelected)));
 								
-								// Todo : MAKE THIS PROPERLY
-								ImGui::TextColored(ImVec4(1.0f, 0.6f, 0.4f, 1.0f), "Added \"%s\" successfully to Layer (%d)", BackgroundIDList->at(BackgroundSelected).c_str(), bgl);
+								sprintf(bg_display_label, "Added \"%s\" successfully to Layer (%d)", BackgroundIDList->at(BackgroundSelected).c_str(), bgl);
 							}
 
 							else
 							{
-								ImGui::TextColored(ImVec4(1.0f, 0.6f, 0.4f, 1.0f), "ERROR ADDING BACKGROUND");
+								sprintf(bg_display_label, "Error adding background!");
 							}
 						}
+
+						ImGui::TextColored(ImVec4(1.0f, 0.6f, 0.4f, 1.0f), bg_display_label);
+						ImGui::Text("\n\n");
 
 						ImGui::Separator();
 						ImGui::InputInt("Background Layer", &bgl);	
@@ -918,9 +930,9 @@ namespace GLGame
 							ImGui::Button("No Backgrounds to erase!");
 						}
 					}
-
-					ImGui::End();
 				}
+
+				ImGui::End();
 			}
 		}
 
@@ -983,10 +995,9 @@ namespace GLGame
 
 					ImGui::Text("\n\n");
 					ImGui::InputInt("Layer/Depth", &CurrentSceneEditorLayer);
-					ImGui::End();
 				}
 
-				
+				ImGui::End();
 
 				// Draw Selected item window
 				{
@@ -1023,8 +1034,10 @@ namespace GLGame
 							ImVec2(1, 0),
 							ImVec2(0, 1));
 
-						ImGui::End();
 					}
+
+					ImGui::End();
+
 				}
 			}
 		}
