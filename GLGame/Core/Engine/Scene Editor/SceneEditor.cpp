@@ -1130,7 +1130,6 @@ namespace GLGame
 				}
 
 				RenderSceneEditorBackgrounds();
-				DrawGrid();
 				RenderSceneEditorItems();
 
 				bool display_title_place_item = true;
@@ -1147,6 +1146,7 @@ namespace GLGame
 				glfwGetFramebufferSize(SceneEditorWindow, &SceneEditorWidth, &SceneEditorHeight);
 
 				DrawMenuBar();
+				DrawGrid();
 				DrawModalWindows();
 				DrawFloatingWidgets();
 				DrawPlaceItemWindowWidget();
