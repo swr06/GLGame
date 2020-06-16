@@ -102,8 +102,6 @@ namespace GLGame
 		vector<string>* GetGlobalObjectIDs() { return &m_ObjectItemNames; }
 		vector<string>* GetGlobalSpriteIDs() { return &m_SpriteItemNames; }
 
-		bool ShouldDrawImGui() const { return m_DisplayImGui; }
-
 		// Helper Functions : 
 
 		// Is functions
@@ -198,14 +196,13 @@ namespace GLGame
 		
 	protected : 
 		
-		void Init(int w, int h, bool can_resize = true, string title = "Test Game", bool start_SE = false, bool use_imgui = false, ImGuiStyle imgui_style = ImGuiStyleDark);
+		void Init(int w, int h, bool can_resize = true, string title = "Test Game", bool start_SE = false);
 
 		int m_GameWindowWidth;
 		int m_GameWindowHeight;
 		string m_WindowTitle;
 
 		bool m_DisplayFPS = true;
-		bool m_DisplayImGui = false;
 		bool m_Vsync = false;
 		bool m_CanResize = true;
 
@@ -226,7 +223,6 @@ namespace GLGame
 		virtual void SceneLoader() {}
 		virtual void OnObjectMove(Object* object) {} // TODO
 		virtual void OnEvent(Event e) {}
-		virtual void OnImGuiRender(long long frame) {}
 		virtual void OnFrameAdvance(long long frame, double ts) {}
 		virtual void OnGameDestroy(double ts) {}
 	};

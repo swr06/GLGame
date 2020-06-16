@@ -10,7 +10,7 @@ namespace GLGame
 	static vector<Scene*> RegisterSceneQueue;
 	static vector<Background*> RegisterBackgroundQueue;
 
-	void Game::Init(int w, int h, bool can_resize, string title, bool start_SE, bool use_imgui, ImGuiStyle imgui_style)
+	void Game::Init(int w, int h, bool can_resize, string title, bool start_SE)
 	{
 		static bool GameIsAlreadyInitialized = true;
 
@@ -23,8 +23,6 @@ namespace GLGame
 		m_GameWindowHeight = h;
 		m_CanResize = can_resize;
 		m_WindowTitle = title;
-		m_DisplayImGui = use_imgui;
-		m_IMStyle = imgui_style;
 
 		const bool init_all_events = true;
 		int callbacks_initialized = 0;
@@ -61,12 +59,12 @@ namespace GLGame
 
 		glViewport(0, 0, m_GameWindowWidth, m_GameWindowHeight);
 
-		m_DisplayImGui = false;
 		m_ImGuiInitialized = false;
 
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+		/*
 		if (use_imgui)
 		{
 			m_ImGuiInitialized = true;
@@ -99,7 +97,7 @@ namespace GLGame
 			ImGuiIO& io = ImGui::GetIO();
 			io.Fonts->AddFontDefault();
 			io.Fonts->Build();
-		}
+		}*/
 
 		// Initialize the key event buffer and set the key callbacks
 		GLGameEventInit();
@@ -377,14 +375,14 @@ namespace GLGame
 
 				// ImGui
 				{
-					if (m_DisplayImGui)
+					/*if (m_DisplayImGui)
 					{
 						ImGui::SetCurrentContext(m_IMContext);
 						ImGui_ImplOpenGL3_NewFrame();
 						ImGui_ImplGlfw_NewFrame();
 						ImGui::NewFrame();
 						OnImGuiRender(m_FpsCount);
-					}
+					}*/
 				}
 
 				if (m_CurrentScene != nullptr)
@@ -569,11 +567,11 @@ namespace GLGame
 
 				// ImGui 
 				{
-					if (m_DisplayImGui)
+					/*if (m_DisplayImGui)
 					{
 						ImGui::Render();
 						ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-					}
+					}*/
 				}
 				
 				// Display the FPS if needed
