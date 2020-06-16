@@ -148,7 +148,6 @@ namespace GLGame
 
 		GLFWwindow* _Init(GLFWwindow* share_window, ImGuiContext* context);
 		void Undo();
-		void Redo();
 		void ExtendString(string& str, int ex_amt, const string& ex_c);
 		void FlushSceneFile();
 		void DrawModalWindows();
@@ -262,24 +261,27 @@ namespace GLGame
 
 				else if (LastOperationCompleted.last_operation == ChangeBackground)
 				{
-					// Todo 
+					SceneEditorBackgroundQueue.at(LastOperationCompleted.layer).erase(
+						SceneEditorBackgroundQueue.at(LastOperationCompleted.layer).begin() + LastOperationCompleted.element);
 				}
 
 				LastOperationCompleted.erase = false;
 			}
 
-			
-
 			else if (LastOperationCompleted.erase == false)
 			{
-				SceneEditorItemQueue[LastOperationCompleted.layer].push_back(LastOperationCompleted.item);
-				LastOperationCompleted.erase = true;
+				if (LastOperationCompleted.last_operation == PlaceItems)
+				{
+					SceneEditorItemQueue[LastOperationCompleted.layer].push_back(LastOperationCompleted.item);
+					LastOperationCompleted.erase = true;
+				}
+
+				else if (LastOperationCompleted.last_operation == ChangeBackground)
+				{
+					SceneEditorBackgroundQueue[LastOperationCompleted.layer].push_back(SceneEditorGlobalBackgrounds->at(LastOperationCompleted.id));
+					LastOperationCompleted.erase = true;
+				}
 			}
-		}
-
-		void Redo()
-		{
-
 		}
 
 		void OpenSceneFile()
@@ -846,7 +848,7 @@ namespace GLGame
 
 			if (CurrentOperationSelected == ChangeBackground)
 			{
-				if (ImGui::Begin("Add backgrounds"))
+				if (ImGui::Begin("Add Backgrounds"))
 				{
 					if (ImGui::CollapsingHeader("Add Backgrounds"))
 					{
@@ -868,6 +870,16 @@ namespace GLGame
 						{
 							if (BackgroundSelected >= 0 && BackgroundSelected < BackgroundIDList->size())
 							{
+								// Write the data for undo'ing the background operation
+
+								LastOperationCompleted.last_operation = ChangeBackground;
+								LastOperationCompleted.layer = bgl;
+								LastOperationCompleted.id = BackgroundIDList->at(BackgroundSelected);
+								
+								// The location of the pushed element will be at the end of the vector 
+								LastOperationCompleted.element = SceneEditorBackgroundQueue[bgl].size();
+								LastOperationCompleted.erase = true;
+
 								SceneEditorBackgroundQueue[bgl].push_back(SceneEditorGlobalBackgrounds->at(BackgroundIDList->at(BackgroundSelected)));
 								
 								sprintf(bg_display_label, "Added \"%s\" successfully to Layer (%d)", BackgroundIDList->at(BackgroundSelected).c_str(), bgl);
@@ -920,6 +932,14 @@ namespace GLGame
 
 							if (ImGui::Button(bg_remove_label))
 							{
+								LastOperationCompleted.last_operation = ChangeBackground;
+								LastOperationCompleted.layer = background_map_contents.at(erase_element).layer;
+								LastOperationCompleted.id = background_map_contents.at(erase_element).id;
+
+								// The location of the pushed element will be at the end of the vector 
+								LastOperationCompleted.element = SceneEditorBackgroundQueue[bgl].size();
+								LastOperationCompleted.erase = false;
+
 								SceneEditorBackgroundQueue.at(background_map_contents.at(erase_element).layer).erase(
 									SceneEditorBackgroundQueue.at(background_map_contents.at(erase_element).layer).begin() + background_map_contents.at(erase_element).vector_element);
 							}
