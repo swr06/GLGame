@@ -39,6 +39,20 @@ namespace GLGame
 			ViewScene,
 		};
 
+		// For undo and redo
+
+		struct LastOperation
+		{
+			Operations last_operation;
+			string id;
+			int layer;
+			int element;
+			bool erase;
+			SceneEditorRenderItem item;
+		};
+
+		LastOperation LastOperationCompleted;
+
 		// Variables to initialize the window
 		static bool SceneEditorInitialized = false;
 		static GLFWwindow* SceneEditorWindow;
@@ -133,6 +147,8 @@ namespace GLGame
 		GameDebugInfo* DebugInfo;
 
 		GLFWwindow* _Init(GLFWwindow* share_window, ImGuiContext* context);
+		void Undo();
+		void Redo();
 		void ExtendString(string& str, int ex_amt, const string& ex_c);
 		void FlushSceneFile();
 		void DrawModalWindows();
@@ -145,6 +161,7 @@ namespace GLGame
 		void RenderBackgroundAddWidget();
 		void DrawGrid();
 		void RenderDebugWindow();
+		
 
 		// Event callbacks
 
@@ -231,6 +248,39 @@ namespace GLGame
 			SceneEditorBackgroundShader.CompileShaders();
 
 			return SceneEditorWindow;
+		}
+
+		void Undo()
+		{
+			if (LastOperationCompleted.erase)
+			{
+				if (LastOperationCompleted.last_operation == PlaceItems)
+				{
+					SceneEditorItemQueue.at(LastOperationCompleted.layer).erase(
+						SceneEditorItemQueue.at(LastOperationCompleted.layer).begin()
+						+ LastOperationCompleted.element);
+				}
+
+				else if (LastOperationCompleted.last_operation == ChangeBackground)
+				{
+					// Todo 
+				}
+
+				LastOperationCompleted.erase = false;
+			}
+
+			
+
+			else if (LastOperationCompleted.erase == false)
+			{
+				SceneEditorItemQueue[LastOperationCompleted.layer].push_back(LastOperationCompleted.item);
+				LastOperationCompleted.erase = true;
+			}
+		}
+
+		void Redo()
+		{
+
 		}
 
 		void OpenSceneFile()
@@ -1317,6 +1367,11 @@ namespace GLGame
 						}
 					}
 				}
+
+				if (key == GLFW_KEY_Z && mods & GLFW_MOD_CONTROL)
+				{
+					Undo();
+				}
 			}
 
 			else if (action == GLFW_RELEASE)
@@ -1488,6 +1543,14 @@ namespace GLGame
 
 									item.layer = CurrentSceneEditorLayer;
 									SceneEditorItemQueue[item.layer].push_back(item);
+
+									// Writing the required data in the struct
+									// For undo/redo
+									LastOperationCompleted.erase = true;
+									LastOperationCompleted.element = SceneEditorItemQueue[item.layer].size() - 1;
+									LastOperationCompleted.last_operation = PlaceItems;
+									LastOperationCompleted.id = "";
+									LastOperationCompleted.item = item;
 								}
 							}
 						}
@@ -1530,6 +1593,11 @@ namespace GLGame
 
 									item.layer = CurrentSceneEditorLayer;
 									SceneEditorItemQueue[item.layer].push_back(item);
+									LastOperationCompleted.erase = true;
+									LastOperationCompleted.element = SceneEditorItemQueue[item.layer].size() - 1;
+									LastOperationCompleted.last_operation = PlaceItems;
+									LastOperationCompleted.id = "";
+									LastOperationCompleted.item = item;
 								}
 							}
 						}
@@ -1562,7 +1630,17 @@ namespace GLGame
 						// If the mouse collided with the object, erase it from the editor queue
 						if (CheckAABBCollision(o1, o2))
 						{
+							// Write some data in the undo structure
+							// For undo/redo
+							LastOperationCompleted.erase = false;
+							LastOperationCompleted.element = i;
+							LastOperationCompleted.last_operation = PlaceItems;
+							LastOperationCompleted.id = "";
+							LastOperationCompleted.item = SceneEditorItemQueue[CurrentSceneEditorLayer].at(i);
+							LastOperationCompleted.layer = CurrentSceneEditorLayer;
+
 							SceneEditorItemQueue[CurrentSceneEditorLayer].erase(SceneEditorItemQueue[CurrentSceneEditorLayer].begin() + i);
+							
 							break;
 						}
 					}
@@ -1574,7 +1652,17 @@ namespace GLGame
 
 						if (CheckAABBCollision(o1, o2))
 						{
+							// Write some data in the undo structure
+							// For undo/redo
+							LastOperationCompleted.erase = false;
+							LastOperationCompleted.element = i;
+							LastOperationCompleted.last_operation = PlaceItems;
+							LastOperationCompleted.id = "";
+							LastOperationCompleted.item = SceneEditorItemQueue[CurrentSceneEditorLayer].at(i);
+							LastOperationCompleted.layer = CurrentSceneEditorLayer;
+
 							SceneEditorItemQueue[CurrentSceneEditorLayer].erase(SceneEditorItemQueue[CurrentSceneEditorLayer].begin() + i);
+
 							break;
 						}
 					}
