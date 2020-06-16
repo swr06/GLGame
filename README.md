@@ -114,7 +114,7 @@ If you like this project and would like to support it, please do star it on GitH
 
 ![GLGame Demo-1](https://github.com/swr06/GLGame/blob/master/Docs/Readme/Lighting%20demo.png)
 <p align="center">
-<i>A Basic lighting demo created with the in-build 2D Light classes</i>
+<i>A Basic lighting demo created with the built-in 2D Light classes and batchers</i>
 </p>
 
 ![GLGame Demo-2](https://github.com/swr06/GLGame/blob/master/Docs/Readme/Lighting%20demo%20-%201.PNG)
