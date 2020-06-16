@@ -44,6 +44,17 @@ namespace GLGame
 					{
 						pos.x = items[i].x;
 						pos.y = items[i].y;
+
+						// If the object has a sprite, correct the x and y according to the width and height
+						// x = x - (w/2)
+						// y = y - (h/2)
+
+						if (obj->HasSprite())
+						{
+							pos.x = pos.x - (int)(obj->GetSprite()->GetCurrentTextureWidth() / 2);
+							pos.y = pos.y - (int)(obj->GetSprite()->GetCurrentTextureHeight() / 2);
+						}
+
 						pos.z = 1.0f;
 						scene->AddObjectAtPosition(*obj, items[i].layer, pos);
 					}
