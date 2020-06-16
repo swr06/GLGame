@@ -71,7 +71,7 @@ GLGame has very humble dependencies.
 
 - ``C++17`` (for ``std::filesystem``)
 - ``stb_image`` (for reading texture files)
-- ``ImGui`` (Bloat free immediate mode GUI interface by Omar Ocurnut)
+- ``ImGui`` (Bloat free immediate mode GUI interface by Omar Cornut)
 - ``GLEW`` (OpenGL wrangler library)
 - ``GLFW`` (Windowing environment)
 
