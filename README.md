@@ -134,4 +134,4 @@ If you like this project and would like to support it, please do star it on GitH
 <i>The batch renderer that comes with GLGame can render upto 10000 sprites in one draw call</i>
 </p>
 
-Thankyou.
+Thankyou for visiting the GLGame github page.
