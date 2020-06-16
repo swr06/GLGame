@@ -622,12 +622,6 @@ namespace GLGame
 
 			m_ObjectsInitialized = true;;
 		}
-		
-		// Buffer is empty
-		if (m_VerticesWritten < 1)
-		{
-			return;
-		}
 
 		if (m_BatchShader == nullptr)
 		{

@@ -192,6 +192,11 @@ namespace GLGame
 
 	BatcherInfo& LightBatcher::EndLightBatch()
 	{
+		return m_Info;
+	}
+
+	void LightBatcher::DrawFullBatch()
+	{
 		if (!m_ObjectsInitialized)
 		{
 			m_Shader.CreateShaderProgramFromFile(GLGAME_DEFAULT_LIGHT_VERTEX, GLGAME_DEFAULT_LIGHT_FRAGMENT);
@@ -208,14 +213,11 @@ namespace GLGame
 			m_VBO.VertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), (GLvoid*)(7 * sizeof(GLfloat)));
 			m_VAO.Unbind();
 
+			m_Shader.CompileShaders();
+
 			m_ObjectsInitialized = true;
 		}
 
-		return m_Info;
-	}
-
-	void LightBatcher::DrawFullBatch()
-	{
 		if (m_VerticesWritten == 0)
 		{
 			return;

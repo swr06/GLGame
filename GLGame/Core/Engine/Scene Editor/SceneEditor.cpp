@@ -933,9 +933,10 @@ namespace GLGame
 
 					ImGui::Text("\n\n");
 					ImGui::InputInt("Layer/Depth", &CurrentSceneEditorLayer);
+					ImGui::End();
 				}
 
-				ImGui::End();
+				
 
 				// Draw Selected item window
 				{
@@ -958,21 +959,23 @@ namespace GLGame
 
 					ImGui::SetNextWindowPos(ImVec2(SceneEditorWidth - 270, SceneEditorHeight - 270), ImGuiCond_FirstUseEver);
 					ImGui::SetNextWindowSize(ImVec2(250, 250), ImGuiCond_Always);
-					ImGui::Begin("Selected Item", &selected_item_show_window, selected_item_window_flags);
-					ImGui::TextColored(ImVec4(0.0f, 1.0f, 1.0f, 1.0f), "SELECTED OBJECT ! \n\n\n");
 
-					// Add the item to the imgui draw list
-					ImGui::GetWindowDrawList()->AddImage(
-						(void*)selected_obj_spr->GetCurrentTexture()->GetTextureID(),
-						ImVec2(ImGui::GetCursorScreenPos()),
-						ImVec2(ImGui::GetCursorScreenPos().x + selected_obj_spr->GetCurrentTextureWidth(),
-							ImGui::GetCursorScreenPos().y + selected_obj_spr->GetCurrentTextureHeight()),
-						ImVec2(1, 0),
-						ImVec2(0, 1));
+					if (ImGui::Begin("Selected Item", &selected_item_show_window, selected_item_window_flags))
+					{
+						ImGui::TextColored(ImVec4(0.0f, 1.0f, 1.0f, 1.0f), "SELECTED OBJECT ! \n\n\n");
 
-					ImGui::End();
+						// Add the item to the imgui draw list
+						ImGui::GetWindowDrawList()->AddImage(
+							(void*)selected_obj_spr->GetCurrentTexture()->GetTextureID(),
+							ImVec2(ImGui::GetCursorScreenPos()),
+							ImVec2(ImGui::GetCursorScreenPos().x + selected_obj_spr->GetCurrentTextureWidth(),
+								ImGui::GetCursorScreenPos().y + selected_obj_spr->GetCurrentTextureHeight()),
+							ImVec2(1, 0),
+							ImVec2(0, 1));
+
+						ImGui::End();
+					}
 				}
-
 			}
 		}
 

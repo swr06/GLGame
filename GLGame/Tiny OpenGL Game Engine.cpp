@@ -8,6 +8,7 @@ const int game_width = 800;
 const int game_height = 600;
 
 void EventCallback(Event e);
+Light light_t(glm::vec3(100.0f, 300.0f, 0.0f), glm::vec4(1.0f, 0.0f, 0.0f, 4.0f), 400.0f);
 
 class game_ : public Game
 {
@@ -103,6 +104,11 @@ void EventCallback(Event e)
 		cam.SetProjection(0, e.WindowFrameBufferX, 0, e.WindowFrameBufferY);
 	}
 
+	if (e.EventType == Event_CursorMoved)
+	{
+		light_t.m_Position = glm::vec3(e.MouseX, e.WindowFrameBufferY - e.MouseY, 0.0f);
+	}
+
 	if (increment_pos)
 	{
 		if (e.EventType == type && e.KeyCode == GLFW_KEY_LEFT)
@@ -155,10 +161,10 @@ void EventCallback(Event e)
 
 int main()
 {
-	Light light_2(glm::vec3(400.0f, 400.0f, 0.0f), glm::vec4(0.0f, 1.0f, 0.0f, 2.0f), 400.0f);
-	Light light_3(glm::vec3(600.0f, 400.0f, 0.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), 800.0f);
+	Light light_1(glm::vec3(200.0f, 400.0f, 0.0f), glm::vec4(0.0f, 0.0f, 1.0f, 4.0f), 400.0f);
+	Light light_2(glm::vec3(400.0f, 400.0f, 0.0f), glm::vec4(0.0f, 1.0f, 0.0f, 4.0f), 400.0f);
+	Light light_3(glm::vec3(600.0f, 400.0f, 0.0f), glm::vec4(1.0f, 1.0f, 1.0f, 4.0f), 400.0f);
 
-	Light light_t(glm::vec3(100.0f, 300.0f, 0.0f), glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), 100.0f);
 	BlinkingLight pLight(light_t, 1, 30, 1.0f);
 	Texture tex1, tex2, tile_sheet;
 	Scene scene;
@@ -192,10 +198,12 @@ int main()
 	new_bg.SetStretchToWindow(false);
 	scene.SetSceneCamera(cam);
 	scene.SetSceneAmbientLight(glm::vec4(0.5f, 0.5f, 0.5f, 1.0f));
-	scene.AddSceneBackground(bg, 0);
-	// 	scene.AddLightAtPosition(light_2);
-	// 	scene.AddLightAtPosition(light_3);
-	// 	scene.AddBlinkingLightAtPosition(pLight);
+   // scene.AddSceneBackground(bg, 0);
+ //	scene.AddLightAtPosition(light_1);
+ //	scene.AddLightAtPosition(light_2);
+	//scene.AddLightAtPosition(light_3);
+	//scene.AddLightAtPosition(light_t);
+ 	//scene.AddBlinkingLightAtPosition(pLight);
 	// 	scene.AddSceneBackground(bg, 1);
 
 	tile_sheet.CreateTexture("Core\\Resources\\terrain_atlas.png");
@@ -213,7 +221,7 @@ int main()
 	obj_2.SetSprite(spr_2); // tex2
 	obj_3.SetSprite(spr_3);
 
-	scene.LoadSceneFile("TestScene.sce");
+	scene.LoadSceneFile("SmallScene.sce");
 
 	game.SetCurrentScene(scene);
 	game.DisplayFpsOnWindowTitleBar(true);
@@ -225,7 +233,7 @@ int main()
 		//call it like this
 		game.Render(); 
 		
-		static Background bg("Core\\Resources\\grass_block.png", "Runtime bg");
+		//static Background bg("Core\\Resources\\grass_block.png", "Runtime bg");
 
 		if (game.IsThereCollisionOnLayer(obj, obj_2, 1, 0))
 		{
