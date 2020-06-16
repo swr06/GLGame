@@ -109,3 +109,27 @@ This project is licensed under the highly permissive MIT License. Read the LICEN
 # Supporting this project
 
 If you like this project and would like to support it, please do star it on GitHub.
+
+# Screenshots and Demos
+
+![GLGame Demo-1](https://github.com/swr06/GLGame/blob/master/Docs/Readme/Lighting%20demo.png)
+<p align="center">
+<i>A Basic lighting demo created with the in-build 2D Light classes</i>
+</p>
+\
+![GLGame Demo-2](https://github.com/swr06/GLGame/blob/master/Docs/Readme/Lighting%20demo%20-%201.PNG)
+<p align="center">
+<i>A Basic lighting demo emulated over a 2D sprite</i>
+</p>
+\
+![GLGame Demo-3](https://github.com/swr06/GLGame/blob/master/Docs/Readme/Scene%20Editor.png)
+<p align="center">
+<i>The GLGame Scene Editor created and rendered at runtime</i>
+</p>
+\
+![GLGame Demo-4](https://github.com/swr06/GLGame/blob/master/Docs/Readme/Batch%20Rendering.png)
+<p align="center">
+<i>The batch renderer that comes with GLGame can render upto 10000 sprites in one draw call</i>
+</p>
+
+Thankyou.
