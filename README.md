@@ -102,6 +102,10 @@ It got arount 1000+ FPS in game without the scene editor running and 400+ FPS on
 - Gmail   : ``samuelrasquinha@gmail.com``
 - Instagram : Samuel Rasquinha
 
+# Using it
+
+A wiki has been written for GLGame. Please refer to the demos and the ``Wiki`` tab in the repo page.
+
 # License
 
 This project is licensed under the highly permissive MIT License. Read the LICENSE file for more info.
