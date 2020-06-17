@@ -25,26 +25,42 @@ namespace GLGame
 			m_TileY = ty;
 		}
 
+		TextureAtlas(const string& atlas_path, int tx, int ty)
+		{
+			m_Atlas = new Texture(atlas_path);
+			m_TileX = tx;
+			m_TileY = ty;
+		}
+
 		Texture* Sample(const glm::vec2& start_coords, const glm::vec2& end_coords)
 		{
 			float width, height;
+			float x2, y2;
+			float x1, y1;
 
 			width = m_TileX * (end_coords.x - start_coords.x);
 			height = m_TileY * (end_coords.y - start_coords.y);
-		
+
 			array<GLfloat, 8> TextureCoordinates;
 
-			TextureCoordinates[0] = (end_coords.x * m_TileX) / m_Atlas->GetHeight();
-			TextureCoordinates[1] = (end_coords.y * m_TileY) / m_Atlas->GetWidth();
+			x1 = start_coords.x * m_TileX;
+			y1 = start_coords.y * m_TileY;
+			x2 = end_coords.x * m_TileX;
+			y2 = end_coords.y * m_TileY;
 
-			TextureCoordinates[2] = (end_coords.x * m_TileX) / m_Atlas->GetWidth();
-			TextureCoordinates[3] = (start_coords.y * m_TileY) / m_Atlas->GetHeight();
+			x1 = x1 / m_Atlas->GetWidth();
+			y1 = y1 / m_Atlas->GetHeight();
+			x2 = x2 / m_Atlas->GetWidth();
+			y2 = y2 / m_Atlas->GetHeight();
 
-			TextureCoordinates[4] = (start_coords.x * m_TileX) / m_Atlas->GetWidth();
-			TextureCoordinates[5] = (start_coords.y * m_TileY) / m_Atlas->GetHeight();
-
-			TextureCoordinates[6] = (start_coords.x * m_TileX) / m_Atlas->GetWidth();
-			TextureCoordinates[7] = (end_coords.y * m_TileY) / m_Atlas->GetHeight();
+			TextureCoordinates[0] = x2;
+			TextureCoordinates[1] = y2;
+			TextureCoordinates[2] = x2;
+			TextureCoordinates[3] = y1;
+			TextureCoordinates[4] = x1;
+			TextureCoordinates[5] = y1;
+			TextureCoordinates[6] = x1;
+			TextureCoordinates[7] = y2;
 
 			Texture *tex = new Texture;
 
