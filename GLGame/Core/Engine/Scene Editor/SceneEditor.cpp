@@ -1019,15 +1019,10 @@ namespace GLGame
 
 				ImGui::End();
 
-				// Draw Selected item window
+				if (CurrentOperationSelected == PlaceItems)
 				{
 					ImGuiWindowFlags selected_item_window_flags = 0;
 					bool selected_item_show_window = true;
-
-					//selected_item_window_flags |= ImGuiWindowFlags_NoTitleBar;
-					//selected_item_window_flags |= ImGuiWindowFlags_NoMove;
-					//selected_item_window_flags |= ImGuiWindowFlags_NoNav;
-					//selected_item_window_flags |= ImGuiWindowFlags_NoBackground;
 
 					selected_item_window_flags |= ImGuiWindowFlags_NoScrollbar;
 					selected_item_window_flags |= ImGuiWindowFlags_MenuBar;
@@ -1036,24 +1031,48 @@ namespace GLGame
 					selected_item_window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus;
 					selected_item_window_flags |= ImGuiWindowFlags_NoDocking;
 
-					Sprite* selected_obj_spr = SceneEditorGlobalObjects->at("@#$*#Object_1")->GetSprite();
-
 					ImGui::SetNextWindowPos(ImVec2(SceneEditorWidth - 270, SceneEditorHeight - 270), ImGuiCond_FirstUseEver);
 					ImGui::SetNextWindowSize(ImVec2(250, 250), ImGuiCond_Always);
 
 					if (ImGui::Begin("Selected Item", &selected_item_show_window, selected_item_window_flags))
 					{
-						ImGui::TextColored(ImVec4(0.0f, 1.0f, 1.0f, 1.0f), "SELECTED OBJECT ! \n\n\n");
+						if (ItemTypeSelected == ObjectSelection && RadioObjectSelected > 0 && RadioObjectSelected < ObjectIDList->size())
+						{
+							Texture* selected_item_texture;
 
-						// Add the item to the imgui draw list
-						ImGui::GetWindowDrawList()->AddImage(
-							(void*)selected_obj_spr->GetCurrentTexture()->GetTextureID(),
-							ImVec2(ImGui::GetCursorScreenPos()),
-							ImVec2(ImGui::GetCursorScreenPos().x + selected_obj_spr->GetCurrentTextureWidth(),
-								ImGui::GetCursorScreenPos().y + selected_obj_spr->GetCurrentTextureHeight()),
-							ImVec2(1, 0),
-							ImVec2(0, 1));
+							if (SceneEditorGlobalObjects->at(ObjectIDList->at(RadioObjectSelected))->HasSprite())
+							{
+								selected_item_texture = SceneEditorGlobalObjects->at(ObjectIDList->at(RadioObjectSelected))->GetSprite()->GetCurrentTexture();
+							
+								// Add the item to the imgui draw list
+								ImGui::GetWindowDrawList()->AddImage(
+									(void*)selected_item_texture->GetTextureID(),
+									ImVec2(ImGui::GetCursorScreenPos()),
+									ImVec2(ImGui::GetCursorScreenPos().x + selected_item_texture->GetWidth(),
+									ImGui::GetCursorScreenPos().y + selected_item_texture->GetHeight()),
+									ImVec2(0, 0),
+									ImVec2(1, 1));
+							}
+						}
 
+						if (ItemTypeSelected == SpriteSelection && RadioSpriteSelected > 0 && RadioSpriteSelected < SpriteIDList->size())
+						{
+							Texture* selected_item_texture;
+
+							if (SceneEditorGlobalSprites->at(SpriteIDList->at(RadioSpriteSelected))->GetCurrentTexture() != nullptr)
+							{
+								selected_item_texture = SceneEditorGlobalSprites->at(SpriteIDList->at(RadioSpriteSelected))->GetCurrentTexture();
+								
+								// Add the item to the imgui draw list
+								ImGui::GetWindowDrawList()->AddImage(
+									(void*)selected_item_texture->GetTextureID(),
+									ImVec2(ImGui::GetCursorScreenPos()),
+									ImVec2(ImGui::GetCursorScreenPos().x + selected_item_texture->GetWidth(),
+										ImGui::GetCursorScreenPos().y + selected_item_texture->GetHeight()),
+									ImVec2(0, 0),
+									ImVec2(1, 1));
+							}
+						}
 					}
 
 					ImGui::End();
