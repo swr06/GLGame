@@ -70,6 +70,44 @@ namespace GLGame
 			return tex;
 		}
 
+		Texture* SampleCustom(const glm::vec2& start_coords, const glm::vec2& end_coords)
+		{
+			float width, height;
+			float x2, y2;
+			float x1, y1;
+
+			width = end_coords.x - start_coords.x;
+			height = end_coords.y - start_coords.y;
+
+			array<GLfloat, 8> TextureCoordinates;
+
+			x1 = start_coords.x;
+			y1 = start_coords.y;
+			x2 = end_coords.x;
+			y2 = end_coords.y;
+
+			x1 = x1 / m_Atlas->GetWidth();
+			y1 = y1 / m_Atlas->GetHeight();
+			x2 = x2 / m_Atlas->GetWidth();
+			y2 = y2 / m_Atlas->GetHeight();
+
+			TextureCoordinates[0] = x2;
+			TextureCoordinates[1] = y2;
+			TextureCoordinates[2] = x2;
+			TextureCoordinates[3] = y1;
+			TextureCoordinates[4] = x1;
+			TextureCoordinates[5] = y1;
+			TextureCoordinates[6] = x1;
+			TextureCoordinates[7] = y2;
+
+			Texture* tex = new Texture;
+
+			*tex = *m_Atlas;
+			tex->IntCreateTexture(m_Atlas->GetTextureID(), TextureCoordinates, width, height, false);
+
+			return tex;
+		}
+
 	private : 
 
 		int m_TileX, m_TileY;

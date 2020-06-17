@@ -73,6 +73,7 @@ namespace GLGame
 		Game() : m_CurrentScene(nullptr), m_DisplayFPS(true), m_GameWindow(nullptr), m_KeyHoldEventBuffer(nullptr) {}
 		~Game();
 
+		long long GetCurrentFrame() { return m_FpsCount; }
 		void Render(bool should_clear = true);
 		void StartSceneEditor();
 
