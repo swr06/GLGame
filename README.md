@@ -139,4 +139,10 @@ If you like this project and would like to support it, please do star it on GitH
 <i>The batch renderer that comes with GLGame can render upto 10,000 sprites in one draw call</i>
 </p>
 
+![GLGame Platformer Demo](https://github.com/swr06/GLGame/blob/master/Docs/Readme/Platformer%20Demo.png)
+<p align="center">
+<i>A platformer demo that comes included with GLGame</i>
+</p>
+
+
 Thankyou for visiting the GLGame github page.
