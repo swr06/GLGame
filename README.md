@@ -5,6 +5,10 @@
 Created by Samuel Rasquinha using C++17 and OpenGL 3.3 :game_die:
 </p>
 
+# Note
+
+This game engine is discontinued. No one is working on it as of now, this was merely a project to improve my understanding. 
+
 # What is GLGame ? 
 
 GLGame is a Tiny OpenGL Game Engine that is simple, lightweight and easy to use.
