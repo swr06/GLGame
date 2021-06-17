@@ -79,10 +79,6 @@ GLGame has very humble dependencies.
 - ``GLEW`` (OpenGL wrangler library)
 - ``GLFW`` (Windowing environment)
 
-# About the Author
-
-My name is Samuel Rasquinha (samuelrasquinha@gmail.com) and I am a 14 year old programmer from India. 
-
 # Development Specs 
 
 - Processor : AMD Ryzen 3 2200g
@@ -105,8 +101,6 @@ It got arount 1000+ FPS in game without the scene editor running and 400+ FPS on
 If you need any help or want to report bugs please feel free to contact me : 
 
 - Discord : @swr06 #1899 
-- Gmail   : ``samuelrasquinha@gmail.com``
-- Instagram : Samuel Rasquinha
 
 # Using it
 
