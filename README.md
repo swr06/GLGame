@@ -1,9 +1,13 @@
 # GLGame (A Tiny OpenGL based C++ Game Engine)
 
+# THIS PROJECT IS ABANDONED AND I HAVE MOVED ON TO OTHER PROJECTS AND SUCH! I STRONGLY ADVICE YOU TO NOT LOOK INTO THIS PROJECT OR CODE SINCE I WAS VERY NEW TO GRAPHICS WHEN I WROTE THIS ABOMINATION.
+
+
 ![GLGame Logo](https://github.com/swr06/GLGame/blob/master/Branding/logo1.png)
 <p align=center>
 Created by Samuel Rasquinha using C++17 and OpenGL 3.3 :game_die:
 </p>
+
 
 # Note
 
@@ -88,19 +92,7 @@ GLGame has very humble dependencies.
 
 This engine managed to get 500+ FPS in the game with the scene editor running. (With the above specs) and about 300 FPS on an intel HD 4000 GPU. 
 
-It got arount 1000+ FPS in game without the scene editor running and 400+ FPS on an Intel HD 4000.
-
-# Requirements 
-
-- Processor : N/A
-- Graphics Card : Any graphics card that supports OpenGL 3.2 and GLSL Shading language 3.3
-- Ram : 100MB or Higher
-
-# Contact Me
-
-If you need any help or want to report bugs please feel free to contact me : 
-
-- Discord : @swr06 #1899 
+It got around 1000+ FPS in game without the scene editor running and 400+ FPS on an Intel HD 4000.
 
 # Using it
 
