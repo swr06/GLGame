@@ -1,17 +1,13 @@
 # GLGame (A Tiny OpenGL based C++ Game Engine)
 
-# THIS PROJECT IS ABANDONED AND I HAVE MOVED ON TO OTHER PROJECTS AND SUCH! I STRONGLY ADVICE YOU TO NOT LOOK INTO THIS PROJECT OR CODE SINCE I WAS VERY NEW TO GRAPHICS WHEN I WROTE THIS ABOMINATION.
-
-
 ![GLGame Logo](https://github.com/swr06/GLGame/blob/master/Branding/logo1.png)
 <p align=center>
 Created by Samuel Rasquinha using C++17 and OpenGL 3.3 :game_die:
 </p>
 
-
 # Note
 
-This game engine is discontinued. No one is working on it as of now, this was merely a project to improve my understanding. 
+This game has long since been ABANDONED. I do not recommend using it as I was new to graphics/gamedev/game engine dev when I wrote it.
 
 # What is GLGame ? 
 
